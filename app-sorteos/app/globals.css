@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
-  GoldenTicket — rojo rubí de base, oro de boleto, naranja/amarillo para acciones, verde para lo disponible.
+  GoldenTicket — vino oscuro de base, oro como protagonista; rojo solo en acentos, naranja en el botón de pagar, verde para lo disponible.
   La paleta "violet" de Tailwind se redefine aquí para que toda la app
   use los colores de la marca sin tocar cada componente.
 */
@@ -9,13 +9,13 @@
   --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
 
   --color-ink: #2a1a17;
-  --color-brand: #a3131f;
-  --color-brand-deep: #730c15;
-  --color-gold: #e3a913;
+  --color-brand: #3f0d15;
+  --color-brand-deep: #2b080e;
+  --color-gold: #e6b325;
   --color-gold-deep: #b07f06;
   --color-gold-soft: #fcf0cf;
-  --color-orange: #f2711c;
-  --color-paper: #fbf7f2;
+  --color-orange: #ee7b22;
+  --color-paper: #faf8f5;
   --color-line: #eee3d8;
 
   --color-violet-50: #fbf6e6;
@@ -24,12 +24,12 @@
   --color-violet-300: #ddbf5e;
   --color-violet-400: #c9a23a;
   --color-violet-500: #b8901f;
-  --color-violet-600: #a3131f;
-  --color-violet-700: #a3131f;
-  --color-violet-800: #730c15;
-  --color-violet-900: #4d070d;
-  --color-fuchsia-500: #f2711c;
-  --color-fuchsia-600: #e3a913;
+  --color-violet-600: #b3202e;
+  --color-violet-700: #9e1b27;
+  --color-violet-800: #3f0d15;
+  --color-violet-900: #2b080e;
+  --color-fuchsia-500: #e6b325;
+  --color-fuchsia-600: #c99412;
   --color-amber-400: #e8bd3a;
 }
 
@@ -111,8 +111,8 @@ body {
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primary { background: var(--color-brand); color: white; }
 .btn-primary:hover:not(:disabled) { background: var(--color-brand-deep); }
-.btn-gold { background: var(--color-orange); color: white; }
-.btn-gold:hover:not(:disabled) { background: #d95f10; }
+.btn-gold { background: linear-gradient(180deg, #f0b93a, var(--color-orange)); color: #2b080e; box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12); }
+.btn-gold:hover:not(:disabled) { filter: brightness(1.05); }
 .btn-green { background: #15803d; color: white; }
 .btn-gray { background: #4b5563; color: white; }
 .btn-yellow { background: #f5c518; color: #5c4300; }

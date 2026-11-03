@@ -26,7 +26,7 @@ export default async function SorteosPage() {
               ["Paga y envía tu captura", "Confirmamos cada pago a mano y tu número pasa a pagado."],
               ["Sorteo en vivo", "Sacamos el ganador frente a todos, con la lista de compradores."],
             ].map(([t, d], i) => (
-              <li key={t} className="flex gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+              <li key={t} className="flex gap-3 rounded-xl border border-gold/25 bg-white/5 p-4">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold font-extrabold text-ink">
                   {i + 1}
                 </span>

@@ -31,7 +31,7 @@ export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boo
   };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/10 bg-brand">
+    <header className="sticky top-0 z-30 border-b border-gold/40 bg-brand">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
         <Brand light />
         <nav className="flex flex-wrap items-center gap-0.5">
