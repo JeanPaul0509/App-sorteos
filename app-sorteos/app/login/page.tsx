@@ -23,7 +23,10 @@ export default function LoginPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email: phoneToEmail(p), password });
     setLoading(false);
-    if (error) return setError("Celular o contraseña incorrectos.");
+    if (error)
+      return setError(
+        error.message === "Invalid login credentials" ? "Celular o contraseña incorrectos." : error.message
+      );
     router.replace("/sorteos");
     router.refresh();
   }

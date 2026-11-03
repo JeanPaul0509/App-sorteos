@@ -70,6 +70,27 @@ export async function fetchAll<T>(
   return all;
 }
 
+/** Descarga un CSV que Excel abre directo (con tildes y columnas bien separadas). */
+export function downloadCsv(filename: string, rows: (string | number)[][]) {
+  const esc = (v: string | number) => {
+    const s = String(v ?? "");
+    return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const body = "sep=;\n" + rows.map((r) => r.map(esc).join(";")).join("\n");
+  const blob = new Blob(["﻿" + body], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export function formatDate(iso: string | null) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleString("es-PE", { dateStyle: "short", timeStyle: "short" });
+}
+
 export function timeAgo(iso: string | null) {
   if (!iso) return "";
   const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);

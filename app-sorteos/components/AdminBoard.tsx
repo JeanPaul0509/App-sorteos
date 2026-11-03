@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Legend from "@/components/Legend";
 import { createClient } from "@/lib/supabase/client";
 import type { AdminTicket, Raffle, TicketStatus } from "@/lib/types";
-import { buyerWhatsAppUrl, fetchAll, money, pad, timeAgo } from "@/lib/utils";
+import { buyerWhatsAppUrl, downloadCsv, fetchAll, formatDate, money, pad, timeAgo } from "@/lib/utils";
 
 type Filter = "all" | TicketStatus;
 
@@ -25,6 +25,8 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
   const [picked, setPicked] = useState<number[]>([]); // ids de tickets
   const [saleName, setSaleName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [lookup, setLookup] = useState("");
+  const [onlySold, setOnlySold] = useState(true);
 
   const load = useCallback(async () => {
     try {
@@ -104,6 +106,32 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
 
   const pickedTickets = tickets.filter((t) => picked.includes(t.id));
   const fmt = (n: number) => pad(n, raffle.total_tickets);
+
+  // Lista de compradores (para el sorteo en vivo)
+  const buyers = useMemo(
+    () => tickets.filter((t) => (onlySold ? t.status === "sold" : t.status !== "available")),
+    [tickets, onlySold]
+  );
+
+  const found = useMemo(() => {
+    const n = parseInt(lookup, 10);
+    return isNaN(n) ? null : tickets.find((t) => t.number === n) ?? "none";
+  }, [lookup, tickets]);
+
+  function exportExcel() {
+    const rows: (string | number)[][] = [["Número", "Nombre", "Celular", "Estado", "Fecha de pago"]];
+    buyers.forEach((t) =>
+      rows.push([
+        t.number,
+        t.buyer_name ?? "",
+        t.buyer_phone ?? "",
+        t.status === "sold" ? "Pagado" : "Reservado",
+        formatDate(t.sold_at),
+      ])
+    );
+    const safe = raffle.title.replace(/[^\p{L}\p{N}]+/gu, "-").toLowerCase();
+    downloadCsv(`compradores-${safe}.csv`, rows);
+  }
 
   function togglePick(id: number) {
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
@@ -191,6 +219,88 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+      </section>
+
+      {/* ¿Quién tiene el número? — para el sorteo en vivo */}
+      <section className="card bg-linear-to-br from-violet-700 to-fuchsia-600 p-5 text-white">
+        <h2 className="text-lg font-bold">🎤 ¿Quién tiene el número ganador?</h2>
+        <p className="text-sm text-white/80">Escribe el número que salió en el sorteo.</p>
+        <input
+          className="input mt-3 max-w-xs text-2xl font-bold text-gray-900"
+          inputMode="numeric"
+          placeholder="Ej: 57"
+          value={lookup}
+          onChange={(e) => setLookup(e.target.value.replace(/\D/g, ""))}
+        />
+        {found === "none" && <p className="mt-3">Ese número no existe en este sorteo.</p>}
+        {found && found !== "none" && (
+          <div className="mt-4 rounded-2xl bg-white p-4 text-gray-900">
+            <p className="text-4xl font-extrabold text-violet-700">#{fmt(found.number)}</p>
+            {found.status === "available" ? (
+              <p className="mt-1 text-gray-500">Nadie compró este número.</p>
+            ) : (
+              <>
+                <p className="mt-1 text-2xl font-bold">{found.buyer_name}</p>
+                <p className="text-lg">📱 {found.buyer_phone}</p>
+                <p className={`mt-1 text-sm font-semibold ${found.status === "sold" ? "text-green-700" : "text-yellow-600"}`}>
+                  {found.status === "sold" ? "✅ Pagado" : "⚠️ Reservado, todavía NO pagó"}
+                </p>
+                {found.buyer_phone && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <a href={`tel:${found.buyer_phone}`} className="btn btn-primary">
+                      📞 Llamar
+                    </a>
+                    <a href={buyerWhatsAppUrl(found.buyer_phone)} target="_blank" rel="noreferrer" className="btn btn-green">
+                      WhatsApp
+                    </a>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </section>
+
+      {/* Lista de compradores + Excel */}
+      <section className="card p-5">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-bold">📋 Compradores ({buyers.length})</h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={onlySold} onChange={(e) => setOnlySold(e.target.checked)} />
+              Solo pagados
+            </label>
+            <button onClick={exportExcel} disabled={buyers.length === 0} className="btn btn-green py-2 text-sm">
+              ⬇️ Descargar Excel
+            </button>
+          </div>
+        </div>
+        {buyers.length === 0 ? (
+          <p className="text-sm text-gray-500">Todavía no hay compradores.</p>
+        ) : (
+          <div className="max-h-96 overflow-auto rounded-xl border border-gray-100">
+            <table className="w-full text-left text-sm">
+              <thead className="sticky top-0 bg-gray-50 text-gray-600">
+                <tr>
+                  <th className="px-3 py-2">#</th>
+                  <th className="px-3 py-2">Nombre</th>
+                  <th className="px-3 py-2">Celular</th>
+                  <th className="px-3 py-2">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {buyers.map((t) => (
+                  <tr key={t.id} className="border-t border-gray-100">
+                    <td className="px-3 py-2 font-bold">{fmt(t.number)}</td>
+                    <td className="px-3 py-2">{t.buyer_name}</td>
+                    <td className="px-3 py-2">{t.buyer_phone}</td>
+                    <td className="px-3 py-2">{t.status === "sold" ? "✅ Pagado" : "🟡 Reservado"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </section>
