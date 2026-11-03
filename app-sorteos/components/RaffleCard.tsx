@@ -61,11 +61,11 @@ export default function RaffleCard({
       <div className="flex items-center gap-4 px-4" style={{ height: STUB }}>
         <div className="shrink-0">
           <p className="text-xs text-gray-500">Por número</p>
-          <p className="text-2xl font-extrabold tracking-tight">{money(raffle.price)}</p>
+          <p className="text-2xl font-extrabold tracking-tight text-brand">{money(raffle.price)}</p>
         </div>
         <div className="min-w-0 flex-1">
           <div className="h-2 overflow-hidden rounded-full bg-paper">
-            <div className="h-full rounded-full bg-gold" style={{ width: `${pct}%` }} />
+            <div className="h-full rounded-full bg-linear-to-r from-gold to-orange" style={{ width: `${pct}%` }} />
           </div>
           <p className="mt-1.5 text-xs text-gray-600">
             {finished ? `${taken} de ${raffle.total_tickets} vendidos` : `Quedan ${left} de ${raffle.total_tickets}`}
