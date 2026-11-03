@@ -282,7 +282,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
               <button onClick={() => setShowModal(false)} className="btn btn-light flex-1" disabled={sending}>
                 Volver
               </button>
-              <button onClick={reserve} className="btn btn-green flex-1" disabled={sending}>
+              <button onClick={reserve} className="btn btn-gold flex-1" disabled={sending}>
                 {sending ? "Reservando..." : "Ir a pagar 📲"}
               </button>
             </div>

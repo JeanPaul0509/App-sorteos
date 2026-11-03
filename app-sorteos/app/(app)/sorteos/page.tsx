@@ -15,13 +15,37 @@ export default async function SorteosPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-extrabold">Sorteos activos</h1>
-      <p className="mb-6 text-gray-500">Elige un premio y separa tus números de la suerte 🍀</p>
+      <section className="-mx-4 -mt-6 mb-8 bg-ink px-4 pb-10 pt-8 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:px-8">
+        <div className="mx-auto max-w-5xl">
+          <h1 className="max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl" style={{ fontStretch: "110%" }}>
+            Elige tu número. Paga con Yape. Mira el sorteo en vivo.
+          </h1>
+          <ol className="mt-6 grid gap-3 text-sm sm:grid-cols-3">
+            {[
+              ["Elige hasta 5 números", "Quedan separados a tu nombre apenas los reservas."],
+              ["Paga y envía tu captura", "Confirmamos cada pago a mano y tu número pasa a pagado."],
+              ["Sorteo en vivo", "Sacamos el ganador frente a todos, con la lista de compradores."],
+            ].map(([t, d], i) => (
+              <li key={t} className="flex gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold font-extrabold text-ink">
+                  {i + 1}
+                </span>
+                <span>
+                  <b className="block text-white">{t}</b>
+                  <span className="text-white/65">{d}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <h2 className="mb-5 text-2xl font-extrabold">Sorteos activos</h2>
 
       {list.length === 0 ? (
         <div className="card p-10 text-center text-gray-500">
-          <div className="mb-2 text-5xl">🎁</div>
-          Por ahora no hay sorteos activos. ¡Vuelve pronto!
+          <div className="mb-2 text-5xl">🎟️</div>
+          No hay sorteos abiertos en este momento. Vuelve pronto para ver el próximo premio.
         </div>
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

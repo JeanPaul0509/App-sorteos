@@ -1,3 +1,5 @@
+import Brand from "@/components/Brand";
+
 export default function AuthShell({
   title,
   subtitle,
@@ -8,16 +10,25 @@ export default function AuthShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-violet-700 via-fuchsia-600 to-amber-400 p-4">
-      <div className="card w-full max-w-sm p-7">
-        <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-100 text-4xl">
-            🎟️
-          </div>
-          <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+    <div className="flex min-h-screen flex-col bg-ink">
+      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-10">
+        <div className="mb-8 flex justify-center">
+          <Brand light size="lg" />
         </div>
-        {children}
+        <div className="ticket p-7" style={{ ["--cut" as string]: "calc(100% - 3.75rem)" }}>
+          <h1 className="text-2xl font-extrabold">{title}</h1>
+          <p className="mb-6 mt-1 text-sm text-gray-500">{subtitle}</p>
+          {children}
+          <div className="ticket-perf" style={{ margin: "1.75rem -0.9rem 0" }} />
+          <p className="pt-4 text-center text-xs text-gray-500">
+            Tu celular solo se usa para contactarte si ganas.
+          </p>
+        </div>
+        <ul className="mt-8 space-y-2 text-sm text-white/70">
+          <li className="flex gap-2"><span className="text-gold">✓</span>Cada pago lo confirmamos uno por uno.</li>
+          <li className="flex gap-2"><span className="text-gold">✓</span>El sorteo se hace en vivo, con la lista de compradores.</li>
+          <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus números en todo momento.</li>
+        </ul>
       </div>
     </div>
   );

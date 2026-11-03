@@ -2,14 +2,14 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sorteos 🎟️",
-  description: "Participa en nuestros sorteos",
+  title: "GoldenTicket | Sorteos",
+  description: "Sorteos con pagos confirmados uno por uno y sorteo en vivo.",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#6d28d9",
+  themeColor: "#132238",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&display=swap"
           rel="stylesheet"
         />
       </head>

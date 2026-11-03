@@ -1,18 +1,89 @@
 @import "tailwindcss";
 
+/*
+  GoldenTicket — tinta azul profunda + oro de boleto.
+  La paleta "violet" de Tailwind se redefine aquí para que toda la app
+  use los colores de la marca sin tocar cada componente.
+*/
 @theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #132238;
+  --color-gold: #d4a017;
+  --color-gold-deep: #a87c0c;
+  --color-gold-soft: #f8eecd;
+  --color-paper: #f5f6fa;
+  --color-line: #e3e6ee;
+
+  --color-violet-50: #fbf6e6;
+  --color-violet-100: #f6ebc6;
+  --color-violet-200: #ebd58e;
+  --color-violet-300: #ddbf5e;
+  --color-violet-400: #c9a23a;
+  --color-violet-500: #b8901f;
+  --color-violet-600: #1f3354;
+  --color-violet-700: #132238;
+  --color-violet-800: #0c1626;
+  --color-violet-900: #07101c;
+  --color-fuchsia-500: #d4a017;
+  --color-fuchsia-600: #b8860b;
+  --color-amber-400: #e8bd3a;
 }
 
 body {
-  background: #f4f1fb;
-  color: #1e1b2e;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-feature-settings: "tnum" 1;
 }
 
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* En @layer components para que las clases de Tailwind (py-2, etc.) puedan ajustarlas */
+@layer components {
+/* ---------- Marca ---------- */
+.brand {
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.brand-mark {
+  /* boleto pequeño con muescas laterales */
+  width: 2.1rem;
+  height: 1.45rem;
+  background: var(--color-gold);
+  -webkit-mask: radial-gradient(circle at 0 50%, #0000 0.3rem, #000 0.31rem) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, #0000 0.3rem, #000 0.31rem) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle at 0 50%, #0000 0.3rem, #000 0.31rem) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, #0000 0.3rem, #000 0.31rem) right / 51% 100% no-repeat;
+  border-radius: 0.3rem;
+}
+
+/* ---------- Boleto (tarjeta de sorteo) ---------- */
+.ticket {
+  --notch: 0.85rem;
+  position: relative;
+  background: white;
+  border-radius: 1.1rem;
+  -webkit-mask: radial-gradient(circle var(--notch) at 0 var(--cut), #0000 98%, #000) 0 0 / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--cut), #0000 98%, #000) 100% 0 / 51% 100% no-repeat;
+  mask: radial-gradient(circle var(--notch) at 0 var(--cut), #0000 98%, #000) 0 0 / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--cut), #0000 98%, #000) 100% 0 / 51% 100% no-repeat;
+  filter: drop-shadow(0 1px 1px rgb(19 34 56 / 0.06)) drop-shadow(0 6px 16px rgb(19 34 56 / 0.07));
+}
+.ticket-perf {
+  border-top: 2px dashed var(--color-line);
+  margin: 0 var(--notch);
+}
+
+/* ---------- Bolitas de números ---------- */
 .ball {
   aspect-ratio: 1 / 1;
   border-radius: 9999px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.8rem;
   display: flex;
   align-items: center;
@@ -20,29 +91,49 @@ body {
   transition: transform 0.1s, box-shadow 0.1s;
   user-select: none;
 }
-.ball-available { background: #22c55e; color: white; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.15); }
+.ball-available { background: #1f9d55; color: white; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.16); }
 .ball-available:hover { transform: scale(1.08); }
-.ball-selected { background: #6d28d9; color: white; box-shadow: 0 0 0 3px #c4b5fd; transform: scale(1.08); }
-.ball-reserved { background: #facc15; color: #713f12; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.12); }
-.ball-sold { background: #d1d5db; color: #6b7280; text-decoration: line-through; }
-.ball-admin-picked { outline: 3px solid #6d28d9; outline-offset: 2px; }
+.ball-selected {
+  background: var(--color-ink);
+  color: var(--color-gold);
+  box-shadow: 0 0 0 3px var(--color-gold);
+  transform: scale(1.08);
+}
+.ball-reserved { background: #f5c518; color: #5c4300; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.12); }
+.ball-sold { background: #d6d9e0; color: #6b7280; text-decoration: line-through; }
+.ball-admin-picked { outline: 3px solid var(--color-ink); outline-offset: 2px; }
 
-.btn { border-radius: 0.9rem; padding: 0.7rem 1.1rem; font-weight: 600; transition: opacity 0.15s; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-primary { background: #6d28d9; color: white; }
-.btn-green { background: #16a34a; color: white; }
+/* ---------- Botones e inputs ---------- */
+.btn { border-radius: 0.8rem; padding: 0.7rem 1.1rem; font-weight: 700; transition: opacity 0.15s, background 0.15s; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--color-ink); color: white; }
+.btn-primary:hover:not(:disabled) { background: #1f3354; }
+.btn-gold { background: var(--color-gold); color: var(--color-ink); }
+.btn-gold:hover:not(:disabled) { background: #e2b12a; }
+.btn-green { background: #15803d; color: white; }
 .btn-gray { background: #4b5563; color: white; }
-.btn-yellow { background: #facc15; color: #713f12; }
-.btn-light { background: white; color: #1e1b2e; border: 1px solid #e5e1f0; }
+.btn-yellow { background: #f5c518; color: #5c4300; }
+.btn-light { background: white; color: var(--color-ink); border: 1px solid var(--color-line); }
 .btn-danger { background: #fee2e2; color: #b91c1c; }
 
 .input {
   width: 100%;
-  border-radius: 0.9rem;
-  border: 1px solid #ddd6f3;
+  border-radius: 0.8rem;
+  border: 1px solid #d3d8e3;
   background: white;
   padding: 0.75rem 1rem;
   outline: none;
 }
-.input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px #ede9fe; }
-.card { background: white; border-radius: 1.25rem; box-shadow: 0 1px 3px rgb(30 27 46 / 0.06); }
+.input:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px var(--color-gold-soft); }
+
+.card {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid var(--color-line);
+}
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
