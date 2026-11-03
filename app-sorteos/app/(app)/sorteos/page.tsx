@@ -15,8 +15,6 @@ export default async function SorteosPage() {
 
   return (
     <div>
-      {/* Fondo negro solo en el inicio */}
-      <div aria-hidden className="fixed inset-0 -z-10 bg-black" />
       <section className="-mx-4 -mt-6 mb-8 bg-brand px-4 pb-10 pt-8 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:px-8">
         <div className="mx-auto max-w-5xl">
           <h1 className="max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl" style={{ fontStretch: "110%" }}>

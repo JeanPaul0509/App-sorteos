@@ -16,7 +16,7 @@
   --color-gold-soft: #fcf0cf;
   --color-orange: #ee7b22;
   --color-paper: #faf8f5;
-  --color-line: #eee3d8;
+  --color-line: #ece6df;
 
   --color-violet-50: #fbf6e6;
   --color-violet-100: #f6ebc6;
@@ -34,8 +34,8 @@
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: #000;
+  color: #fff;
   font-feature-settings: "tnum" 1;
 }
 
@@ -70,6 +70,7 @@ body {
   --notch: 0.85rem;
   position: relative;
   background: white;
+  color: var(--color-ink);
   border-radius: 1.1rem;
   -webkit-mask: radial-gradient(circle var(--notch) at 0 var(--cut), #0000 98%, #000) 0 0 / 51% 100% no-repeat,
     radial-gradient(circle var(--notch) at 100% var(--cut), #0000 98%, #000) 100% 0 / 51% 100% no-repeat;
@@ -131,6 +132,7 @@ body {
 
 .card {
   background: white;
+  color: var(--color-ink);
   border-radius: 1rem;
   border: 1px solid var(--color-line);
 }

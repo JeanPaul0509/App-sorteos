@@ -200,7 +200,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
 
       {/* Barra inferior con la selección */}
       {selected.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white/95 p-3 shadow-2xl backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white/95 p-3 text-ink shadow-2xl backdrop-blur">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
             <div>
               <div className="flex flex-wrap gap-1.5">

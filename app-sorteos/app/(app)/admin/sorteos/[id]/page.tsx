@@ -16,13 +16,13 @@ export default async function AdminRafflePage({ params }: { params: Promise<{ id
 
   return (
     <div>
-      <Link href="/admin" className="text-sm text-violet-700">
+      <Link href="/admin" className="text-sm text-gold">
         ← Volver al panel
       </Link>
       <h1 className="mt-2 text-2xl font-extrabold">
         {r.icon} {r.title}
       </h1>
-      <p className="mb-5 text-gray-500">
+      <p className="mb-5 text-white/60">
         {r.total_tickets} números · {money(r.price)} c/u
       </p>
       <AdminBoard raffle={r} />

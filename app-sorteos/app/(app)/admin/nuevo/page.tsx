@@ -75,7 +75,7 @@ export default function NewRafflePage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Link href="/admin" className="text-sm text-violet-700">
+      <Link href="/admin" className="text-sm text-gold">
         ← Volver
       </Link>
       <h1 className="mb-5 mt-2 text-2xl font-extrabold">Nuevo sorteo</h1>

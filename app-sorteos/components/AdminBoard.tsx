@@ -344,7 +344,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
 
       {/* Panel de acciones para la selección */}
       {pickedTickets.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white p-4 shadow-2xl">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white p-4 text-ink shadow-2xl">
           <div className="mx-auto max-w-5xl">
             <div className="mb-3 max-h-32 space-y-1 overflow-y-auto text-sm">
               {pickedTickets.map((t) => (

@@ -60,10 +60,10 @@ export default function AdminPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold">Panel de administrador</h1>
-          <p className="text-gray-500">
+          <p className="text-white/60">
             {pendingTotal > 0 ? (
               <>
-                Tienes <b className="text-yellow-600">{pendingTotal} números reservados</b> esperando confirmación
+                Tienes <b className="text-gold">{pendingTotal} números reservados</b> esperando confirmación
               </>
             ) : (
               "No hay pagos pendientes"

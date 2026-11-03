@@ -10,7 +10,7 @@ export default function AuthShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-brand">
+    <div className="flex min-h-screen flex-col bg-black">
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-10">
         <div className="mb-8 flex justify-center">
           <Brand light size="lg" />
