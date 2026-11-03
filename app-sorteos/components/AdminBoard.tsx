@@ -129,7 +129,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
         formatDate(t.sold_at),
       ])
     );
-    const safe = raffle.title.replace(/[^\p{L}\p{N}]+/gu, "-").toLowerCase();
+    const safe = raffle.title.normalize("NFD").replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase();
     downloadCsv(`compradores-${safe}.csv`, rows);
   }
 
