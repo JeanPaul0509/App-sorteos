@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import ConfirmWordModal from "@/components/ConfirmWordModal";
 import { createClient } from "@/lib/supabase/client";
 import type { Raffle, RaffleCount } from "@/lib/types";
 import { money } from "@/lib/utils";
@@ -11,6 +12,8 @@ export default function AdminPage() {
   const [raffles, setRaffles] = useState<Raffle[]>([]);
   const [counts, setCounts] = useState<Map<string, RaffleCount>>(new Map());
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState<{ raffle: Raffle; action: "delete" | "finish" } | null>(null);
+  const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
     const [{ data: r }, { data: c }] = await Promise.all([
@@ -26,18 +29,28 @@ export default function AdminPage() {
     load();
   }, [load]);
 
-  async function toggleStatus(r: Raffle) {
-    const status = r.status === "active" ? "finished" : "active";
+  async function setStatus(r: Raffle, status: "active" | "finished") {
+    setBusy(true);
     const { error } = await supabase.from("raffles").update({ status }).eq("id", r.id);
+    setBusy(false);
     if (error) return alert(error.message);
+    setPending(null);
     load();
   }
 
   async function remove(r: Raffle) {
-    if (!confirm(`¿Eliminar "${r.title}" y TODOS sus números? Esto no se puede deshacer.`)) return;
+    setBusy(true);
     const { error } = await supabase.from("raffles").delete().eq("id", r.id);
+    setBusy(false);
     if (error) return alert(error.message);
+    setPending(null);
     load();
+  }
+
+  function toggleStatus(r: Raffle) {
+    // Reactivar es seguro; finalizar pide confirmación escrita.
+    if (r.status === "finished") return setStatus(r, "active");
+    setPending({ raffle: r, action: "finish" });
   }
 
   const pendingTotal = [...counts.values()].reduce((a, c) => a + Number(c.reserved), 0);
@@ -110,7 +123,7 @@ export default function AdminPage() {
                   <button onClick={() => toggleStatus(r)} className="btn btn-light py-2 text-sm">
                     {r.status === "active" ? "Finalizar" : "Reactivar"}
                   </button>
-                  <button onClick={() => remove(r)} className="btn btn-danger py-2 text-sm">
+                  <button onClick={() => setPending({ raffle: r, action: "delete" })} className="btn btn-danger py-2 text-sm">
                     Eliminar
                   </button>
                 </div>
@@ -118,6 +131,34 @@ export default function AdminPage() {
             );
           })}
         </div>
+      )}
+      {pending && (
+        <ConfirmWordModal
+          key={pending.raffle.id + pending.action}
+          word={pending.action === "delete" ? "ELIMINAR" : "FINALIZAR"}
+          danger={pending.action === "delete"}
+          busy={busy}
+          title={pending.action === "delete" ? "⚠️ Eliminar sorteo" : "Finalizar sorteo"}
+          confirmLabel={pending.action === "delete" ? "Eliminar para siempre" : "Finalizar sorteo"}
+          message={
+            pending.action === "delete" ? (
+              <>
+                Vas a eliminar <b>{pending.raffle.title}</b> con <b>TODOS</b> sus números, compradores y pagos.
+                <br />
+                <b className="text-red-600">Esto no se puede deshacer.</b>
+              </>
+            ) : (
+              <>
+                Vas a finalizar <b>{pending.raffle.title}</b>. Desaparecerá de los sorteos activos y nadie
+                podrá comprar más números. Los compradores se mantienen y luego puedes reactivarlo.
+              </>
+            )
+          }
+          onCancel={() => setPending(null)}
+          onConfirm={() =>
+            pending.action === "delete" ? remove(pending.raffle) : setStatus(pending.raffle, "finished")
+          }
+        />
       )}
     </div>
   );
