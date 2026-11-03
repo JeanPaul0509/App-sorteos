@@ -1,0 +1,31 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import AdminBoard from "@/components/AdminBoard";
+import { createClient } from "@/lib/supabase/server";
+import type { Raffle } from "@/lib/types";
+import { money } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminRafflePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const supabase = await createClient();
+  const { data } = await supabase.from("raffles").select("*").eq("id", id).maybeSingle();
+  if (!data) notFound();
+  const r = data as Raffle;
+
+  return (
+    <div>
+      <Link href="/admin" className="text-sm text-violet-700">
+        ← Volver al panel
+      </Link>
+      <h1 className="mt-2 text-2xl font-extrabold">
+        {r.icon} {r.title}
+      </h1>
+      <p className="mb-5 text-gray-500">
+        {r.total_tickets} números · {money(r.price)} c/u
+      </p>
+      <AdminBoard raffle={r} />
+    </div>
+  );
+}
