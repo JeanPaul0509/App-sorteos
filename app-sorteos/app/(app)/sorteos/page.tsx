@@ -15,7 +15,9 @@ export default async function SorteosPage() {
 
   return (
     <div>
-      <section className="-mx-4 -mt-6 mb-8 bg-black px-4 pb-10 pt-8 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:px-8">
+      {/* Fondo negro solo en el inicio */}
+      <div aria-hidden className="fixed inset-0 -z-10 bg-black" />
+      <section className="-mx-4 -mt-6 mb-8 bg-brand px-4 pb-10 pt-8 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:px-8">
         <div className="mx-auto max-w-5xl">
           <h1 className="max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl" style={{ fontStretch: "110%" }}>
             Elige tu número. Paga con Yape. Mira el sorteo en vivo.
@@ -40,7 +42,7 @@ export default async function SorteosPage() {
         </div>
       </section>
 
-      <h2 className="mb-5 text-2xl font-extrabold">Sorteos activos</h2>
+      <h2 className="mb-5 text-2xl font-extrabold text-white">Sorteos activos</h2>
 
       {list.length === 0 ? (
         <div className="card p-10 text-center text-gray-500">
