@@ -34,6 +34,7 @@ export interface RaffleCount {
   available: number;
   reserved: number;
   sold: number;
+  buyers?: number; // personas distintas con números pagados
 }
 
 export interface MyTicket {

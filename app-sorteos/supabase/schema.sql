@@ -165,14 +165,15 @@ begin
 end;
 $$;
 
--- Conteos por sorteo (para barras de progreso)
-create or replace function public.raffle_counts()
-returns table (raffle_id uuid, available bigint, reserved bigint, sold bigint)
+-- Conteos por sorteo (incluye cuántas personas distintas compraron)
+create function public.raffle_counts()
+returns table (raffle_id uuid, available bigint, reserved bigint, sold bigint, buyers bigint)
 language sql stable security definer set search_path = public as $$
   select t.raffle_id,
          count(*) filter (where t.status = 'available'),
          count(*) filter (where t.status = 'reserved'),
-         count(*) filter (where t.status = 'sold')
+         count(*) filter (where t.status = 'sold'),
+         count(distinct coalesce(t.user_id::text, t.buyer_phone, t.buyer_name)) filter (where t.status = 'sold')
     from tickets t
    group by t.raffle_id;
 $$;

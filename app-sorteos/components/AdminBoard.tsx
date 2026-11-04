@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Legend from "@/components/Legend";
+import Pager, { PAGE_SIZE } from "@/components/Pager";
 import { createClient } from "@/lib/supabase/client";
 import type { AdminTicket, Raffle, TicketStatus } from "@/lib/types";
 import { buyerWhatsAppUrl, downloadCsv, fetchAll, formatDate, money, pad, timeAgo } from "@/lib/utils";
@@ -22,6 +23,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<Filter>("all");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
   const [picked, setPicked] = useState<number[]>([]); // ids de tickets
   const [saleName, setSaleName] = useState("");
   const [busy, setBusy] = useState(false);
@@ -104,6 +106,10 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
     });
   }, [tickets, filter, search]);
 
+  const pages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  const curPage = Math.min(page, pages - 1);
+  const pageItems = visible.slice(curPage * PAGE_SIZE, (curPage + 1) * PAGE_SIZE);
+
   const pickedTickets = tickets.filter((t) => picked.includes(t.id));
   const fmt = (n: number) => pad(n, raffle.total_tickets);
 
@@ -139,7 +145,10 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
 
   const tab = (f: Filter, label: string) => (
     <button
-      onClick={() => setFilter(f)}
+      onClick={() => {
+        setFilter(f);
+        setPage(0);
+      }}
       className={`rounded-full px-3 py-1.5 text-sm font-semibold ${
         filter === f ? "bg-violet-700 text-white" : "bg-gray-100 text-gray-700"
       }`}
@@ -318,7 +327,10 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
             className="input w-56 py-2"
             placeholder="Buscar número, nombre o celular"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(0);
+            }}
           />
         </div>
         <Legend />
@@ -328,7 +340,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
           <p className="py-10 text-center text-gray-400">Cargando...</p>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(2.9rem,1fr))] gap-2">
-            {visible.map((t) => (
+            {pageItems.map((t) => (
               <button
                 key={t.id}
                 onClick={() => togglePick(t.id)}
@@ -340,6 +352,8 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
             ))}
           </div>
         )}
+        {!loading && <Pager page={curPage} pages={pages} first={pageItems[0]?.number}
+          last={pageItems[pageItems.length - 1]?.number} onChange={setPage} />}
       </section>
 
       {/* Panel de acciones para la selección */}

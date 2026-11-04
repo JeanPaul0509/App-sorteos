@@ -14,10 +14,9 @@ export default function RaffleCard({
   href: string;
 }) {
   const sold = Number(count?.sold ?? 0);
-  const reserved = Number(count?.reserved ?? 0);
-  const taken = sold + reserved;
-  const left = raffle.total_tickets - taken;
-  const pct = Math.round((taken / raffle.total_tickets) * 100);
+  const buyers = Number(count?.buyers ?? 0);
+  // La barra avanza con los tickets vendidos (pagados)
+  const pct = Math.min(100, Math.round((sold / raffle.total_tickets) * 100));
   const finished = raffle.status === "finished";
 
   return (
@@ -64,12 +63,22 @@ export default function RaffleCard({
           <p className="text-2xl font-extrabold tracking-tight">{money(raffle.price)}</p>
         </div>
         <div className="min-w-0 flex-1">
-          <div className="h-2 overflow-hidden rounded-full bg-paper">
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="text-sm font-extrabold">{pct}% vendido</span>
+            <span
+              className="flex items-center gap-1 text-sm font-semibold text-gray-600"
+              title={`${buyers} ${buyers === 1 ? "persona compró" : "personas compraron"}`}
+            >
+              <svg viewBox="0 0 20 20" className="h-4 w-4 fill-current" aria-hidden>
+                <path d="M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-7 2.2-7 4.5V18h14v-1.5c0-2.3-2.6-4.5-7-4.5Z" />
+              </svg>
+              {buyers}
+              <span className="sr-only">{buyers === 1 ? "persona compró" : "personas compraron"}</span>
+            </span>
+          </div>
+          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-paper">
             <div className="h-full rounded-full bg-gold" style={{ width: `${pct}%` }} />
           </div>
-          <p className="mt-1.5 text-xs text-gray-600">
-            {finished ? `${taken} de ${raffle.total_tickets} vendidos` : `Quedan ${left} de ${raffle.total_tickets}`}
-          </p>
         </div>
       </div>
     </Link>

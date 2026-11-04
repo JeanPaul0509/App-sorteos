@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Legend from "@/components/Legend";
+import Pager, { PAGE_SIZE } from "@/components/Pager";
 import { createClient } from "@/lib/supabase/client";
 import type { MyTicket, PublicTicket, Raffle } from "@/lib/types";
 import { buildWhatsAppUrl, fetchAll, money, pad, YAPE_NAME, YAPE_NUMBER } from "@/lib/utils";
@@ -15,6 +16,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
   const [selected, setSelected] = useState<number[]>([]);
   const [toast, setToast] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState("");
   const [sending, setSending] = useState(false);
@@ -132,6 +134,10 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
     return q ? tickets.filter((t) => String(t.number).includes(q)) : tickets;
   }, [tickets, search]);
 
+  const pages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  const curPage = Math.min(page, pages - 1);
+  const pageItems = visible.slice(curPage * PAGE_SIZE, (curPage + 1) * PAGE_SIZE);
+
   const stats = useMemo(() => {
     const s = { available: 0, reserved: 0, sold: 0 };
     tickets.forEach((t) => s[t.status]++);
@@ -171,7 +177,10 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
             inputMode="numeric"
             placeholder="Buscar #"
             value={search}
-            onChange={(e) => setSearch(e.target.value.replace(/\D/g, ""))}
+            onChange={(e) => {
+              setSearch(e.target.value.replace(/\D/g, ""));
+              setPage(0);
+            }}
           />
           {active && (
             <button onClick={randomPick} className="btn btn-light whitespace-nowrap py-2">
@@ -209,7 +218,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
         <p className="py-10 text-center text-gray-400">Cargando números...</p>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(2.9rem,1fr))] gap-2">
-          {visible.map((t) => {
+          {pageItems.map((t) => {
             const isSel = selected.includes(t.number);
             const cls = isSel ? "ball-selected" : `ball-${t.status}`;
             return (
@@ -224,6 +233,11 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
             );
           })}
         </div>
+      )}
+
+      {!loading && (
+        <Pager page={curPage} pages={pages} first={pageItems[0]?.number}
+          last={pageItems[pageItems.length - 1]?.number} onChange={setPage} />
       )}
 
       {/* Barra inferior con la selección */}
