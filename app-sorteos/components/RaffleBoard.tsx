@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Legend from "@/components/Legend";
 import { createClient } from "@/lib/supabase/client";
-import type { PublicTicket, Raffle } from "@/lib/types";
+import type { MyTicket, PublicTicket, Raffle } from "@/lib/types";
 import { buildWhatsAppUrl, fetchAll, money, pad, YAPE_NAME, YAPE_NUMBER } from "@/lib/utils";
 
 const MAX = 5;
@@ -20,8 +20,10 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<{ numbers: number[]; url: string } | null>(null);
+  const [myPending, setMyPending] = useState(0); // mis números aún en amarillo
 
   const active = raffle.status === "active";
+  const limit = Math.max(0, MAX - myPending); // cuántos puedo elegir ahora
 
   const load = useCallback(async () => {
     try {
@@ -34,6 +36,10 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
           .range(from, to)
       );
       setTickets(data);
+      const { data: mine } = await supabase.rpc("my_tickets");
+      setMyPending(
+        ((mine ?? []) as MyTicket[]).filter((t) => t.raffle_id === raffle.id && t.status === "reserved").length
+      );
       const free = new Set(data.filter((t) => t.status === "available").map((t) => t.number));
       setSelected((prev) => prev.filter((n) => free.has(n)));
     } finally {
@@ -58,6 +64,12 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
     setTimeout(() => setToast(null), 2500);
   }
 
+  function limitMessage() {
+    if (myPending === 0) return `Puedes elegir máximo ${MAX} números a la vez`;
+    if (limit === 0) return `Tienes ${myPending} números esperando confirmación de pago`;
+    return `Puedes elegir ${limit} más: tienes ${myPending} esperando confirmación`;
+  }
+
   function toggle(t: PublicTicket) {
     if (!active) return;
     if (t.status !== "available") {
@@ -66,15 +78,15 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
     }
     if (selected.includes(t.number)) {
       setSelected(selected.filter((n) => n !== t.number));
-    } else if (selected.length >= MAX) {
-      flash(`Puedes elegir máximo ${MAX} números a la vez`);
+    } else if (selected.length >= limit) {
+      flash(limitMessage());
     } else {
       setSelected([...selected, t.number].sort((a, b) => a - b));
     }
   }
 
   function randomPick() {
-    if (selected.length >= MAX) return flash(`Puedes elegir máximo ${MAX} números a la vez`);
+    if (selected.length >= limit) return flash(limitMessage());
     const free = tickets.filter((t) => t.status === "available" && !selected.includes(t.number));
     if (free.length === 0) return flash("No quedan números disponibles");
     const pick = free[Math.floor(Math.random() * free.length)];
@@ -169,6 +181,22 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
         </div>
       </div>
 
+      {active && myPending > 0 && (
+        <div className="mb-4 rounded-xl border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-900">
+          {limit === 0 ? (
+            <>
+              🟡 Tienes <b>{myPending} números</b> esperando confirmación de pago. Podrás elegir más cuando
+              confirmemos tu pago.
+            </>
+          ) : (
+            <>
+              🟡 Tienes <b>{myPending}</b> número(s) esperando confirmación. Ahora puedes elegir hasta{" "}
+              <b>{limit}</b> más.
+            </>
+          )}
+        </div>
+      )}
+
       <Legend showSelected />
 
       {!active && (
@@ -211,7 +239,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
                 ))}
               </div>
               <p className="mt-1 text-sm text-gray-600">
-                {selected.length}/{MAX} · Total: <b>{money(total)}</b>
+                {selected.length}/{limit} · Total: <b>{money(total)}</b>
               </p>
             </div>
             <div className="flex gap-2">

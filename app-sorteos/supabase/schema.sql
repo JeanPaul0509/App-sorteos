@@ -119,13 +119,14 @@ grant select (id, raffle_id, number, status) on public.tickets to authenticated;
 -- 4. FUNCIONES
 -- ---------------------------------------------------------------------
 
--- Reservar (máx. 5 números por vez). Todo o nada.
+-- Reservar: máx. 5 por compra y máx. 5 en espera por persona. Todo o nada.
 create or replace function public.reserve_tickets(p_raffle_id uuid, p_numbers int[], p_name text)
 returns void language plpgsql security definer set search_path = public as $$
 declare
-  v_phone text;
-  v_wanted int;
-  v_done int;
+  v_phone   text;
+  v_wanted  int;
+  v_pending int;
+  v_done    int;
 begin
   if auth.uid() is null then raise exception 'Debes iniciar sesión'; end if;
   if p_numbers is null or coalesce(array_length(p_numbers, 1), 0) = 0 then
@@ -138,7 +139,19 @@ begin
     raise exception 'Este sorteo ya no está activo';
   end if;
 
-  select phone into v_phone from profiles where id = auth.uid();
+  -- Bloquea al usuario mientras se procesa (evita dos pedidos al mismo tiempo)
+  select phone into v_phone from profiles where id = auth.uid() for update;
+
+  select count(*) into v_pending
+    from tickets
+   where raffle_id = p_raffle_id and user_id = auth.uid() and status = 'reserved';
+
+  if v_pending + v_wanted > 5 then
+    if v_pending >= 5 then
+      raise exception 'Ya tienes 5 números esperando confirmación de pago. Podrás pedir más cuando confirmemos tu pago.';
+    end if;
+    raise exception 'Tienes % número(s) esperando confirmación. Solo puedes pedir % más por ahora.', v_pending, 5 - v_pending;
+  end if;
 
   update tickets
      set status = 'reserved', user_id = auth.uid(), buyer_name = trim(p_name),
