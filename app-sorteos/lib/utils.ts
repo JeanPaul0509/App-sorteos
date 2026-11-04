@@ -47,7 +47,8 @@ export function buildWhatsAppUrl(opts: {
     "",
     "📎 *Adjunto captura de Yape* 👇",
   ].join("\n");
-  return `https://wa.me/${admin}?text=${encodeURIComponent(text)}`;
+  // api.whatsapp.com conserva los emojis; wa.me a veces los rompe al redirigir (sale �)
+  return `https://api.whatsapp.com/send?phone=${admin}&text=${encodeURIComponent(text)}`;
 }
 
 export function buyerWhatsAppUrl(phone: string) {
