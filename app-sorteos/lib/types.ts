@@ -48,3 +48,9 @@ export interface MyTicket {
   buyer_name: string | null;
   group_url: string | null;
 }
+
+export interface SiteSettings {
+  whatsapp_url: string | null;
+  instagram_url: string | null;
+  tiktok_url: string | null;
+}

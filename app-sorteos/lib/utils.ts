@@ -107,3 +107,18 @@ export const ICONS = ["🎁", "📱", "💻", "🎮", "📺", "🎧", "⌚", "�
 export function isValidGroupUrl(url: string) {
   return /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+/.test(url.trim());
 }
+
+/** Acepta link, @usuario o número y lo convierte en un enlace válido. */
+export function normalizeSocial(kind: "whatsapp" | "instagram" | "tiktok", raw: string): string | null {
+  const v = raw.trim();
+  if (!v) return null;
+  if (/^https?:\/\//i.test(v)) return v;
+  if (kind === "whatsapp") {
+    const d = v.replace(/\D/g, "");
+    if (!d) return null;
+    return `https://wa.me/${d.length === 9 ? "51" + d : d}`;
+  }
+  const user = v.replace(/^@/, "").replace(/\s/g, "");
+  if (!user) return null;
+  return kind === "instagram" ? `https://instagram.com/${user}` : `https://www.tiktok.com/@${user}`;
+}

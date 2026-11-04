@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ConfirmWordModal from "@/components/ConfirmWordModal";
+import SocialSettings from "@/components/SocialSettings";
 import { createClient } from "@/lib/supabase/client";
 import type { Raffle, RaffleCount } from "@/lib/types";
 import { money } from "@/lib/utils";
@@ -132,6 +133,10 @@ export default function AdminPage() {
           })}
         </div>
       )}
+      <div className="mt-10">
+        <SocialSettings />
+      </div>
+
       {pending && (
         <ConfirmWordModal
           key={pending.raffle.id + pending.action}

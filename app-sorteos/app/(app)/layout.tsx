@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
+import SocialLinks from "@/components/SocialLinks";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -18,7 +19,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <>
       <Header phone={profile?.phone ?? ""} isAdmin={profile?.role === "admin"} />
-      <main className="mx-auto max-w-5xl px-4 pb-32 pt-6">{children}</main>
+      <main className="mx-auto max-w-5xl px-4 pb-10 pt-6">{children}</main>
+      <footer className="mx-auto flex max-w-5xl flex-col items-center gap-3 border-t border-white/10 px-4 pb-32 pt-8 text-sm text-white/50">
+        <SocialLinks />
+        <p>GoldenTicket · Sorteos con pagos confirmados</p>
+      </footer>
     </>
   );
 }

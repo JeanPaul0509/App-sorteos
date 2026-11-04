@@ -1,4 +1,5 @@
 import Brand from "@/components/Brand";
+import SocialLinks from "@/components/SocialLinks";
 
 export default function AuthShell({
   title,
@@ -29,6 +30,7 @@ export default function AuthShell({
           <li className="flex gap-2"><span className="text-gold">✓</span>El sorteo se hace en vivo, con la lista de compradores.</li>
           <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus números en todo momento.</li>
         </ul>
+        <SocialLinks className="mt-8 justify-center" />
       </div>
     </div>
   );
