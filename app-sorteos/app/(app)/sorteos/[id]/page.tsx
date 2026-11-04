@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import GroupLinkBanner from "@/components/GroupLinkBanner";
 import RaffleBoard from "@/components/RaffleBoard";
 import { createClient } from "@/lib/supabase/server";
 import type { Raffle } from "@/lib/types";
@@ -13,9 +14,10 @@ export default async function RafflePage({ params }: { params: Promise<{ id: str
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: raffle }, { data: profile }] = await Promise.all([
+  const [{ data: raffle }, { data: profile }, { data: groupUrl }] = await Promise.all([
     supabase.from("raffles").select("*").eq("id", id).maybeSingle(),
     supabase.from("profiles").select("phone").eq("id", user!.id).single(),
+    supabase.rpc("my_group_link", { p_raffle_id: id }),
   ]);
   if (!raffle) notFound();
   const r = raffle as Raffle;
@@ -56,6 +58,8 @@ export default async function RafflePage({ params }: { params: Promise<{ id: str
           )}
         </div>
       </section>
+
+      {typeof groupUrl === "string" && groupUrl && <GroupLinkBanner url={groupUrl} />}
 
       <RaffleBoard raffle={r} phone={profile?.phone ?? ""} />
     </div>

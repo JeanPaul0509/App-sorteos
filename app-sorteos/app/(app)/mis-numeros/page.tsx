@@ -36,6 +36,7 @@ export default async function MisNumerosPage() {
         {[...groups.values()].map((list) => {
           const first = list[0];
           const pending = list.filter((t) => t.status === "reserved");
+          const groupUrl = list.find((t) => t.group_url)?.group_url;
           return (
             <div key={first.raffle_id} className="card p-5">
               <Link href={`/sorteos/${first.raffle_id}`} className="text-lg font-bold">
@@ -48,6 +49,14 @@ export default async function MisNumerosPage() {
                   </span>
                 ))}
               </div>
+              {groupUrl && (
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-green-50 p-3 text-sm text-green-900">
+                  <span>✅ Pago confirmado. Únete al grupo del sorteo.</span>
+                  <a href={groupUrl} target="_blank" rel="noreferrer" className="btn btn-green py-2 text-sm">
+                    Unirme al grupo de WhatsApp
+                  </a>
+                </div>
+              )}
               {pending.length > 0 && (
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-yellow-50 p-3 text-sm">
                   <span>

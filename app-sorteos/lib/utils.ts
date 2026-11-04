@@ -102,3 +102,7 @@ export function timeAgo(iso: string | null) {
 }
 
 export const ICONS = ["🎁", "📱", "💻", "🎮", "📺", "🎧", "⌚", "🏍️", "🚲", "💵", "🛒", "🍗"];
+
+export function isValidGroupUrl(url: string) {
+  return /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+/.test(url.trim());
+}

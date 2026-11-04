@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { ICONS, money } from "@/lib/utils";
+import { ICONS, isValidGroupUrl, money } from "@/lib/utils";
 
 const PRESETS = [50, 100, 150, 200, 500, 1000];
 
@@ -17,6 +17,7 @@ export default function NewRafflePage() {
   const [price, setPrice] = useState("5");
   const [total, setTotal] = useState("100");
   const [drawDate, setDrawDate] = useState("");
+  const [groupUrl, setGroupUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +36,8 @@ export default function NewRafflePage() {
     if (!title.trim()) return setError("Ponle un nombre al sorteo.");
     if (!n || n < 1 || n > 10000) return setError("La cantidad de tickets debe estar entre 1 y 10000.");
     if (isNaN(p) || p < 0) return setError("Precio inválido.");
+    if (groupUrl.trim() && !isValidGroupUrl(groupUrl))
+      return setError("El enlace del grupo debe empezar con https://chat.whatsapp.com/");
 
     setSaving(true);
     const supabase = createClient();
@@ -68,8 +71,17 @@ export default function NewRafflePage() {
       .select("id")
       .single();
 
+    if (error) {
+      setSaving(false);
+      return setError(error.message);
+    }
+    if (groupUrl.trim()) {
+      const { error: gErr } = await supabase
+        .from("raffle_secrets")
+        .upsert({ raffle_id: data.id, whatsapp_group_url: groupUrl.trim() });
+      if (gErr) alert("El sorteo se creó, pero no se guardó el enlace del grupo: " + gErr.message);
+    }
     setSaving(false);
-    if (error) return setError(error.message);
     router.push(`/admin/sorteos/${data.id}`);
   }
 
@@ -179,6 +191,19 @@ export default function NewRafflePage() {
             <label className="mb-1 block text-sm font-medium">Fecha del sorteo</label>
             <input className="input" type="date" value={drawDate} onChange={(e) => setDrawDate(e.target.value)} />
           </div>
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium">Enlace del grupo de WhatsApp</label>
+          <input
+            className="input"
+            placeholder="https://chat.whatsapp.com/..."
+            value={groupUrl}
+            onChange={(e) => setGroupUrl(e.target.value)}
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            Opcional. Solo lo verán los compradores después de que confirmes su pago.
+          </p>
         </div>
 
         <p className="rounded-xl bg-violet-50 p-3 text-sm text-violet-900">

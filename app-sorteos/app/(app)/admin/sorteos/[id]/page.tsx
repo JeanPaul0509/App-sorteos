@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AdminBoard from "@/components/AdminBoard";
+import GroupLinkEditor from "@/components/GroupLinkEditor";
 import { createClient } from "@/lib/supabase/server";
 import type { Raffle } from "@/lib/types";
 import { money } from "@/lib/utils";
@@ -25,7 +26,10 @@ export default async function AdminRafflePage({ params }: { params: Promise<{ id
       <p className="mb-5 text-white/60">
         {r.total_tickets} números · {money(r.price)} c/u
       </p>
-      <AdminBoard raffle={r} />
+      <div className="space-y-6">
+        <GroupLinkEditor raffleId={r.id} />
+        <AdminBoard raffle={r} />
+      </div>
     </div>
   );
 }

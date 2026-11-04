@@ -45,4 +45,5 @@ export interface MyTicket {
   total_tickets: number;
   status: TicketStatus;
   buyer_name: string | null;
+  group_url: string | null;
 }
