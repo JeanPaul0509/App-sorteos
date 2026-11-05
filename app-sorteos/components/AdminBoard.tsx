@@ -233,7 +233,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
       </section>
 
       {/* ¿Quién tiene el número? — para el sorteo en vivo */}
-      <section className="card border-0 bg-brand p-5 text-white">
+      <section className="card border-gold/30 bg-brand p-5 text-white">
         <h2 className="text-lg font-bold">🎤 ¿Quién tiene el número ganador?</h2>
         <p className="text-sm text-white/80">Escribe el número que salió en el sorteo.</p>
         <input
