@@ -21,6 +21,13 @@ export default async function MisNumerosPage() {
   const groups = new Map<string, MyTicket[]>();
   rows.forEach((t) => groups.set(t.raffle_id, [...(groups.get(t.raffle_id) ?? []), t]));
 
+  // Fotos de los premios
+  const ids = [...groups.keys()];
+  const { data: imgs } = ids.length
+    ? await supabase.from("raffles").select("id, image_url, status").in("id", ids)
+    : { data: [] as { id: string; image_url: string | null; status: string }[] };
+  const info = new Map((imgs ?? []).map((r) => [r.id, r]));
+
   return (
     <div>
       <h1 className="mb-6 text-2xl font-extrabold">Mis números</h1>
@@ -39,10 +46,30 @@ export default async function MisNumerosPage() {
           const groupUrl = list.find((t) => t.group_url)?.group_url;
           return (
             <div key={first.raffle_id} className="card p-5">
-              <Link href={`/sorteos/${first.raffle_id}`} className="text-lg font-bold">
-                {first.raffle_icon} {first.raffle_title}
+              <Link href={`/sorteos/${first.raffle_id}`} className="group flex items-center gap-4">
+                <span className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gold-soft sm:h-24 sm:w-24">
+                  {info.get(first.raffle_id)?.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={info.get(first.raffle_id)!.image_url!}
+                      alt={first.raffle_title}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <span className="flex h-full items-center justify-center text-4xl">{first.raffle_icon}</span>
+                  )}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-lg font-bold leading-snug">
+                    {first.raffle_icon} {first.raffle_title}
+                  </span>
+                  <span className="block text-sm text-gray-500">
+                    {list.length} {list.length === 1 ? "número" : "números"}
+                    {info.get(first.raffle_id)?.status === "finished" ? " · sorteo finalizado" : ""}
+                  </span>
+                </span>
               </Link>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {list.map((t) => (
                   <span key={t.number} title={LABEL[t.status]} className={`ball ball-${t.status} w-12`}>
                     {pad(t.number, t.total_tickets)}
