@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 /*
-  GoldenTicket — noche negra, oro como color principal y boletos de papel marfil.
-  El rojo queda solo para acentos pequeños; verde/amarillo/gris para el estado de los números.
+  GoldenTicket — "Esmeralda y oro": verde esmeralda profundo (mesa de casino), oro como acento
+  y boletos de papel marfil. Verde/amarillo/gris siguen marcando el estado de los números.
   La paleta "violet" de Tailwind se redefine aquí para que toda la app
   use los colores de la marca sin tocar cada componente.
 */
 @theme {
   --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #1c1712;
-  --color-brand: #15120e;
-  --color-brand-deep: #0d0b08;
-  --color-gold: #e9b949;
-  --color-gold-deep: #a5781c;
-  --color-gold-soft: #f7ecd2;
+  --color-ink: #0f2a20;
+  --color-brand: #0b3326;
+  --color-brand-deep: #072219;
+  --color-gold: #e2b43c;
+  --color-gold-deep: #a8801f;
+  --color-gold-soft: #f6ecd0;
   --color-orange: #e8892b;
-  --color-paper: #f4efe5;
-  --color-line: #e8e0d2;
+  --color-paper: #eef3ee;
+  --color-line: #dde6df;
 
   --color-violet-50: #fbf6e6;
   --color-violet-100: #f6ebc6;
@@ -25,23 +25,24 @@
   --color-violet-300: #ddbf5e;
   --color-violet-400: #c9a23a;
   --color-violet-500: #b8901f;
-  --color-violet-600: #7a5512;
-  --color-violet-700: #6b4a10;
-  --color-violet-800: #15120e;
-  --color-violet-900: #0d0b08;
+  --color-violet-600: #0e6b4d;
+  --color-violet-700: #0b5d43;
+  --color-violet-800: #0b3326;
+  --color-violet-900: #072219;
   --color-fuchsia-500: #e6b325;
   --color-fuchsia-600: #c99412;
   --color-amber-400: #e8bd3a;
   --color-ruby: #b3262d;
-  --color-night: #070706;
+  --color-night: #061a13;
 }
 
 body {
   background:
-    radial-gradient(60rem 30rem at 85% -10%, rgb(233 185 73 / 0.10), transparent 70%),
+    radial-gradient(60rem 30rem at 85% -10%, rgb(226 180 60 / 0.10), transparent 70%),
+    radial-gradient(50rem 40rem at 0% 100%, rgb(14 107 77 / 0.25), transparent 70%),
     var(--color-night);
   background-attachment: fixed;
-  color: #f3ede2;
+  color: #eef4ef;
   font-feature-settings: "tnum" 1;
 }
 
@@ -75,7 +76,7 @@ body {
 .ticket {
   --notch: 0.85rem;
   position: relative;
-  background: #fffdf8;
+  background: #fffdf6;
   color: var(--color-ink);
   border-radius: 1.1rem;
   -webkit-mask: radial-gradient(circle var(--notch) at 0 var(--cut), #0000 98%, #000) 0 0 / 51% 100% no-repeat,
@@ -104,7 +105,7 @@ body {
 .ball-available { background: #16a34a; color: white; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.16); }
 .ball-available:hover { transform: scale(1.08); }
 .ball-selected {
-  background: var(--color-ink);
+  background: var(--color-brand);
   color: var(--color-gold);
   box-shadow: 0 0 0 3px var(--color-gold);
   transform: scale(1.08);
@@ -116,20 +117,20 @@ body {
 /* ---------- Botones e inputs ---------- */
 .btn { border-radius: 0.8rem; padding: 0.7rem 1.1rem; font-weight: 700; transition: opacity 0.15s, background 0.15s; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-primary { background: var(--color-ink); color: var(--color-gold); }
-.btn-primary:hover:not(:disabled) { background: #000; }
-.btn-gold { background: linear-gradient(180deg, #f3c764, var(--color-gold) 55%, var(--color-orange)); color: #1c1712; box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12); }
+.btn-primary { background: var(--color-brand); color: var(--color-gold); }
+.btn-primary:hover:not(:disabled) { background: var(--color-brand-deep); }
+.btn-gold { background: linear-gradient(180deg, #f0cb66, var(--color-gold)); color: var(--color-ink); box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12); }
 .btn-gold:hover:not(:disabled) { filter: brightness(1.05); }
 .btn-green { background: #15803d; color: white; }
 .btn-gray { background: #4b5563; color: white; }
 .btn-yellow { background: #f5c518; color: #5c4300; }
-.btn-light { background: #fffdf8; color: var(--color-ink); border: 1px solid var(--color-line); }
+.btn-light { background: #fffdf6; color: var(--color-ink); border: 1px solid var(--color-line); }
 .btn-danger { background: #fee2e2; color: #b91c1c; }
 
 .input {
   width: 100%;
   border-radius: 0.8rem;
-  border: 1px solid #ddd3c2;
+  border: 1px solid #cfdcd3;
   background: white;
   color: var(--color-ink);
   padding: 0.75rem 1rem;
@@ -138,7 +139,7 @@ body {
 .input:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px var(--color-gold-soft); }
 
 .card {
-  background: #fffdf8;
+  background: #fffdf6;
   color: var(--color-ink);
   border-radius: 1rem;
   border: 1px solid var(--color-line);
