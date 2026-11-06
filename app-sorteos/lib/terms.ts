@@ -22,7 +22,6 @@ GoldenTicket organiza sorteos de premios. Al registrarte y participar aceptas es
 ## 4. El sorteo
 - El sorteo se realiza una vez que se hayan vendido todos los números del premio. Un número cuenta como vendido cuando su pago está confirmado.
 - Cuando se completa la venta, anunciamos la fecha y hora del sorteo en la app y en el grupo de WhatsApp.
-- Si los números no se terminan de vender en [X] días, [indicar qué pasa: se amplía el plazo, se sortea con los números vendidos o se devuelve el dinero].
 - El ganador se elige al azar entre los números pagados, en una transmisión en vivo.
 - El número ganador y el nombre abreviado del ganador se publican en la app.
 
@@ -31,7 +30,7 @@ GoldenTicket organiza sorteos de premios. Al registrarte y participar aceptas es
 - Intentaremos comunicarnos con el ganador durante 7 días desde el sorteo.
 - Si pasados esos 7 días no logramos comunicarnos, el premio se vuelve a sortear entre los demás números pagados, y el número anterior queda fuera del nuevo sorteo.
 - Por eso es importante que te registres con tu celular personal y lo mantengas activo.
-- La entrega se coordina en [lugar o forma de entrega].
+- La entrega del premio se coordina con el ganador por WhatsApp.
 
 ## 6. Cancelación de un sorteo
 Si un sorteo no puede realizarse, devolveremos el dinero de los números pagados por el mismo medio de pago.
