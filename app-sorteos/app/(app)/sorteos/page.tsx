@@ -1,3 +1,4 @@
+import HeroTicket from "@/components/HeroTicket";
 import RaffleCard from "@/components/RaffleCard";
 import { createClient } from "@/lib/supabase/server";
 import type { Raffle, RaffleCount } from "@/lib/types";
@@ -17,16 +18,28 @@ export default async function SorteosPage() {
     <div>
       <section className="-mx-4 -mt-6 mb-10 border-b border-gold/20 bg-brand/80 px-4 pb-10 pt-8 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:border sm:px-8">
         <div className="mx-auto max-w-5xl">
-          <h1 className="max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl" style={{ fontStretch: "110%" }}>
-            Elige tu número. Paga con Yape. Mira el sorteo en vivo.
-          </h1>
-          <ol className="mt-6 grid gap-3 text-sm sm:grid-cols-3">
+          <div className="flex flex-col-reverse gap-7 sm:flex-row sm:items-center sm:justify-between">
+            <h1
+              className="anim-rise max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl"
+              style={{ fontStretch: "110%" }}
+            >
+              Elige tu número. Paga con Yape. Mira el sorteo en vivo.
+            </h1>
+            <div className="w-64 shrink-0 self-center sm:w-72 sm:self-auto">
+              <HeroTicket />
+            </div>
+          </div>
+          <ol className="mt-7 grid gap-3 text-sm sm:grid-cols-3">
             {[
               ["Elige hasta 5 números", "Quedan separados a tu nombre apenas los reservas."],
               ["Paga y envía tu captura", "Confirmamos cada pago a mano y tu número pasa a pagado."],
               ["Sorteo en vivo", "Sacamos el ganador frente a todos, con la lista de compradores."],
             ].map(([t, d], i) => (
-              <li key={t} className="flex gap-3 rounded-xl border border-gold/25 bg-white/5 p-4">
+              <li
+                key={t}
+                className="anim-rise flex gap-3 rounded-xl border border-gold/25 bg-white/5 p-4"
+                style={{ ["--delay" as string]: `${250 + i * 60}ms` }}
+              >
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold font-extrabold text-ink">
                   {i + 1}
                 </span>
