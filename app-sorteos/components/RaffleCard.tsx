@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Raffle, RaffleCount } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
-import { isPastDate, money, num, plural, soldPercent } from "@/lib/utils";
+import { isPastDate, money, num, pad, plural, soldPercent } from "@/lib/utils";
 
 const STUB = "5.25rem"; // alto del talón (debajo de la línea perforada)
 
@@ -41,7 +41,9 @@ export default function RaffleCard({
         />
         {finished && (
           <span className="absolute inset-x-0 bottom-0 bg-ink/80 py-1.5 text-center text-sm font-semibold text-white">
-            Sorteo finalizado
+            {raffle.winner_number != null
+              ? `🏆 Ganó el ${pad(raffle.winner_number, raffle.total_tickets)}${raffle.winner_display ? ` · ${raffle.winner_display}` : ""}`
+              : "Sorteo finalizado"}
           </span>
         )}
       </div>

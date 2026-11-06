@@ -111,6 +111,8 @@ components:
   bottom-sheet: "Barra fija abajo, blanca 95% con desenfoque, sube con ease-drawer"
   modal: "Centrado, marfil, cierra con Esc y tocando fuera"
   brand-mark: "Boleto dorado pequeño con muescas + 'Golden' + 'Ticket' en oro"
+  winner-banner: "Bloque esmeralda con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
+  terms-page: "/terminos, pública; texto editable por el admin (## títulos, - viñetas) dentro de una tarjeta marfil"
 ---
 
 # GoldenTicket: sistema de diseño
@@ -151,7 +153,7 @@ Lujo sobrio, no casino de luces. Nada parpadea y nada compite con el premio.
 Estos colores son el idioma de la app. No se usan para nada más.
 
 ### Reglas de color
-- El **degradado dorado** es exclusivo del botón **"Ir a pagar"**. Si otro botón brilla, ese deja de destacar.
+- El **degradado dorado** es exclusivo del botón **"Ir a pagar"**. Si otro botón brilla, ese deja de destacar. El oro metálico de los boletos (boleto del inicio, disco del número ganador, aviso "¡Ganaste!") es otro uso permitido: representa el premio, no es un botón.
 - El rojo solo aparece en acciones destructivas (Eliminar).
 - No usar morado ni azul eléctrico, que son colores típicos de "plantilla de IA".
 

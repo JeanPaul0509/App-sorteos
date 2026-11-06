@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Brand from "@/components/Brand";
 import SocialLinks from "@/components/SocialLinks";
 
@@ -31,6 +32,9 @@ export default function AuthShell({
           <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus números en todo momento.</li>
         </ul>
         <SocialLinks className="mt-8 justify-center" />
+        <Link href="/terminos" className="mt-6 text-center text-xs text-white/50 underline underline-offset-4 hover:text-white">
+          Términos y condiciones
+        </Link>
       </div>
     </div>
   );

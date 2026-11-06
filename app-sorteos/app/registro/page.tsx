@@ -86,6 +86,13 @@ export default function RegisterPage() {
         <button className="btn btn-primary w-full" disabled={loading}>
           {loading ? "Creando..." : "Crear cuenta"}
         </button>
+        <p className="text-center text-xs text-gray-500">
+          Al crear tu cuenta aceptas los{" "}
+          <Link href="/terminos" className="font-semibold text-violet-700 underline">
+            términos y condiciones
+          </Link>
+          .
+        </p>
       </form>
       <p className="mt-5 text-center text-sm text-gray-500">
         ¿Ya tienes cuenta?{" "}

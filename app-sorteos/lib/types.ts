@@ -12,6 +12,10 @@ export interface Raffle {
   status: "active" | "finished";
   draw_date: string | null;
   created_at: string;
+  winner_number?: number | null;
+  winner_display?: string | null;
+  draw_video_url?: string | null;
+  drawn_at?: string | null;
 }
 
 export interface PublicTicket {
@@ -53,4 +57,6 @@ export interface SiteSettings {
   whatsapp_url: string | null;
   instagram_url: string | null;
   tiktok_url: string | null;
+  terms_text?: string | null;
+  terms_updated_at?: string | null;
 }

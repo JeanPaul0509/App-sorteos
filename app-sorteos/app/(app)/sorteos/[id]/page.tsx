@@ -4,6 +4,7 @@ import RaffleBoard from "@/components/RaffleBoard";
 import { createClient } from "@/lib/supabase/server";
 import type { Raffle } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import WinnerBanner from "@/components/WinnerBanner";
 import { isPastDate, money, plural } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,15 @@ export default async function RafflePage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="space-y-6">
+      {r.winner_number != null && (
+        <WinnerBanner
+          number={r.winner_number}
+          display={r.winner_display}
+          totalTickets={r.total_tickets}
+          drawnAt={r.drawn_at}
+          videoUrl={r.draw_video_url}
+        />
+      )}
       <section className="card overflow-hidden md:flex">
         <div className="relative bg-violet-50 md:w-2/5">
           <div className="h-64 md:h-full">

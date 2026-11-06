@@ -5,7 +5,8 @@ import Legend from "@/components/Legend";
 import Pager, { PAGE_SIZE } from "@/components/Pager";
 import { createClient } from "@/lib/supabase/client";
 import type { AdminTicket, Raffle, TicketStatus } from "@/lib/types";
-import { buyerWhatsAppUrl, downloadCsv, fetchAll, formatDate, LIMITS, money, num, pad, plural, timeAgo } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { buyerWhatsAppUrl, downloadCsv, fetchAll, formatDate, LIMITS, money, num, pad, paidWhatsAppUrl, plural, timeAgo } from "@/lib/utils";
 
 type Filter = "all" | TicketStatus;
 
@@ -30,6 +31,13 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
   const [lookup, setLookup] = useState("");
   const [onlySold, setOnlySold] = useState(true);
   const [buyersPage, setBuyersPage] = useState(0);
+  const router = useRouter();
+  // Pagos recién confirmados, para avisar al comprador por WhatsApp
+  const [justPaid, setJustPaid] = useState<{ key: string; name: string; phone: string; numbers: number[] }[]>([]);
+  const [winner, setWinner] = useState<{ number: number; display: string | null } | null>(
+    raffle.winner_number ? { number: raffle.winner_number, display: raffle.winner_display ?? null } : null
+  );
+  const [videoUrl, setVideoUrl] = useState(raffle.draw_video_url ?? "");
 
   const load = useCallback(async () => {
     try {
@@ -61,10 +69,38 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
       p_name: name?.trim() || null,
     });
     setBusy(false);
-    if (error) return alert(error.message);
+    if (error) {
+      alert(error.message);
+      return false;
+    }
     setPicked([]);
     setSaleName("");
     load();
+    return true;
+  }
+
+  async function confirmGroup(g: Group) {
+    const ok = await setStatus(g.tickets.map((t) => t.id), "sold");
+    if (ok && g.phone)
+      setJustPaid((prev) => [
+        { key: g.key + Date.now(), name: g.name, phone: g.phone, numbers: g.tickets.map((t) => t.number) },
+        ...prev,
+      ]);
+  }
+
+  async function markWinner(n: number | null) {
+    if (n !== null && !confirm(`¿Publicar el número ${fmt(n)} como GANADOR? El sorteo pasará a finalizado.`)) return;
+    if (n === null && !confirm("¿Quitar el ganador publicado?")) return;
+    setBusy(true);
+    const { data, error } = await supabase.rpc("admin_set_winner", {
+      p_raffle_id: raffle.id,
+      p_number: n,
+      p_video: n === null ? null : videoUrl.trim() || null,
+    });
+    setBusy(false);
+    if (error) return alert(error.message);
+    setWinner(n === null ? null : { number: n, display: (data as string | null) ?? null });
+    router.refresh();
   }
 
   // Reservas agrupadas por comprador
@@ -179,6 +215,43 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
         </div>
       </div>
 
+      {/* Pagos recién confirmados: avisar al comprador */}
+      {justPaid.length > 0 && (
+        <section className="space-y-2">
+          {justPaid.map((j) => (
+            <div key={j.key} className="anim-rise card flex flex-wrap items-center justify-between gap-3 border-green-300 bg-green-50 p-4">
+              <p className="min-w-0 text-sm text-green-900 [overflow-wrap:anywhere]">
+                ✅ Pago de <b>{j.name}</b> confirmado ({plural(j.numbers.length, "número", "números")}).
+              </p>
+              <div className="flex shrink-0 gap-2">
+                <a
+                  href={paidWhatsAppUrl({
+                    phone: j.phone,
+                    name: j.name,
+                    raffleTitle: raffle.title,
+                    numbers: j.numbers,
+                    totalTickets: raffle.total_tickets,
+                  })}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setJustPaid((p) => p.filter((x) => x.key !== j.key))}
+                  className="btn btn-green py-2 text-sm"
+                >
+                  📲 Avisarle por WhatsApp
+                </a>
+                <button
+                  onClick={() => setJustPaid((p) => p.filter((x) => x.key !== j.key))}
+                  className="btn btn-light py-2 text-sm"
+                  aria-label="Cerrar aviso"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
       {/* Pagos por confirmar */}
       <section>
         <h2 className="mb-3 text-lg font-bold">🟡 Pagos por confirmar ({groups.length})</h2>
@@ -217,7 +290,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
                 <div className="mt-3 flex gap-2">
                   <button
                     disabled={busy}
-                    onClick={() => setStatus(g.tickets.map((t) => t.id), "sold")}
+                    onClick={() => confirmGroup(g)}
                     className="btn btn-gray flex-1 py-2 text-sm"
                   >
                     ✅ Confirmar pago
@@ -239,6 +312,17 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
       {/* ¿Quién tiene el número? — para el sorteo en vivo */}
       <section className="card border-gold/30 bg-brand p-5 text-white">
         <h2 className="text-lg font-bold">🎤 ¿Quién tiene el número ganador?</h2>
+        {winner && (
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gold/40 bg-white/5 p-3">
+            <p className="text-sm">
+              🏆 Ganador publicado: <b className="text-gold">#{fmt(winner.number)}</b>
+              {winner.display && <> · {winner.display}</>}
+            </p>
+            <button onClick={() => markWinner(null)} disabled={busy} className="btn btn-light py-1.5 text-sm">
+              Quitar ganador
+            </button>
+          </div>
+        )}
         <p className="text-sm text-white/80">Escribe el número que salió en el sorteo.</p>
         <input
           className="input mt-3 max-w-xs text-2xl font-bold text-gray-900"
@@ -260,6 +344,24 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
                 <p className={`mt-1 text-sm font-semibold ${found.status === "sold" ? "text-green-700" : "text-yellow-600"}`}>
                   {found.status === "sold" ? "✅ Pagado" : "⚠️ Reservado, todavía NO pagó"}
                 </p>
+                {found.status === "sold" && winner?.number !== found.number && (
+                  <div className="mt-4 rounded-xl bg-gold-soft p-3">
+                    <label className="mb-1 block text-sm font-semibold">Link del video del sorteo (opcional)</label>
+                    <input
+                      className="input py-2"
+                      placeholder="https://www.tiktok.com/... o https://youtube.com/..."
+                      value={videoUrl}
+                      onChange={(e) => setVideoUrl(e.target.value)}
+                    />
+                    <button onClick={() => markWinner(found.number)} disabled={busy} className="btn btn-gold mt-3 w-full">
+                      🏆 Publicar como ganador
+                    </button>
+                    <p className="mt-2 text-xs text-gray-600">
+                      Se muestra en el sorteo con el nombre abreviado (por ejemplo, &quot;Juan P.&quot;) y el sorteo pasa a
+                      finalizado.
+                    </p>
+                  </div>
+                )}
                 {found.buyer_phone && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     <a href={`tel:${found.buyer_phone}`} className="btn btn-primary">

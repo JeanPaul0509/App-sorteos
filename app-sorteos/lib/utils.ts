@@ -159,3 +159,26 @@ export function normalizeSocial(kind: "whatsapp" | "instagram" | "tiktok", raw: 
   if (!user) return null;
   return kind === "instagram" ? `https://instagram.com/${user}` : `https://www.tiktok.com/@${user}`;
 }
+
+/** Mensaje para avisarle al comprador que su pago fue confirmado. */
+export function paidWhatsAppUrl(opts: {
+  phone: string;
+  name: string;
+  raffleTitle: string;
+  numbers: number[];
+  totalTickets: number;
+}) {
+  const p = opts.phone.replace(/\D/g, "");
+  const to = p.length === 9 ? "51" + p : p;
+  const first = opts.name.trim().split(/\s+/)[0] || "";
+  const nums = [...opts.numbers].sort((a, b) => a - b).map((n) => pad(n, opts.totalTickets));
+  const text = [
+    `¡Hola${first ? " " + first : ""}! ✅ Tu pago fue confirmado.`,
+    "",
+    `🎁 Sorteo: *${opts.raffleTitle}*`,
+    `🎟️ ${nums.length === 1 ? "Tu número" : "Tus números"}: *${nums.join(", ")}*`,
+    "",
+    "Puedes verlos en GoldenTicket → Mis números. ¡Mucha suerte! 🍀",
+  ].join("\n");
+  return `https://api.whatsapp.com/send?phone=${to}&text=${encodeURIComponent(text)}`;
+}

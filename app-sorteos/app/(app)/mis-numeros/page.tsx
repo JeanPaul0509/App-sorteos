@@ -25,8 +25,8 @@ export default async function MisNumerosPage() {
   // Fotos de los premios
   const ids = [...groups.keys()];
   const { data: imgs } = ids.length
-    ? await supabase.from("raffles").select("id, image_url, status").in("id", ids)
-    : { data: [] as { id: string; image_url: string | null; status: string }[] };
+    ? await supabase.from("raffles").select("id, image_url, status, winner_number").in("id", ids)
+    : { data: [] as { id: string; image_url: string | null; status: string; winner_number: number | null }[] };
   const info = new Map((imgs ?? []).map((r) => [r.id, r]));
 
   return (
@@ -45,6 +45,8 @@ export default async function MisNumerosPage() {
           const first = list[0];
           const pending = list.filter((t) => t.status === "reserved");
           const groupUrl = list.find((t) => t.group_url)?.group_url;
+          const winNum = info.get(first.raffle_id)?.winner_number;
+          const iWon = winNum != null && list.some((t) => t.number === winNum && t.status === "sold");
           return (
             <div key={first.raffle_id} className="card p-5">
               <Link href={`/sorteos/${first.raffle_id}`} className="group flex items-center gap-4">
@@ -74,6 +76,17 @@ export default async function MisNumerosPage() {
                   </span>
                 ))}
               </div>
+              {iWon && (
+                <div className="mt-4 rounded-xl p-4 text-[#3a2a06]" style={{ background: "linear-gradient(135deg, #f8dc85, #e2b43c 60%, #c4902a)" }}>
+                  <p className="text-lg font-extrabold">🏆 ¡Ganaste con el número {pad(winNum!, first.total_tickets)}!</p>
+                  <p className="text-sm">Te contactaremos a tu celular para coordinar la entrega del premio.</p>
+                </div>
+              )}
+              {!iWon && winNum != null && (
+                <p className="mt-4 rounded-xl bg-paper p-3 text-sm text-gray-700">
+                  Este sorteo ya tiene ganador: el número {pad(winNum, first.total_tickets)}. ¡Suerte en el próximo!
+                </p>
+              )}
               {groupUrl && (
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-green-50 p-3 text-sm text-green-900">
                   <span>✅ Pago confirmado. Únete al grupo del sorteo.</span>

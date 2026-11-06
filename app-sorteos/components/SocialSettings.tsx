@@ -57,7 +57,7 @@ export default function SocialSettings() {
   }
 
   return (
-    <section className="card mb-6 p-5">
+    <section className="card p-5">
       <h2 className="text-lg font-bold">Redes sociales</h2>
       <p className="mt-1 text-sm text-gray-600">
         Aparecen como íconos al pie de todas las páginas y en el login. Deja vacío lo que no quieras mostrar.

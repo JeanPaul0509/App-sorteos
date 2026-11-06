@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import SocialLinks from "@/components/SocialLinks";
@@ -23,6 +24,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <footer className="mx-auto flex max-w-5xl flex-col items-center gap-3 border-t border-white/10 px-4 pb-32 pt-8 text-sm text-white/50">
         <SocialLinks />
         <p>GoldenTicket · Sorteos con pagos confirmados</p>
+        <Link href="/terminos" className="underline decoration-white/30 underline-offset-4 hover:text-white">
+          Términos y condiciones
+        </Link>
       </footer>
     </>
   );

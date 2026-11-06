@@ -1,7 +1,8 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_ROUTES = ["/login", "/registro"];
+const AUTH_ROUTES = ["/login", "/registro"]; // solo sin sesión
+const OPEN_ROUTES = ["/terminos"]; // con o sin sesión
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -30,14 +31,15 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isPublic = PUBLIC_ROUTES.some((r) => path.startsWith(r));
+  const isAuthPage = AUTH_ROUTES.some((r) => path.startsWith(r));
+  const isOpen = OPEN_ROUTES.some((r) => path.startsWith(r));
 
-  if (!user && !isPublic) {
+  if (!user && !isAuthPage && !isOpen) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
-  if (user && (isPublic || path === "/")) {
+  if (user && (isAuthPage || path === "/")) {
     const url = request.nextUrl.clone();
     url.pathname = "/sorteos";
     return NextResponse.redirect(url);
