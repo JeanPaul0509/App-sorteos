@@ -99,6 +99,7 @@ motion:
   toast-in: "translateY(-8px) scale(0.97) + opacity · 200ms ease-out"
   rise: "translateY(10px) + opacity · 360ms ease-out · stagger 50ms (máx. 6)"
   hero-ticket: "rotateX(40deg) rotate(-10deg) → rotate(-4deg) · 900ms + brillo 1100ms, una sola vez"
+  auth-ticket: "translateY(20px) rotateX(16deg) scale(0.97) + opacity · 700ms ease-out + brillo dorado suave 1000ms, una vez al abrir login/registro"
 
 components:
   ticket: "Tarjeta de sorteo con forma de boleto: marfil, muescas laterales a la altura de la línea perforada, talón fijo abajo con precio, % vendido y personas"
@@ -233,7 +234,7 @@ Basado en los principios de Emil Kowalski:
 - **Menos de 300ms** en todo lo de interfaz. Lo único más largo es el boleto del inicio: es decorativo y ocurre una vez.
 - **Solo `transform` y `opacity`.**
 - **No se anima lo frecuente:** cambiar de página, elegir números (fuera del toque) y los filtros.
-- **Un solo momento "show"**: el boleto dorado del inicio que gira y brilla una vez.
+- **Dos momentos "show", ambos del mismo boleto**: el boleto dorado del inicio y el boleto del login, que entran girando y brillan una sola vez. No se agregan videos de fondo: pesan, distraen del formulario y restan confianza.
 - **Movimiento reducido:** se quitan los desplazamientos y se mantienen los fundidos.
 
 ## Copy

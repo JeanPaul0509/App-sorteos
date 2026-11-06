@@ -199,6 +199,17 @@ button.ball:active { transform: scale(0.92); }
   animation: gt-shine 1100ms var(--ease-in-out) 950ms both;
   pointer-events: none;
 }
+/* ---------- Boleto del login: misma familia que el del inicio, más contenido (es un formulario) ---------- */
+.auth-ticket { animation: gt-auth 700ms var(--ease-out) 80ms backwards; }
+.auth-ticket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 38%, rgb(226 180 60 / 0.28) 50%, transparent 62%);
+  transform: translateX(-120%);
+  animation: gt-shine 1000ms var(--ease-in-out) 700ms both;
+  pointer-events: none;
+}
 @media (hover: hover) and (pointer: fine) {
   .hero-ticket:hover .hero-ticket-inner { transform: rotate(-1.5deg) translateY(-4px); }
 }
@@ -212,6 +223,7 @@ button.ball:active { transform: scale(0.92); }
 @keyframes gt-pulse { 50% { opacity: 0.45; } }
 @keyframes gt-ticket { from { opacity: 0; transform: translateY(28px) rotateX(40deg) rotate(-10deg) scale(0.92); } }
 @keyframes gt-shine { to { transform: translateX(120%); } }
+@keyframes gt-auth { from { opacity: 0; transform: perspective(900px) translateY(20px) rotateX(16deg) scale(0.97); } }
 
 /* Movimiento reducido: menos y más suave, no cero. Se quitan desplazamientos, se mantienen fundidos. */
 @media (prefers-reduced-motion: reduce) {
@@ -220,4 +232,6 @@ button.ball:active { transform: scale(0.92); }
   .skeleton { animation: none; }
   .hero-ticket-inner { animation-name: gt-fade; }
   .hero-ticket-inner::after { animation: none; opacity: 0; }
+  .auth-ticket { animation-name: gt-fade; }
+  .auth-ticket::after { animation: none; opacity: 0; }
 }

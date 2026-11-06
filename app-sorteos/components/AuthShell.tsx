@@ -13,10 +13,10 @@ export default function AuthShell({
   return (
     <div className="flex min-h-screen flex-col">
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-10">
-        <div className="mb-8 flex justify-center">
+        <div className="anim-rise mb-8 flex justify-center">
           <Brand light size="lg" />
         </div>
-        <div className="ticket p-7" style={{ ["--cut" as string]: "calc(100% - 3.75rem)" }}>
+        <div className="ticket auth-ticket p-7" style={{ ["--cut" as string]: "calc(100% - 3.75rem)" }}>
           <h1 className="text-2xl font-extrabold">{title}</h1>
           <p className="mb-6 mt-1 text-sm text-gray-500">{subtitle}</p>
           {children}
@@ -25,7 +25,7 @@ export default function AuthShell({
             Tu celular solo se usa para contactarte si ganas.
           </p>
         </div>
-        <ul className="mt-8 space-y-2 text-sm text-white/70">
+        <ul className="anim-rise mt-8 space-y-2 text-sm text-white/70" style={{ ["--delay" as string]: "450ms" }}>
           <li className="flex gap-2"><span className="text-gold">✓</span>Cada pago lo confirmamos uno por uno.</li>
           <li className="flex gap-2"><span className="text-gold">✓</span>El sorteo se hace en vivo, con la lista de compradores.</li>
           <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus números en todo momento.</li>
