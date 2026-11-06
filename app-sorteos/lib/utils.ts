@@ -18,9 +18,44 @@ export function pad(n: number, total: number) {
   return String(n).padStart(String(total).length, "0");
 }
 
+const MONEY = new Intl.NumberFormat("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const INT = new Intl.NumberFormat("es-PE");
+
+/** S/ 1,234.50 */
 export function money(v: number | string) {
-  return `S/ ${Number(v).toFixed(2)}`;
+  const n = Number(v);
+  return `S/ ${MONEY.format(Number.isFinite(n) ? n : 0)}`;
 }
+
+/** 1,284 */
+export function num(v: number | string | null | undefined) {
+  const n = Number(v ?? 0);
+  return INT.format(Number.isFinite(n) ? n : 0);
+}
+
+/** "1 número" / "3 números" */
+export function plural(n: number, one: string, many: string) {
+  return `${num(n)} ${n === 1 ? one : many}`;
+}
+
+/** Porcentaje honesto: nunca "0%" si ya se vendió algo, ni "100%" si aún queda alguno. */
+export function soldPercent(sold: number, total: number) {
+  if (!total || sold <= 0) return { width: 0, label: "0%" };
+  if (sold >= total) return { width: 100, label: "100%" };
+  const raw = (sold / total) * 100;
+  if (raw < 1) return { width: 1, label: "<1%" };
+  const r = Math.min(99, Math.round(raw));
+  return { width: r, label: `${r}%` };
+}
+
+/** true si la fecha (YYYY-MM-DD) ya pasó, en hora de Lima. */
+export function isPastDate(d: string | null) {
+  if (!d) return false;
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Lima" });
+  return d < today;
+}
+
+export const LIMITS = { title: 80, description: 1000, specs: 1000, buyerName: 60 };
 
 export const YAPE_NUMBER = process.env.NEXT_PUBLIC_YAPE_NUMBER ?? "";
 export const YAPE_NAME = process.env.NEXT_PUBLIC_YAPE_NAME ?? "";
@@ -74,7 +109,9 @@ export async function fetchAll<T>(
 /** Descarga un CSV que Excel abre directo (con tildes y columnas bien separadas). */
 export function downloadCsv(filename: string, rows: (string | number)[][]) {
   const esc = (v: string | number) => {
-    const s = String(v ?? "");
+    let s = String(v ?? "");
+    // Evita que Excel ejecute fórmulas escritas como nombre (inyección CSV)
+    if (typeof v === "string" && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
     return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
   const body = "sep=;\n" + rows.map((r) => r.map(esc).join(";")).join("\n");

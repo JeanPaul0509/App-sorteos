@@ -6,7 +6,8 @@ import ConfirmWordModal from "@/components/ConfirmWordModal";
 import SocialSettings from "@/components/SocialSettings";
 import { createClient } from "@/lib/supabase/client";
 import type { Raffle, RaffleCount } from "@/lib/types";
-import { money } from "@/lib/utils";
+import SafeImg from "@/components/SafeImg";
+import { money, num, plural } from "@/lib/utils";
 
 export default function AdminPage() {
   const supabase = useMemo(() => createClient(), []);
@@ -64,7 +65,7 @@ export default function AdminPage() {
           <p className="text-white/60">
             {pendingTotal > 0 ? (
               <>
-                Tienes <b className="text-gold">{pendingTotal} números reservados</b> esperando confirmación
+                Tienes <b className="text-gold">{plural(pendingTotal, "número reservado", "números reservados")}</b> esperando confirmación
               </>
             ) : (
               "No hay pagos pendientes"
@@ -87,18 +88,13 @@ export default function AdminPage() {
             return (
               <div key={r.id} className="card flex flex-wrap items-center gap-4 p-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-violet-50">
-                  {r.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={r.image_url} alt="" className="h-full w-full object-cover" />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-3xl">{r.icon}</div>
-                  )}
+                  <SafeImg src={r.image_url} alt={r.title} icon={r.icon} iconClassName="text-3xl" className="h-full w-full object-cover" />
                 </div>
                 <div className="min-w-[12rem] flex-1">
-                  <p className="font-bold">
+                  <p className="font-bold [overflow-wrap:anywhere]">
                     {r.icon} {r.title}{" "}
                     <span
-                      className={`ml-1 rounded-full px-2 py-0.5 text-xs ${
+                      className={`ml-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs ${
                         r.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"
                       }`}
                     >
@@ -106,12 +102,12 @@ export default function AdminPage() {
                     </span>
                   </p>
                   <p className="text-sm text-gray-500">
-                    {r.total_tickets} números · {money(r.price)} c/u
+                    {plural(r.total_tickets, "número", "números")} · {money(r.price)} c/u
                   </p>
-                  <p className="mt-1 flex gap-3 text-sm">
-                    <span className="text-green-600">🟢 {c?.available ?? r.total_tickets}</span>
-                    <span className="text-yellow-600">🟡 {c?.reserved ?? 0}</span>
-                    <span className="text-gray-500">⚪ {c?.sold ?? 0} vendidos</span>
+                  <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm">
+                    <span className="text-green-600">🟢 {num(c?.available ?? r.total_tickets)}</span>
+                    <span className="text-yellow-600">🟡 {num(c?.reserved)}</span>
+                    <span className="text-gray-500">⚪ {plural(Number(c?.sold ?? 0), "vendido", "vendidos")}</span>
                     <span className="font-semibold text-violet-700">
                       {money(Number(c?.sold ?? 0) * Number(r.price))}
                     </span>

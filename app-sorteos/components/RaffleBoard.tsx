@@ -5,7 +5,7 @@ import Legend from "@/components/Legend";
 import Pager, { PAGE_SIZE } from "@/components/Pager";
 import { createClient } from "@/lib/supabase/client";
 import type { MyTicket, PublicTicket, Raffle } from "@/lib/types";
-import { buildWhatsAppUrl, fetchAll, money, pad, YAPE_NAME, YAPE_NUMBER } from "@/lib/utils";
+import { buildWhatsAppUrl, fetchAll, money, pad, plural, YAPE_NAME, YAPE_NUMBER } from "@/lib/utils";
 
 const MAX = 5;
 
@@ -177,7 +177,8 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
         <div>
           <h2 className="text-xl font-bold">Elige tus números</h2>
           <p className="text-sm text-gray-500">
-            Hasta {MAX} números por compra · quedan <b>{stats.available}</b> disponibles
+            Hasta {MAX} números por compra · {stats.available === 1 ? "queda" : "quedan"}{" "}
+            <b>{plural(stats.available, "disponible", "disponibles")}</b>
           </p>
         </div>
         <div className="flex gap-2">
@@ -208,7 +209,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
             </>
           ) : (
             <>
-              🟡 Tienes <b>{myPending}</b> número(s) esperando confirmación. Ahora puedes elegir hasta{" "}
+              🟡 Tienes <b>{plural(myPending, "número", "números")}</b> esperando confirmación. Ahora puedes elegir hasta{" "}
               <b>{limit}</b> más.
             </>
           )}

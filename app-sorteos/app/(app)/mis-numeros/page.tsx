@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { MyTicket } from "@/lib/types";
-import { buildWhatsAppUrl, money, pad } from "@/lib/utils";
+import SafeImg from "@/components/SafeImg";
+import { buildWhatsAppUrl, money, pad, plural } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -48,23 +49,20 @@ export default async function MisNumerosPage() {
             <div key={first.raffle_id} className="card p-5">
               <Link href={`/sorteos/${first.raffle_id}`} className="group flex items-center gap-4">
                 <span className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gold-soft sm:h-24 sm:w-24">
-                  {info.get(first.raffle_id)?.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={info.get(first.raffle_id)!.image_url!}
-                      alt={first.raffle_title}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  ) : (
-                    <span className="flex h-full items-center justify-center text-4xl">{first.raffle_icon}</span>
-                  )}
+                  <SafeImg
+                    src={info.get(first.raffle_id)?.image_url}
+                    alt={first.raffle_title}
+                    icon={first.raffle_icon}
+                    iconClassName="text-4xl"
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-lg font-bold leading-snug">
+                  <span className="block text-lg font-bold leading-snug [overflow-wrap:anywhere]">
                     {first.raffle_icon} {first.raffle_title}
                   </span>
                   <span className="block text-sm text-gray-500">
-                    {list.length} {list.length === 1 ? "número" : "números"}
+                    {plural(list.length, "número", "números")}
                     {info.get(first.raffle_id)?.status === "finished" ? " · sorteo finalizado" : ""}
                   </span>
                 </span>
@@ -87,7 +85,7 @@ export default async function MisNumerosPage() {
               {pending.length > 0 && (
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-yellow-50 p-3 text-sm">
                   <span>
-                    {pending.length} número(s) esperando confirmación de pago ·{" "}
+                    {plural(pending.length, "número esperando", "números esperando")} confirmación de pago ·{" "}
                     {money(pending.length * Number(first.price))}
                   </span>
                   <a

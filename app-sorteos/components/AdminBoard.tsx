@@ -5,7 +5,7 @@ import Legend from "@/components/Legend";
 import Pager, { PAGE_SIZE } from "@/components/Pager";
 import { createClient } from "@/lib/supabase/client";
 import type { AdminTicket, Raffle, TicketStatus } from "@/lib/types";
-import { buyerWhatsAppUrl, downloadCsv, fetchAll, formatDate, money, pad, timeAgo } from "@/lib/utils";
+import { buyerWhatsAppUrl, downloadCsv, fetchAll, formatDate, LIMITS, money, num, pad, plural, timeAgo } from "@/lib/utils";
 
 type Filter = "all" | TicketStatus;
 
@@ -29,6 +29,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
   const [busy, setBusy] = useState(false);
   const [lookup, setLookup] = useState("");
   const [onlySold, setOnlySold] = useState(true);
+  const [buyersPage, setBuyersPage] = useState(0);
 
   const load = useCallback(async () => {
     try {
@@ -51,7 +52,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
 
   async function setStatus(ids: number[], status: TicketStatus, name?: string) {
     if (ids.length === 0) return;
-    if (status === "available" && !confirm(`¿Liberar ${ids.length} número(s)? Volverán a estar disponibles (verde).`))
+    if (status === "available" && !confirm(`¿Liberar ${plural(ids.length, "número", "números")}? Volverán a estar disponibles (verde).`))
       return;
     setBusy(true);
     const { error } = await supabase.rpc("admin_set_ticket_status", {
@@ -119,6 +120,9 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
     [tickets, onlySold]
   );
 
+  const buyersPages = Math.max(1, Math.ceil(buyers.length / PAGE_SIZE));
+  const buyersCur = Math.min(buyersPage, buyersPages - 1);
+
   const found = useMemo(() => {
     const n = parseInt(lookup, 10);
     return isNaN(n) ? null : tickets.find((t) => t.number === n) ?? "none";
@@ -162,15 +166,15 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
       {/* Resumen */}
       <div className="grid grid-cols-3 gap-3">
         <div className="card p-4 text-center">
-          <p className="text-2xl font-extrabold text-green-600">{stats.available}</p>
+          <p className="text-2xl font-extrabold text-green-600">{num(stats.available)}</p>
           <p className="text-xs text-gray-500">Disponibles</p>
         </div>
         <div className="card p-4 text-center">
-          <p className="text-2xl font-extrabold text-yellow-500">{stats.reserved}</p>
+          <p className="text-2xl font-extrabold text-yellow-500">{num(stats.reserved)}</p>
           <p className="text-xs text-gray-500">Reservados</p>
         </div>
         <div className="card p-4 text-center">
-          <p className="text-2xl font-extrabold text-gray-500">{stats.sold}</p>
+          <p className="text-2xl font-extrabold text-gray-500">{num(stats.sold)}</p>
           <p className="text-xs text-gray-500">Vendidos · {money(stats.sold * Number(raffle.price))}</p>
         </div>
       </div>
@@ -185,8 +189,8 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
             {groups.map((g) => (
               <div key={g.key} className="card border-l-4 border-yellow-400 p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <p className="font-bold">{g.name}</p>
+                  <div className="min-w-0">
+                    <p className="font-bold [overflow-wrap:anywhere]">{g.name}</p>
                     {g.phone && (
                       <a
                         href={buyerWhatsAppUrl(g.phone)}
@@ -198,7 +202,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
                       </a>
                     )}
                   </div>
-                  <span className="text-xs text-gray-400">{timeAgo(g.reservedAt)}</span>
+                  <span className="shrink-0 whitespace-nowrap text-xs text-gray-400">{timeAgo(g.reservedAt)}</span>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {g.tickets.map((t) => (
@@ -251,7 +255,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
               <p className="mt-1 text-gray-500">Nadie compró este número.</p>
             ) : (
               <>
-                <p className="mt-1 text-2xl font-bold">{found.buyer_name}</p>
+                <p className="mt-1 text-2xl font-bold [overflow-wrap:anywhere]">{found.buyer_name}</p>
                 <p className="text-lg">📱 {found.buyer_phone}</p>
                 <p className={`mt-1 text-sm font-semibold ${found.status === "sold" ? "text-green-700" : "text-yellow-600"}`}>
                   {found.status === "sold" ? "✅ Pagado" : "⚠️ Reservado, todavía NO pagó"}
@@ -275,10 +279,13 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
       {/* Lista de compradores + Excel */}
       <section className="card p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-bold">📋 Compradores ({buyers.length})</h2>
+          <h2 className="text-lg font-bold">📋 Compradores ({num(buyers.length)})</h2>
           <div className="flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={onlySold} onChange={(e) => setOnlySold(e.target.checked)} />
+              <input type="checkbox" checked={onlySold} onChange={(e) => {
+                  setOnlySold(e.target.checked);
+                  setBuyersPage(0);
+                }} />
               Solo pagados
             </label>
             <button onClick={exportExcel} disabled={buyers.length === 0} className="btn btn-green py-2 text-sm">
@@ -300,18 +307,25 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
                 </tr>
               </thead>
               <tbody>
-                {buyers.map((t) => (
+                {buyers.slice(buyersCur * PAGE_SIZE, (buyersCur + 1) * PAGE_SIZE).map((t) => (
                   <tr key={t.id} className="border-t border-gray-100">
                     <td className="px-3 py-2 font-bold">{fmt(t.number)}</td>
-                    <td className="px-3 py-2">{t.buyer_name}</td>
-                    <td className="px-3 py-2">{t.buyer_phone}</td>
-                    <td className="px-3 py-2">{t.status === "sold" ? "✅ Pagado" : "🟡 Reservado"}</td>
+                    <td className="max-w-[14rem] px-3 py-2 [overflow-wrap:anywhere]">{t.buyer_name}</td>
+                    <td className="whitespace-nowrap px-3 py-2">{t.buyer_phone}</td>
+                    <td className="whitespace-nowrap px-3 py-2">{t.status === "sold" ? "✅ Pagado" : "🟡 Reservado"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         )}
+        <Pager
+          page={buyersCur}
+          pages={buyersPages}
+          first={buyersCur * PAGE_SIZE + 1}
+          last={Math.min(buyers.length, (buyersCur + 1) * PAGE_SIZE)}
+          onChange={setBuyersPage}
+        />
       </section>
 
       {/* Tablero completo */}
@@ -385,6 +399,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
               <input
                 className="input mb-3 py-2"
                 placeholder="Nombre del comprador (para ventas hechas por fuera de la app)"
+                maxLength={LIMITS.buyerName}
                 value={saleName}
                 onChange={(e) => setSaleName(e.target.value)}
               />

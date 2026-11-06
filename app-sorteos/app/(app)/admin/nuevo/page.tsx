@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { ICONS, isValidGroupUrl, money } from "@/lib/utils";
+import { ICONS, isValidGroupUrl, LIMITS, money } from "@/lib/utils";
 
 const PRESETS = [50, 100, 150, 200, 500, 1000];
 
@@ -116,7 +116,16 @@ export default function NewRafflePage() {
 
         <div>
           <label className="mb-1 block text-sm font-medium">Nombre del premio *</label>
-          <input className="input" placeholder="Ej: iPhone 15 128GB" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input
+            className="input"
+            placeholder="Ej: iPhone 15 128GB"
+            maxLength={LIMITS.title}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <p className="mt-1 text-right text-xs text-gray-500">
+            {title.length}/{LIMITS.title}
+          </p>
         </div>
 
         <div>
@@ -140,6 +149,7 @@ export default function NewRafflePage() {
           <textarea
             className="input min-h-20"
             placeholder="Cuenta algo del premio, reglas, cómo se sortea..."
+            maxLength={LIMITS.description}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -150,6 +160,7 @@ export default function NewRafflePage() {
           <textarea
             className="input min-h-24"
             placeholder={"Color negro\n128 GB\nNuevo en caja"}
+            maxLength={LIMITS.specs}
             value={specs}
             onChange={(e) => setSpecs(e.target.value)}
           />

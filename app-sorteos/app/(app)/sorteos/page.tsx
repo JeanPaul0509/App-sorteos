@@ -63,7 +63,7 @@ export default async function SorteosPage() {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((r, i) => (
-            <div key={r.id} className="anim-rise" style={{ ["--delay" as string]: `${Math.min(i, 6) * 50}ms` }}>
+            <div key={r.id} className="anim-rise h-full" style={{ ["--delay" as string]: `${Math.min(i, 6) * 50}ms` }}>
               <RaffleCard raffle={r} count={byId.get(r.id)} href={`/sorteos/${r.id}`} />
             </div>
           ))}

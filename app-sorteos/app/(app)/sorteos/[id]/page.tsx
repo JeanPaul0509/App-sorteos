@@ -3,7 +3,8 @@ import GroupLinkBanner from "@/components/GroupLinkBanner";
 import RaffleBoard from "@/components/RaffleBoard";
 import { createClient } from "@/lib/supabase/server";
 import type { Raffle } from "@/lib/types";
-import { money } from "@/lib/utils";
+import SafeImg from "@/components/SafeImg";
+import { isPastDate, money, plural } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -27,30 +28,32 @@ export default async function RafflePage({ params }: { params: Promise<{ id: str
     <div className="space-y-6">
       <section className="card overflow-hidden md:flex">
         <div className="relative bg-violet-50 md:w-2/5">
-          {r.image_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={r.image_url} alt={r.title} className="h-64 w-full object-cover md:h-full" />
-          ) : (
-            <div className="flex h-64 items-center justify-center text-8xl">{r.icon}</div>
-          )}
+          <div className="h-64 md:h-full">
+            <SafeImg src={r.image_url} alt={r.title} icon={r.icon} iconClassName="text-8xl" className="h-64 w-full object-cover md:h-full" />
+          </div>
         </div>
         <div className="flex-1 p-6">
           <div className="flex items-start gap-3">
-            <span className="text-4xl">{r.icon}</span>
-            <div>
-              <h1 className="text-2xl font-extrabold">{r.title}</h1>
+            <span className="shrink-0 text-4xl">{r.icon}</span>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-extrabold [overflow-wrap:anywhere]">{r.title}</h1>
               <p className="text-violet-700">
-                <b>{money(r.price)}</b> por número · {r.total_tickets} números
-                {r.draw_date && <> · Sorteo: {new Date(r.draw_date + "T12:00:00").toLocaleDateString("es-PE")}</>}
+                <b>{money(r.price)}</b> por número · {plural(r.total_tickets, "número", "números")}
+                {r.draw_date &&
+                  (r.status === "active" && isPastDate(r.draw_date) ? (
+                    <> · Fecha del sorteo por confirmar</>
+                  ) : (
+                    <> · Sorteo: {new Date(r.draw_date + "T12:00:00").toLocaleDateString("es-PE")}</>
+                  ))}
               </p>
             </div>
           </div>
-          {r.description && <p className="mt-4 whitespace-pre-line text-gray-700">{r.description}</p>}
+          {r.description && <p className="mt-4 whitespace-pre-line text-gray-700 [overflow-wrap:anywhere]">{r.description.replace(/\n{3,}/g, "\n\n")}</p>}
           {specs.length > 0 && (
-            <ul className="mt-4 grid gap-1.5 text-sm text-gray-700 sm:grid-cols-2">
+            <ul className="mt-4 grid gap-1.5 text-sm text-gray-700 [overflow-wrap:anywhere] sm:grid-cols-2">
               {specs.map((s, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-violet-600">✔</span>
+                  <span className="shrink-0 text-violet-600">✔</span>
                   {s}
                 </li>
               ))}
