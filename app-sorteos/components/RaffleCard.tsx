@@ -31,7 +31,7 @@ export default function RaffleCard({
           <img
             src={raffle.image_url}
             alt={raffle.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-7xl">{raffle.icon}</div>

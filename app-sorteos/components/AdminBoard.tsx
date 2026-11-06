@@ -337,7 +337,12 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
         <p className="mb-3 text-sm text-gray-500">Toca los números para seleccionarlos y cambiarles el estado.</p>
 
         {loading ? (
-          <p className="py-10 text-center text-gray-400">Cargando...</p>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(2.9rem,1fr))] gap-2" aria-busy="true">
+            {Array.from({ length: 40 }, (_, i) => (
+              <span key={i} className="skeleton aspect-square rounded-full" />
+            ))}
+            <span className="sr-only">Cargando</span>
+        </div>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(2.9rem,1fr))] gap-2">
             {pageItems.map((t) => (
@@ -358,7 +363,7 @@ export default function AdminBoard({ raffle }: { raffle: Raffle }) {
 
       {/* Panel de acciones para la selección */}
       {pickedTickets.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white p-4 text-ink shadow-2xl">
+        <div className="anim-sheet fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white p-4 text-ink shadow-2xl">
           <div className="mx-auto max-w-5xl">
             <div className="mb-3 max-h-32 space-y-1 overflow-y-auto text-sm">
               {pickedTickets.map((t) => (

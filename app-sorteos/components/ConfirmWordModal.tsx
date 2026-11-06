@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Ventana de confirmación en 2 pasos:
@@ -29,9 +29,17 @@ export default function ConfirmWordModal({
   const [text, setText] = useState("");
   const ok = text.trim().toUpperCase() === word.toUpperCase();
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !busy) onCancel();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [busy, onCancel]);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center">
-      <div className="card w-full max-w-md p-6">
+    <div className="anim-overlay fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center">
+      <div role="dialog" aria-modal="true" className="anim-modal card w-full max-w-md p-6">
         <h3 className="text-xl font-bold">{title}</h3>
         <div className="mt-2 text-sm text-gray-700">{message}</div>
 

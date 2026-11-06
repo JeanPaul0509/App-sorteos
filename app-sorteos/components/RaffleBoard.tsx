@@ -56,6 +56,15 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
   }, [load]);
 
   useEffect(() => {
+    if (!showModal) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !sending) setShowModal(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showModal, sending]);
+
+  useEffect(() => {
     try {
       setName(localStorage.getItem("sorteo_nombre") ?? "");
     } catch {}
@@ -149,7 +158,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
   return (
     <section className="card p-5">
       {done && (
-        <div className="mb-5 rounded-2xl border-2 border-green-500 bg-green-50 p-4">
+        <div className="anim-rise mb-5 rounded-2xl border-2 border-green-500 bg-green-50 p-4">
           <p className="font-bold text-green-800">
             ✅ ¡Listo! Reservaste: {done.numbers.map((n) => pad(n, raffle.total_tickets)).join(", ")}
           </p>
@@ -215,7 +224,12 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
       )}
 
       {loading ? (
-        <p className="py-10 text-center text-gray-400">Cargando números...</p>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(2.9rem,1fr))] gap-2" aria-busy="true">
+          {Array.from({ length: 40 }, (_, i) => (
+            <span key={i} className="skeleton aspect-square rounded-full" />
+          ))}
+          <span className="sr-only">Cargando números</span>
+        </div>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(2.9rem,1fr))] gap-2">
           {pageItems.map((t) => {
@@ -242,7 +256,7 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
 
       {/* Barra inferior con la selección */}
       {selected.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white/95 p-3 text-ink shadow-2xl backdrop-blur">
+        <div className="anim-sheet fixed inset-x-0 bottom-0 z-40 border-t border-violet-100 bg-white/95 p-3 text-ink shadow-2xl backdrop-blur">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
             <div>
               <div className="flex flex-wrap gap-1.5">
@@ -276,8 +290,11 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
 
       {/* Modal: nombre + pago */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center">
-          <div className="card w-full max-w-md p-6">
+        <div
+          className="anim-overlay fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center"
+          onClick={(e) => e.target === e.currentTarget && !sending && setShowModal(false)}
+        >
+          <div role="dialog" aria-modal="true" className="anim-modal card w-full max-w-md p-6">
             <h3 className="text-xl font-bold">Confirmar compra</h3>
             <p className="mt-1 text-sm text-gray-500">{raffle.title}</p>
 
@@ -333,7 +350,11 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
       )}
 
       {toast && (
-        <div className="fixed left-1/2 top-20 z-[60] -translate-x-1/2 rounded-full bg-gray-900 px-4 py-2 text-sm text-white shadow-lg">
+        <div
+          key={toast}
+          role="status"
+          className="anim-toast fixed left-1/2 top-20 z-[60] -translate-x-1/2 rounded-full bg-gray-900 px-4 py-2 text-sm text-white shadow-lg"
+        >
           {toast}
         </div>
       )}
