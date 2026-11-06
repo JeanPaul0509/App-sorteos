@@ -27,8 +27,10 @@ GoldenTicket organiza sorteos de premios. Al registrarte y participar aceptas es
 - El número ganador y el nombre abreviado del ganador se publican en la app.
 
 ## 5. Entrega del premio
-- Contactaremos al ganador al celular registrado.
-- El ganador tiene [X] días para reclamar el premio. Pasado ese plazo, [indicar qué pasa].
+- Contactaremos al ganador por llamada y WhatsApp al celular con el que se registró.
+- Intentaremos comunicarnos con el ganador durante 7 días desde el sorteo.
+- Si pasados esos 7 días no logramos comunicarnos, el premio se vuelve a sortear entre los demás números pagados, y el número anterior queda fuera del nuevo sorteo.
+- Por eso es importante que te registres con tu celular personal y lo mantengas activo.
 - La entrega se coordina en [lugar o forma de entrega].
 
 ## 6. Cancelación de un sorteo
