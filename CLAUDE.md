@@ -2,7 +2,7 @@
 
 App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano.
 
-- **Producción:** https://goldenticket-pe.vercel.app (o el dominio `.vercel.app` configurado en Vercel → Settings → Domains)
+- **Producción:** dominio `.vercel.app` configurado en Vercel → Settings → Domains (el original era app-sorteos-liard.vercel.app; confirmar con el usuario cuál quedó).
 - **Repo:** github.com/JeanPaul0509/App-sorteos (rama `main`). El código está en `app-sorteos/`.
 - **Stack:** Next.js 15 (App Router) + React 19 + Tailwind v4 + Supabase (Auth, Postgres, Storage) + Vercel.
 - **Idioma:** todo en español de Perú. El usuario no es programador: explicar en pasos simples.
