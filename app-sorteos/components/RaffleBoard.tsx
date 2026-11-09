@@ -3,14 +3,25 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Legend from "@/components/Legend";
 import Pager, { PAGE_SIZE } from "@/components/Pager";
+import VerifyPhoneModal from "@/components/VerifyPhoneModal";
 import { createClient } from "@/lib/supabase/client";
 import type { MyTicket, PublicTicket, Raffle } from "@/lib/types";
 import { buildWhatsAppUrl, fetchAll, money, pad, plural, YAPE_NAME, YAPE_NUMBER } from "@/lib/utils";
 
 const MAX = 5;
 
-export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: string }) {
+export default function RaffleBoard({
+  raffle,
+  phone,
+  needsVerify: needsVerifyInitial = false,
+}: {
+  raffle: Raffle;
+  phone: string;
+  needsVerify?: boolean; // true si la regla está encendida y el celular aún no está verificado
+}) {
   const supabase = useMemo(() => createClient(), []);
+  const [needsVerify, setNeedsVerify] = useState(needsVerifyInitial);
+  const [showVerify, setShowVerify] = useState(false);
   const [tickets, setTickets] = useState<PublicTicket[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<number[]>([]);
@@ -115,6 +126,13 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
     });
     setSending(false);
     if (error) {
+      // La regla se encendió mientras la persona tenía la página abierta
+      if (error.message.startsWith("Verifica tu celular")) {
+        setNeedsVerify(true);
+        setShowModal(false);
+        setShowVerify(true);
+        return;
+      }
       setError(error.message);
       load();
       return;
@@ -216,6 +234,17 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
         </div>
       )}
 
+      {active && needsVerify && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-paper p-3 text-sm text-ink">
+          <p className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+            🔒 Para comprar, primero verifica tu celular por WhatsApp. Es gratis y rápido.
+          </p>
+          <button onClick={() => setShowVerify(true)} className="btn btn-light whitespace-nowrap py-2">
+            Verificar celular
+          </button>
+        </div>
+      )}
+
       <Legend showSelected />
 
       {!active && (
@@ -278,7 +307,8 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
               <button
                 onClick={() => {
                   setError(null);
-                  setShowModal(true);
+                  if (needsVerify) setShowVerify(true);
+                  else setShowModal(true);
                 }}
                 className="btn btn-primary"
               >
@@ -348,6 +378,19 @@ export default function RaffleBoard({ raffle, phone }: { raffle: Raffle; phone: 
             </div>
           </div>
         </div>
+      )}
+
+      {showVerify && (
+        <VerifyPhoneModal
+          phone={phone}
+          onClose={() => setShowVerify(false)}
+          onVerified={() => {
+            setNeedsVerify(false);
+            setShowVerify(false);
+            setError(null);
+            if (selected.length > 0) setShowModal(true); // sigue con la compra
+          }}
+        />
       )}
 
       {toast && (

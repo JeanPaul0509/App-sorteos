@@ -112,6 +112,7 @@ components:
   modal: "Centrado, marfil, cierra con Esc y tocando fuera"
   brand-mark: "Boleto dorado pequeño con muescas + 'Golden' + 'Ticket' en oro"
   winner-banner: "Bloque esmeralda con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
+  verify-modal: "Modal marfil estándar para verificar el celular: 3 pasos cortos, botón verde WhatsApp (único uso del verde de acción), código en cifras tabulares y mensaje 'Esperando tu mensaje…'; al terminar muestra ✅ y sigue con la compra. Aviso previo en el tablero: franja 'paper' con borde 'line' (nunca amarillo, que es de 'reservado')"
   terms-page: "/terminos, pública; texto editable por el admin (## títulos, - viñetas) dentro de una tarjeta marfil"
 ---
 

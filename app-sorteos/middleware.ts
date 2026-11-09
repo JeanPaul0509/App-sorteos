@@ -2,7 +2,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 const AUTH_ROUTES = ["/login", "/registro"]; // solo sin sesión
-const OPEN_ROUTES = ["/terminos"]; // con o sin sesión
+const OPEN_ROUTES = ["/terminos", "/api/whatsapp"]; // con o sin sesión (el aviso de Meta no trae sesión)
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });

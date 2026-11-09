@@ -12,7 +12,7 @@ App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, r
 1. Claude edita el código en el repo y hace `git push` a `main`. **Vercel publica solo** en 1-2 minutos.
 2. Si el cambio toca la base de datos: crear `app-sorteos/supabase/migrations/00N_nombre.sql`, agregar lo mismo al final de `supabase/schema.sql` y **darle al usuario el SQL para que lo pegue en Supabase → SQL Editor → Run**. Claude no tiene acceso directo a Supabase.
 3. El entorno de Claude no puede hacer `npm install` (registro bloqueado), así que no puede compilar. Hacer revisión de sintaxis con cuidado y pedir al usuario la captura del log de Vercel si el deploy falla.
-4. Variables de entorno en Vercel (Settings → Environment Variables, tipo Config): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (publishable key), `NEXT_PUBLIC_WHATSAPP_NUMBER` (51 + número), `NEXT_PUBLIC_YAPE_NUMBER`, `NEXT_PUBLIC_YAPE_NAME`. Después de cambiarlas: Deployments → ⋯ → Redeploy.
+4. Variables de entorno en Vercel (Settings → Environment Variables, tipo Config): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (publishable key), `NEXT_PUBLIC_WHATSAPP_NUMBER` (51 + número), `NEXT_PUBLIC_YAPE_NUMBER`, `NEXT_PUBLIC_YAPE_NAME`. Para la verificación de celular (ver más abajo): `NEXT_PUBLIC_VERIFY_WHATSAPP_NUMBER` (51 + número del chip de verificación) y tres **secretas, marcadas Sensitive y SIN `NEXT_PUBLIC`**: `WHATSAPP_VERIFY_TOKEN`, `WHATSAPP_APP_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`. Después de cambiarlas: Deployments → ⋯ → Redeploy.
 
 ## Reglas del código
 
@@ -39,13 +39,21 @@ App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, r
 - Tarjetas con % vendido honesto y conteo de personas; ganador visible en la tarjeta y en el detalle.
 - Diseño: boleto dorado animado en el inicio y en el login, ícono propio (`app/icon.svg`, `app/apple-icon.png`), animaciones cortas, esqueletos de carga, casos extremos probados con break-ui.
 
+## Verificación de celular por WhatsApp (código listo; falta conectar Meta)
+
+- **Cómo funciona (verificación inversa, gratis):** al comprar, la persona toca "Verificar celular" → se le da un código `GT-XXXXXX` (vale 15 min) y se abre WhatsApp hacia el chip de verificación con el mensaje escrito → al enviarlo, Meta avisa a `app/api/whatsapp/route.ts` → la función SQL `confirm_phone_verification` compara el celular que envió con el de la cuenta y el código, y marca `profiles.verified_at`. La ventana (`components/VerifyPhoneModal.tsx`) revisa cada 3 s y sigue sola con la compra. La app **no responde nada por WhatsApp**: solo recibe mensajes (gratis); enviar respuestas sí se cobra desde el 1-oct-2026.
+- **Chip de verificación:** 913880121 (aparte del número que recibe las capturas de pago, que es `NEXT_PUBLIC_WHATSAPP_NUMBER`). Debe registrarse en la API de Meta, por lo que pierde el WhatsApp normal; no afecta Yape.
+- **Interruptor:** viene **apagado** (`site_settings.require_phone_verification = false`) para que nadie se quede sin comprar mientras Meta no esté conectado. Encender: `update public.site_settings set require_phone_verification = true where id = 1;` (apagar con `false`). El admin no necesita verificarse. Al encenderlo, los usuarios ya registrados deberán verificarse la próxima vez que compren.
+- **Webhook en Meta:** URL `https://goldenticketperu.vercel.app/api/whatsapp`, token = `WHATSAPP_VERIFY_TOKEN`, suscribir el campo `messages`. La ruta está abierta en `middleware.ts` (`OPEN_ROUTES`) y valida la firma `X-Hub-Signature-256` con `WHATSAPP_APP_SECRET`.
+- **Pendiente de conectar (lo hace el usuario en Meta):** cuenta de desarrollador, app con producto WhatsApp, registrar el chip, webhook y variables en Vercel. Luego probar con un celular y recién encender el interruptor.
+
 ## Migraciones SQL (`supabase/migrations/`)
 
-002 grupo WhatsApp · 003 límite de 5 en espera · 004 conteo de compradores · 005 redes sociales · 006 límites de texto · 007 ganador + reset de contraseña + términos. El usuario las corre a mano; si algo falla por "función no existe", confirmar que corrió la migración correspondiente.
+002 grupo WhatsApp · 003 límite de 5 en espera · 004 conteo de compradores · 005 redes sociales · 006 límites de texto · 007 ganador + reset de contraseña + términos · 008 verificación de celular (columna `verified_at`, interruptor, códigos, `reserve_tickets` con la revisión). El usuario las corre a mano; si algo falla por "función no existe", confirmar que corrió la migración correspondiente.
 
 ## Pendientes / ideas
 
-- Verificación de celular gratis por WhatsApp (verificación inversa con la API de Meta; necesita un chip aparte).
+- Terminar de conectar la verificación de celular con Meta (ver sección arriba) y encender el interruptor. Idea: botón en el admin para encender/apagar la regla sin SQL, e insignia ✅ de verificado en la lista de compradores.
 - Historial de sorteos pasados con ganadores en el inicio.
 - Sorteo al azar dentro de la app para el en vivo.
 - Antes de cobrar: consultar con abogado/ONAGI el permiso para rifas y revisar los términos.

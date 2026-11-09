@@ -16,12 +16,18 @@ export default async function RafflePage({ params }: { params: Promise<{ id: str
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: raffle }, { data: profile }, { data: groupUrl }] = await Promise.all([
-    supabase.from("raffles").select("*").eq("id", id).maybeSingle(),
-    supabase.from("profiles").select("phone").eq("id", user!.id).single(),
-    supabase.rpc("my_group_link", { p_raffle_id: id }),
-  ]);
+  const [{ data: raffle }, { data: profile }, { data: groupUrl }, { data: verif }, { data: settings }] =
+    await Promise.all([
+      supabase.from("raffles").select("*").eq("id", id).maybeSingle(),
+      supabase.from("profiles").select("phone").eq("id", user!.id).single(),
+      supabase.rpc("my_group_link", { p_raffle_id: id }),
+      // Consultas aparte: si la migración 008 aún no se corrió, solo devuelven null y no rompen la compra.
+      supabase.from("profiles").select("role, verified_at").eq("id", user!.id).maybeSingle(),
+      supabase.from("site_settings").select("require_phone_verification").eq("id", 1).maybeSingle(),
+    ]);
   if (!raffle) notFound();
+  const needsVerify =
+    settings?.require_phone_verification === true && verif?.role !== "admin" && !verif?.verified_at;
   const r = raffle as Raffle;
   const specs = (r.specs ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
 
@@ -74,7 +80,7 @@ export default async function RafflePage({ params }: { params: Promise<{ id: str
 
       {typeof groupUrl === "string" && groupUrl && <GroupLinkBanner url={groupUrl} />}
 
-      <RaffleBoard raffle={r} phone={profile?.phone ?? ""} />
+      <RaffleBoard raffle={r} phone={profile?.phone ?? ""} needsVerify={needsVerify} />
     </div>
   );
 }
