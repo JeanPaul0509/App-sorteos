@@ -54,6 +54,7 @@ App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, r
 
 ## Pendientes / ideas
 
+- **Antes de encender la verificación:** WhatsApp está lanzando nombres de usuario; si alguien lo activa, Meta puede mandar al webhook un identificador (BSUID) en vez de su celular (`from`/`wa_id`) y `route.ts` lo descarta (no verifica). Falta una salida: mensaje en `VerifyPhoneModal` para esos casos + botón/función SQL de admin para verificar un celular a mano (`admin_verify_phone`).
 - Terminar de conectar la verificación de celular con Meta (ver sección arriba) y encender el interruptor. Idea: botón en el admin para encender/apagar la regla sin SQL, e insignia ✅ de verificado en la lista de compradores.
 - Historial de sorteos pasados con ganadores en el inicio.
 - Sorteo al azar dentro de la app para el en vivo.
