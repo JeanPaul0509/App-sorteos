@@ -5,7 +5,7 @@
  * líneas que empiezan con "- " son viñetas.
  */
 export const DEFAULT_TERMS = `## 1. Quiénes somos
-Tora vende pollo aderezado listo para cocinar y productos de belleza, y organiza sorteos de premios. Al registrarte, pedir o participar aceptas estas reglas.
+Gekko vende pollo aderezado listo para cocinar y productos de belleza, y organiza sorteos de premios. Al registrarte, pedir o participar aceptas estas reglas.
 
 ## 2. Pedidos y entregas
 - Puedes agendar tu pedido durante la semana. Las entregas se hacen los domingos.

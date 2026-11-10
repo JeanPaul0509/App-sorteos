@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tora | Pollo aderezado, belleza y sorteos",
+  title: "Gekko | Pollo aderezado, belleza y sorteos",
   description: "Pollo aderezado listo para cocinar, productos de belleza y sorteos. Pide por la app, paga con Yape y recibe todos los domingos.",
 };
 

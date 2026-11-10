@@ -1,5 +1,5 @@
 -- =====================================================================
---  TORA: TIENDA (productos, pedidos y stock)
+--  GEKKO: TIENDA (productos, pedidos y stock)
 --  Cómo usarlo: Supabase > SQL Editor > New query > pega TODO esto > Run
 --  Es seguro correrlo más de una vez.
 -- =====================================================================

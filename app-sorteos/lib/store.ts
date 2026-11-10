@@ -28,7 +28,7 @@ function waNumber() {
   return (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
 }
 
-/** Mensaje del cliente a Tora con su pedido (luego adjunta la captura de Yape). */
+/** Mensaje del cliente a Gekko con su pedido (luego adjunta la captura de Yape). */
 export function buildOrderWhatsAppUrl(opts: {
   orderNo: number;
   name: string;
@@ -39,7 +39,7 @@ export function buildOrderWhatsAppUrl(opts: {
   total: number;
 }) {
   const text = [
-    `¡Hola! 👋 Hice el pedido *N.º ${opts.orderNo}* en Tora:`,
+    `¡Hola! 👋 Hice el pedido *N.º ${opts.orderNo}* en Gekko:`,
     "",
     ...itemLines(opts.items),
     "",
@@ -55,7 +55,7 @@ export function buildOrderWhatsAppUrl(opts: {
   return `https://api.whatsapp.com/send?phone=${waNumber()}&text=${encodeURIComponent(text)}`;
 }
 
-/** Mensaje de Tora al cliente cuando cambia el estado de su pedido. */
+/** Mensaje de Gekko al cliente cuando cambia el estado de su pedido. */
 export function orderStatusWhatsAppUrl(opts: {
   phone: string;
   name: string;

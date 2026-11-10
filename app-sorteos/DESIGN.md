@@ -1,7 +1,7 @@
 ---
 version: 1.0
-name: Tora
-description: Sistema de diseño de Tora, tienda de pollo aderezado y belleza con un apartado de sorteos, todo con pago por Yape. Noche esmeralda como fondo, oro como protagonista y boletos de papel marfil. Debe transmitir lujo sobrio y, sobre todo, confianza para pagar. Tipografía Archivo con ancho expandido en títulos, cifras tabulares, bolitas de colores para el estado de cada número y movimiento firme y corto.
+name: Gekko
+description: Sistema de diseño de Gekko, tienda de pollo aderezado y belleza con un apartado de sorteos, todo con pago por Yape. Noche esmeralda como fondo, oro como protagonista y boletos de papel marfil. Debe transmitir lujo sobrio y, sobre todo, confianza para pagar. Tipografía Archivo con ancho expandido en títulos, cifras tabulares, bolitas de colores para el estado de cada número y movimiento firme y corto.
 
 colors:
   # Marca
@@ -110,7 +110,7 @@ components:
   pager: "‹ N › con N en píldora esmeralda y texto dorado; de 100 en 100"
   bottom-sheet: "Barra fija abajo, blanca 95% con desenfoque, sube con ease-drawer"
   modal: "Centrado, marfil, cierra con Esc y tocando fuera"
-  brand-mark: "Boleto dorado pequeño con muescas + 'To' en blanco + 'ra' en oro"
+  brand-mark: "Boleto dorado pequeño con muescas + 'Gek' en blanco + 'ko' en oro"
   winner-banner: "Bloque esmeralda con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
   verify-modal: "Modal marfil estándar para verificar el celular: 3 pasos cortos, botón verde WhatsApp (único uso del verde de acción), código en cifras tabulares y mensaje 'Esperando tu mensaje…'; al terminar muestra ✅ y sigue con la compra. Aviso previo en el tablero: franja 'paper' con borde 'line' (nunca amarillo, que es de 'reservado')"
   product-card: "Tarjeta marfil con foto 4:3, nombre, descripción (3 líneas máx.), precio en 24px y, abajo a la derecha, botón 'Agregar' que se vuelve selector − 2 +. Agotado: foto en gris con etiqueta 'Agotado' y 'Sin stock' en vez del botón. Con 5 o menos unidades: '¡Quedan N unidades!' en oro oscuro"
@@ -121,13 +121,13 @@ components:
   terms-page: "/terminos, pública; texto editable por el admin (## títulos, - viñetas) dentro de una tarjeta marfil"
 ---
 
-# Tora: sistema de diseño
+# Gekko: sistema de diseño
 
 > Lee este archivo antes de cambiar cualquier pantalla. Si un cambio no encaja aquí, primero se actualiza este archivo y después el código.
 
 ## Overview
 
-Tora vende **pollo aderezado listo para cocinar** y **productos de belleza**, entrega los domingos y cobra por Yape; además tiene un apartado de **sorteos** donde se venden números. La gente paga **antes** de recibir, así que el diseño tiene una sola misión: **que se vea confiable sin dejar de ser apetitoso**.
+Gekko vende **pollo aderezado listo para cocinar** y **productos de belleza**, entrega los domingos y cobra por Yape; además tiene un apartado de **sorteos** donde se venden números. La gente paga **antes** de recibir, así que el diseño tiene una sola misión: **que se vea confiable sin dejar de ser apetitoso**.
 
 La base visual no cambia: **noche esmeralda con oro y papel marfil**.
 
@@ -274,7 +274,7 @@ Basado en los principios de Emil Kowalski:
 ### Don't
 - No poner el degradado dorado en otro botón que no sea "Ir a pagar".
 - No cambiar el significado de verde, amarillo y gris.
-- No copiar el estilo de otra marca (Stripe, Apple, casinos conocidos). Tora tiene su propia identidad.
+- No copiar el estilo de otra marca (Stripe, Apple, casinos conocidos). Gekko tiene su propia identidad.
 - No agregar animaciones al hacer scroll, parpadeos ni carruseles automáticos.
 - No usar blanco puro, morado ni azul eléctrico.
 

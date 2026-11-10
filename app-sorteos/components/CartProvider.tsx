@@ -15,7 +15,7 @@ interface CartCtx {
 }
 
 const Ctx = createContext<CartCtx | null>(null);
-const KEY = "tora_carrito";
+const KEY = "gekko_carrito";
 
 /** El carrito vive en el celular de cada persona (localStorage); el servidor solo ve el pedido final. */
 export function CartProvider({ children }: { children: React.ReactNode }) {

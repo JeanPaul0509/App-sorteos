@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { DEFAULT_TERMS } from "@/lib/terms";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Términos y condiciones | Tora" };
+export const metadata = { title: "Términos y condiciones | Gekko" };
 
 export default async function TerminosPage() {
   const supabase = await createClient();

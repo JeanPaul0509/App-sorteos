@@ -2,7 +2,7 @@ import Link from "next/link";
 import Brand from "@/components/Brand";
 import TermsText from "@/components/TermsText";
 
-export const metadata = { title: "Política de privacidad | Tora" };
+export const metadata = { title: "Política de privacidad | Gekko" };
 
 // Borrador general en lenguaje simple. Debe revisarlo un abogado antes de cobrar (ver CLAUDE.md).
 const PRIVACY = `## 1. Qué datos guardamos

@@ -99,7 +99,7 @@ export default function VerifyPhoneModal({
 
   const url = code
     ? `https://api.whatsapp.com/send?phone=${VERIFY_NUMBER}&text=${encodeURIComponent(
-        `Hola 👋 Quiero verificar mi celular en Tora.\nCódigo: ${code}`
+        `Hola 👋 Quiero verificar mi celular en Gekko.\nCódigo: ${code}`
       )}`
     : null;
 

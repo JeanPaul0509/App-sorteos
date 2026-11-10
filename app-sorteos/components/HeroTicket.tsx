@@ -7,7 +7,7 @@ export default function HeroTicket() {
           <span>Admite 1 ganador</span>
           <span>N.º 000777</span>
         </div>
-        <p className="brand mt-3 text-[1.9rem]">Tora</p>
+        <p className="brand mt-3 text-[1.9rem]">Gekko</p>
         <div className="my-3 border-t-2 border-dashed border-current opacity-30" />
         <div className="flex items-center justify-between text-xs font-semibold">
           <span>Sorteo en vivo</span>

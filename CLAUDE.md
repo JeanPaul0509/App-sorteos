@@ -1,6 +1,6 @@
-# Tora (antes GoldenTicket) — contexto del proyecto
+# Gekko (antes GoldenTicket) — contexto del proyecto
 
-App web de **Tora**: tienda de **pollo aderezado** (piezas y promos, se entrega los domingos) y **belleza**, más un apartado de **sorteos/rifas**. Los usuarios se registran con celular y contraseña, hacen pedidos o reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano. Nombre anterior: GoldenTicket (el dominio y el repo aún conservan el nombre viejo).
+App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega los domingos) y **belleza**, más un apartado de **sorteos/rifas**. Los usuarios se registran con celular y contraseña, hacen pedidos o reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano. Nombre anterior: GoldenTicket (el repo de GitHub aún conserva el nombre viejo).
 
 - **Producción:** https://gekkoperu.vercel.app (antes goldenticketperu.vercel.app, que redirige al nuevo).
 - **Repo:** github.com/JeanPaul0509/App-sorteos (rama `main`). El código está en `app-sorteos/`.
@@ -64,8 +64,8 @@ App web de **Tora**: tienda de **pollo aderezado** (piezas y promos, se entrega 
 
 ## Pendientes / ideas
 
-- **Decisión del usuario:** el negocio pasa a llamarse **Tora**. Pausar el registro del chip 913880121 en Meta (el WABA se iba a llamar "GoldenTicket" y los sorteos cuentan como "juego con dinero" para WhatsApp). Plan: verificación manual desde el admin (`admin_verify_phone`) como respaldo.
-- Cambiar el ícono (`app/icon.svg`, `app/apple-icon.png`) y el dominio de Vercel a uno de Tora; terminos guardados en la base pueden seguir diciendo GoldenTicket (Admin → Ajustes → Términos).
+- **Decisión del usuario:** el negocio pasa a llamarse **Gekko**. Pausar el registro del chip 913880121 en Meta (el WABA se iba a llamar "GoldenTicket" y los sorteos cuentan como "juego con dinero" para WhatsApp). Plan: verificación manual desde el admin (`admin_verify_phone`) como respaldo.
+- Cambiar el ícono (`app/icon.svg`, `app/apple-icon.png`) al de Gekko; los términos guardados en la base pueden seguir diciendo GoldenTicket (Admin → Ajustes → Términos).
 - Aspectos legales de la tienda a consultar: libro de reclamaciones (Indecopi) y permisos sanitarios/municipales para vender alimentos.
 
 - **Antes de encender la verificación:** WhatsApp está lanzando nombres de usuario; si alguien lo activa, Meta puede mandar al webhook un identificador (BSUID) en vez de su celular (`from`/`wa_id`) y `route.ts` lo descarta (no verifica). Falta una salida: mensaje en `VerifyPhoneModal` para esos casos + botón/función SQL de admin para verificar un celular a mano (`admin_verify_phone`).

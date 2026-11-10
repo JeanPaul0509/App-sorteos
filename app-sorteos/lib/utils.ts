@@ -178,7 +178,7 @@ export function paidWhatsAppUrl(opts: {
     `🎁 Sorteo: *${opts.raffleTitle}*`,
     `🎟️ ${nums.length === 1 ? "Tu número" : "Tus números"}: *${nums.join(", ")}*`,
     "",
-    "Puedes verlos en Tora → Sorteos → Mis números. ¡Mucha suerte! 🍀",
+    "Puedes verlos en Gekko → Sorteos → Mis números. ¡Mucha suerte! 🍀",
   ].join("\n");
   return `https://api.whatsapp.com/send?phone=${to}&text=${encodeURIComponent(text)}`;
 }

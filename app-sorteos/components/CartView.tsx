@@ -66,8 +66,8 @@ export default function CartView({ phone }: { phone: string }) {
     if (!ready) return;
     refresh();
     try {
-      setName(localStorage.getItem("tora_nombre") ?? "");
-      setAddress(localStorage.getItem("tora_direccion") ?? "");
+      setName(localStorage.getItem("gekko_nombre") ?? "");
+      setAddress(localStorage.getItem("gekko_direccion") ?? "");
     } catch {}
   }, [ready, refresh]);
 
@@ -98,8 +98,8 @@ export default function CartView({ phone }: { phone: string }) {
     }
     const order = data as { order_no: number; total: number; items: { name: string; price: number; qty: number }[] };
     try {
-      localStorage.setItem("tora_nombre", name.trim());
-      localStorage.setItem("tora_direccion", address.trim());
+      localStorage.setItem("gekko_nombre", name.trim());
+      localStorage.setItem("gekko_direccion", address.trim());
     } catch {}
 
     const url = buildOrderWhatsAppUrl({

@@ -234,7 +234,7 @@ grant execute on function public.admin_list_tickets(uuid) to authenticated;
 grant execute on function public.admin_set_ticket_status(bigint[], text, text) to authenticated;
 
 -- ---------------------------------------------------------------------
--- 5. STORAGE: fotos de los premios
+-- 5. SGEKKOGE: fotos de los premios
 -- ---------------------------------------------------------------------
 insert into storage.buckets (id, name, public)
 values ('raffle-images', 'raffle-images', true)
@@ -579,7 +579,7 @@ grant execute on function public.reserve_tickets(uuid, int[], text) to authentic
 -- =====================================================================
 
 -- =====================================================================
---  TORA: TIENDA (productos, pedidos y stock)
+--  GEKKO: TIENDA (productos, pedidos y stock)
 --  Cómo usarlo: Supabase > SQL Editor > New query > pega TODO esto > Run
 --  Es seguro correrlo más de una vez.
 -- =====================================================================
