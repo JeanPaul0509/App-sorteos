@@ -32,9 +32,14 @@ export default function AuthShell({
           <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus números en todo momento.</li>
         </ul>
         <SocialLinks className="mt-8 justify-center" />
-        <Link href="/terminos" className="mt-6 text-center text-xs text-white/50 underline underline-offset-4 hover:text-white">
-          Términos y condiciones
-        </Link>
+        <p className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-1 text-center text-xs text-white/50">
+          <Link href="/terminos" className="underline underline-offset-4 hover:text-white">
+            Términos y condiciones
+          </Link>
+          <Link href="/privacidad" className="underline underline-offset-4 hover:text-white">
+            Política de privacidad
+          </Link>
+        </p>
       </div>
     </div>
   );
