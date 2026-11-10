@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GoldenTicket | Sorteos",
-  description: "Sorteos con pagos confirmados uno por uno y sorteo en vivo.",
+  title: "Tora | Pollo aderezado, belleza y sorteos",
+  description: "Pollo aderezado listo para cocinar, productos de belleza y sorteos. Pide por la app, paga con Yape y recibe todos los domingos.",
 };
 
 export const viewport: Viewport = {

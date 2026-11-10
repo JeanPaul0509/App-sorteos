@@ -23,13 +23,13 @@ export default function AuthShell({
           {children}
           <div className="ticket-perf" style={{ margin: "1.75rem -0.9rem 0" }} />
           <p className="pt-4 text-center text-xs text-gray-500">
-            Tu celular solo se usa para contactarte si ganas.
+            Tu celular solo se usa para contactarte por tu pedido o si ganas un sorteo.
           </p>
         </div>
         <ul className="anim-rise mt-8 space-y-2 text-sm text-white/70" style={{ ["--delay" as string]: "450ms" }}>
-          <li className="flex gap-2"><span className="text-gold">✓</span>Cada pago lo confirmamos uno por uno.</li>
-          <li className="flex gap-2"><span className="text-gold">✓</span>El sorteo se hace en vivo, con la lista de compradores.</li>
-          <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus números en todo momento.</li>
+          <li className="flex gap-2"><span className="text-gold">✓</span>Pides en la app y pagas con Yape.</li>
+          <li className="flex gap-2"><span className="text-gold">✓</span>Entregamos todos los domingos.</li>
+          <li className="flex gap-2"><span className="text-gold">✓</span>Ves el estado de tus pedidos y sorteos en todo momento.</li>
         </ul>
         <SocialLinks className="mt-8 justify-center" />
         <p className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-1 text-center text-xs text-white/50">

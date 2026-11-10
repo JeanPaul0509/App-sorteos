@@ -27,7 +27,7 @@ export default function LoginPage() {
       return setError(
         error.message === "Invalid login credentials" ? "Celular o contraseña incorrectos." : error.message
       );
-    router.replace("/sorteos");
+    router.replace("/tienda");
     router.refresh();
   }
 

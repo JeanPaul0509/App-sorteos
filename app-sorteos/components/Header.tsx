@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Brand from "@/components/Brand";
+import { useCart } from "@/components/CartProvider";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boolean }) {
   const router = useRouter();
   const path = usePathname();
+  const { count } = useCart();
 
   async function logout() {
     await createClient().auth.signOut();
@@ -15,8 +17,8 @@ export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boo
     router.refresh();
   }
 
-  const link = (href: string, label: string) => {
-    const active = path.startsWith(href);
+  const link = (href: string, label: string, match: string = href) => {
+    const active = path.startsWith(match);
     return (
       <Link
         href={href}
@@ -35,9 +37,11 @@ export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boo
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
         <Brand light />
         <nav className="flex flex-wrap items-center gap-0.5">
+          {link("/tienda", "Tienda")}
           {link("/sorteos", "Sorteos")}
-          {link("/mis-numeros", "Mis números")}
-          {isAdmin && link("/admin", "Admin")}
+          {link("/mis-pedidos", "Pedidos")}
+          {link("/carrito", count > 0 ? `🛒 ${count}` : "🛒")}
+          {isAdmin && link("/admin/pedidos", "Admin", "/admin")}
           <button
             onClick={logout}
             title={phone ? `Sesión: ${phone}` : undefined}

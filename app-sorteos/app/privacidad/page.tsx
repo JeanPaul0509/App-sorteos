@@ -2,17 +2,17 @@ import Link from "next/link";
 import Brand from "@/components/Brand";
 import TermsText from "@/components/TermsText";
 
-export const metadata = { title: "Política de privacidad | GoldenTicket" };
+export const metadata = { title: "Política de privacidad | Tora" };
 
 // Borrador general en lenguaje simple. Debe revisarlo un abogado antes de cobrar (ver CLAUDE.md).
 const PRIVACY = `## 1. Qué datos guardamos
 - Tu número de celular y tu contraseña. La contraseña se guarda cifrada; nosotros no podemos verla.
-- Tu nombre, cuando reservas números.
-- Los números que reservas o compras y el estado de tu pago.
+- Tu nombre y la dirección o referencia de entrega, cuando haces un pedido o reservas números.
+- Tus pedidos (qué pediste, cuánto y el estado del pago) y los números de sorteo que reservas o compras.
 - Si verificas tu celular por WhatsApp: tu número de WhatsApp y el código que envías en ese mensaje.
 
 ## 2. Para qué los usamos
-- Crear tu cuenta y permitirte participar en los sorteos.
+- Crear tu cuenta, preparar y entregar tus pedidos y permitirte participar en los sorteos.
 - Confirmar tus pagos y avisarte por WhatsApp o llamada.
 - Verificar que el celular con el que te registras es tuyo.
 - Contactarte si ganas un premio y coordinar su entrega.
@@ -45,7 +45,7 @@ export default function PrivacidadPage() {
       <header className="border-b border-gold/25 bg-brand/90">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <Brand light />
-          <Link href="/sorteos" className="text-sm font-semibold text-white/80 hover:text-white">
+          <Link href="/tienda" className="text-sm font-semibold text-white/80 hover:text-white">
             Volver
           </Link>
         </div>

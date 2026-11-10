@@ -1,3 +1,4 @@
+import Link from "next/link";
 import HeroTicket from "@/components/HeroTicket";
 import RaffleCard from "@/components/RaffleCard";
 import { createClient } from "@/lib/supabase/server";
@@ -53,7 +54,12 @@ export default async function SorteosPage() {
         </div>
       </section>
 
-      <h2 className="mb-5 text-2xl font-extrabold text-white">Sorteos activos</h2>
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-2xl font-extrabold text-white">Sorteos activos</h2>
+        <Link href="/mis-numeros" className="btn bg-white/10 py-2 text-sm text-white">
+          Mis números →
+        </Link>
+      </div>
 
       {list.length === 0 ? (
         <div className="card p-10 text-center text-gray-500">

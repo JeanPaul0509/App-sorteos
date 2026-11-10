@@ -1,6 +1,6 @@
-# GoldenTicket — contexto del proyecto
+# Tora (antes GoldenTicket) — contexto del proyecto
 
-App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano.
+App web de **Tora**: tienda de **pollo aderezado** (piezas y promos, se entrega los domingos) y **belleza**, más un apartado de **sorteos/rifas**. Los usuarios se registran con celular y contraseña, hacen pedidos o reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano. Nombre anterior: GoldenTicket (el dominio y el repo aún conservan el nombre viejo).
 
 - **Producción:** https://goldenticketperu.vercel.app (antes app-sorteos-liard.vercel.app, que redirige al nuevo).
 - **Repo:** github.com/JeanPaul0509/App-sorteos (rama `main`). El código está en `app-sorteos/`.
@@ -28,7 +28,17 @@ App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, r
 - El registro solo crea usuarios comunes. Admin: crear usuario en Supabase (Auth → Add user, Auto Confirm) y luego `update public.profiles set role = 'admin' where phone = '9XXXXXXXX';`.
 - Admin actual: celular `994722642`.
 
-## Funciones ya hechas
+## Tienda (migración 009)
+
+- **Productos** (`products`): nombre, descripción, categoría (`pollo` / `promos` / `belleza`), precio, **unidades (stock)**, foto, visible/oculto. Los crea el admin en **Admin → Productos** (foto subida al bucket `raffle-images`, carpeta `productos/`, comprimida en el navegador). Semilla con los 9 productos del flyer (stock 0 hasta que el admin ponga las unidades y fotos).
+- **Pedidos** (`orders` + `order_items`, con nombre y precio guardados al momento): estados `pending` (esperando pago) → `paid` → `delivered`, o `cancelled`. Todo pasa por funciones SQL `security definer`: `create_order` (revisa y descuenta stock, máx. 3 pedidos en espera por persona), `cancel_my_order` y `admin_set_order_status` (cancelar devuelve el stock). Nadie escribe directo en las tablas.
+- **Cliente:** `/tienda` (catálogo con filtros y barra del carrito), `/carrito` (datos de entrega, Yape, "Ir a pagar" abre WhatsApp con el pedido), `/mis-pedidos` (estado, reenviar captura, cancelar). El carrito vive en `localStorage` (`CartProvider`).
+- **Admin:** pestañas Pedidos (por cobrar / por entregar / entregados / cancelados + resumen de lo que hay que preparar), Productos, Sorteos (lo de siempre) y Ajustes (redes, restablecer contraseña, términos).
+- Reglas del negocio: se pide durante la semana y **se entrega los domingos** (`DELIVERY_NOTE` en `lib/store.ts`). Las promos tienen su propio stock (no descuentan de las piezas).
+- Sin tienda sin login: todo requiere cuenta (igual que los sorteos). Idea pendiente: dejar ver el catálogo sin registrarse.
+- `NEXT_PUBLIC_WHATSAPP_NUMBER` ahora es el WhatsApp de pedidos y capturas (flyer: 912389459 → `51912389459`).
+
+## Funciones ya hechas (sorteos)
 
 - Registro/login por celular; sorteos con foto, ícono, especificaciones, precio, cantidad de tickets (1–10,000) y fecha opcional.
 - Tablero de números de 100 en 100 (‹ N ›): verde disponible, amarillo reservado, gris vendido. Máximo 5 por compra **y máximo 5 en espera por persona por sorteo** hasta que el admin confirme.
@@ -50,9 +60,13 @@ App web de sorteos/rifas. Los usuarios se registran con celular y contraseña, r
 
 ## Migraciones SQL (`supabase/migrations/`)
 
-002 grupo WhatsApp · 003 límite de 5 en espera · 004 conteo de compradores · 005 redes sociales · 006 límites de texto · 007 ganador + reset de contraseña + términos · 008 verificación de celular (columna `verified_at`, interruptor, códigos, `reserve_tickets` con la revisión). El usuario las corre a mano; si algo falla por "función no existe", confirmar que corrió la migración correspondiente.
+002 grupo WhatsApp · 003 límite de 5 en espera · 004 conteo de compradores · 005 redes sociales · 006 límites de texto · 007 ganador + reset de contraseña + términos · 008 verificación de celular (columna `verified_at`, interruptor, códigos, `reserve_tickets` con la revisión) · 009 tienda (productos, pedidos, stock). El usuario las corre a mano; si algo falla por "función no existe", confirmar que corrió la migración correspondiente.
 
 ## Pendientes / ideas
+
+- **Decisión del usuario:** el negocio pasa a llamarse **Tora**. Pausar el registro del chip 913880121 en Meta (el WABA se iba a llamar "GoldenTicket" y los sorteos cuentan como "juego con dinero" para WhatsApp). Plan: verificación manual desde el admin (`admin_verify_phone`) como respaldo.
+- Cambiar el ícono (`app/icon.svg`, `app/apple-icon.png`) y el dominio de Vercel a uno de Tora; terminos guardados en la base pueden seguir diciendo GoldenTicket (Admin → Ajustes → Términos).
+- Aspectos legales de la tienda a consultar: libro de reclamaciones (Indecopi) y permisos sanitarios/municipales para vender alimentos.
 
 - **Antes de encender la verificación:** WhatsApp está lanzando nombres de usuario; si alguien lo activa, Meta puede mandar al webhook un identificador (BSUID) en vez de su celular (`from`/`wa_id`) y `route.ts` lo descarta (no verifica). Falta una salida: mensaje en `VerifyPhoneModal` para esos casos + botón/función SQL de admin para verificar un celular a mano (`admin_verify_phone`).
 - Terminar de conectar la verificación de celular con Meta (ver sección arriba) y encender el interruptor. Idea: botón en el admin para encender/apagar la regla sin SQL, e insignia ✅ de verificado en la lista de compradores.

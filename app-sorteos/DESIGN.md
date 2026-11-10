@@ -1,7 +1,7 @@
 ---
 version: 1.0
-name: GoldenTicket
-description: Sistema de diseño de GoldenTicket, app de sorteos con pago por Yape. Noche esmeralda como fondo, oro como protagonista y boletos de papel marfil. Debe transmitir lujo sobrio y, sobre todo, confianza para pagar. Tipografía Archivo con ancho expandido en títulos, cifras tabulares, bolitas de colores para el estado de cada número y movimiento firme y corto.
+name: Tora
+description: Sistema de diseño de Tora, tienda de pollo aderezado y belleza con un apartado de sorteos, todo con pago por Yape. Noche esmeralda como fondo, oro como protagonista y boletos de papel marfil. Debe transmitir lujo sobrio y, sobre todo, confianza para pagar. Tipografía Archivo con ancho expandido en títulos, cifras tabulares, bolitas de colores para el estado de cada número y movimiento firme y corto.
 
 colors:
   # Marca
@@ -110,27 +110,32 @@ components:
   pager: "‹ N › con N en píldora esmeralda y texto dorado; de 100 en 100"
   bottom-sheet: "Barra fija abajo, blanca 95% con desenfoque, sube con ease-drawer"
   modal: "Centrado, marfil, cierra con Esc y tocando fuera"
-  brand-mark: "Boleto dorado pequeño con muescas + 'Golden' + 'Ticket' en oro"
+  brand-mark: "Boleto dorado pequeño con muescas + 'To' en blanco + 'ra' en oro"
   winner-banner: "Bloque esmeralda con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
   verify-modal: "Modal marfil estándar para verificar el celular: 3 pasos cortos, botón verde WhatsApp (único uso del verde de acción), código en cifras tabulares y mensaje 'Esperando tu mensaje…'; al terminar muestra ✅ y sigue con la compra. Aviso previo en el tablero: franja 'paper' con borde 'line' (nunca amarillo, que es de 'reservado')"
+  product-card: "Tarjeta marfil con foto 4:3, nombre, descripción (3 líneas máx.), precio en 24px y, abajo a la derecha, botón 'Agregar' que se vuelve selector − 2 +. Agotado: foto en gris con etiqueta 'Agotado' y 'Sin stock' en vez del botón. Con 5 o menos unidades: '¡Quedan N unidades!' en oro oscuro"
+  qty-stepper: "Píldora 'paper' con − (blanco) y + (esmeralda con texto dorado), 40px de alto en tarjetas y 36px en el carrito; el + se desactiva al llegar al stock"
+  cart-bar: "Barra fija abajo (misma del tablero de sorteos): 'N productos · Total S/' y botón esmeralda 'Ver carrito →'. El único botón dorado del flujo es 'Ir a pagar' dentro del carrito"
+  order-chip: "Píldora de estado del pedido: 🟡 Esperando pago (amarillo, igual que 'reservado'), ✅ Pagado (verde), 📦 Entregado (gris), Cancelado (rojo suave)"
+  admin-tabs: "Fila de botones Pedidos · Productos · Sorteos · Ajustes; el activo va en oro plano (sin degradado), los demás en blanco 10%"
   terms-page: "/terminos, pública; texto editable por el admin (## títulos, - viñetas) dentro de una tarjeta marfil"
 ---
 
-# GoldenTicket: sistema de diseño
+# Tora: sistema de diseño
 
 > Lee este archivo antes de cambiar cualquier pantalla. Si un cambio no encaja aquí, primero se actualiza este archivo y después el código.
 
 ## Overview
 
-GoldenTicket vende números para sorteos y cobra por Yape. La gente paga **antes** de ver el premio, así que el diseño tiene una sola misión: **que se vea confiable sin dejar de ser emocionante**.
+Tora vende **pollo aderezado listo para cocinar** y **productos de belleza**, entrega los domingos y cobra por Yape; además tiene un apartado de **sorteos** donde se venden números. La gente paga **antes** de recibir, así que el diseño tiene una sola misión: **que se vea confiable sin dejar de ser apetitoso**.
 
-La idea visual es **un boleto dorado sobre una mesa de casino de noche**:
+La base visual no cambia: **noche esmeralda con oro y papel marfil**.
 
-- **Noche esmeralda:** el fondo, casi negro con verde profundo, como el paño de una mesa de juego.
-- **Oro:** el color de la suerte. Es el protagonista, pero se usa en dosis pequeñas.
-- **Papel marfil:** cada sorteo es un boleto físico, con muescas y línea perforada.
+- **Noche esmeralda:** el fondo, casi negro con verde profundo (combina con el flyer oscuro de la marca).
+- **Oro:** acento para precios, botones activos y lo que importa. En dosis pequeñas.
+- **Papel marfil:** todo lo que se lee (productos, pedidos, modales). El **boleto con muescas** queda como forma firma del apartado de sorteos y del logo.
 
-Lujo sobrio, no casino de luces. Nada parpadea y nada compite con el premio.
+Las fotos de producto mandan: se muestran siempre reales, nunca ilustraciones. Nada parpadea y nada compite con la foto y el precio.
 
 ## Colors
 
@@ -229,6 +234,16 @@ Modal centrado, entra suave, se cierra con **Esc** o tocando afuera. Las accione
 ### Barra inferior
 Aparece al elegir números y sube desde abajo con curva tipo iPhone.
 
+## Tienda y pedidos
+
+- **Pantalla de inicio (`/tienda`):** bloque esmeralda con el titular y la regla de entrega ("Entregamos todos los domingos"), filtros por categoría (Todo · Pollo aderezado · Promos · Belleza) y grilla de tarjetas (1 columna en celular, 2 en tablet, 3 en computadora). Los filtros no se animan.
+- **Stock:** el número de unidades lo pone el admin. El cliente solo ve "¡Quedan N!" cuando son 5 o menos y "Agotado" en 0. El stock se descuenta al hacer el pedido y se devuelve si se cancela.
+- **Carrito (`/carrito`):** lista con foto, cantidad y subtotal; datos de entrega; recuadro con total y datos de Yape; **"Ir a pagar 📲"** (único dorado). Si algo se agotó, se quita solo y se avisa con una franja amarilla.
+- **Pedido enviado:** tarjeta con ✅, el monto a yapear y botón verde de WhatsApp para enviar la captura.
+- **Mis pedidos:** una tarjeta por pedido con su estado; los pendientes muestran cómo pagar y permiten cancelar (con confirmación en el mismo lugar).
+- **Admin:** Pedidos (por cobrar / por entregar, con lista de lo que hay que preparar para el domingo), Productos (foto, precio, unidades editables en la fila), Sorteos y Ajustes.
+- Los sorteos conservan su diseño completo (boletos, bolitas de estado) sin cambios.
+
 ## Motion
 
 Basado en los principios de Emil Kowalski:
@@ -243,7 +258,7 @@ Basado en los principios de Emil Kowalski:
 ## Copy
 
 - Español de Perú, tuteo, frases cortas.
-- Hablar de **dinero y pasos concretos**: "Paga con Yape", "Confirmamos cada pago a mano". Nada de "revoluciona" ni "experiencia única".
+- Hablar de **dinero y pasos concretos**: "Paga con Yape", "Confirmamos cada pago a mano", "Entregamos todos los domingos". Nada de "revoluciona" ni "experiencia única".
 - Los errores dicen qué pasó y qué hacer: "Alguno de esos números acaba de ser tomado. Elige otros."
 - Nunca inventar testimonios, ganadores ni cifras.
 
@@ -259,7 +274,7 @@ Basado en los principios de Emil Kowalski:
 ### Don't
 - No poner el degradado dorado en otro botón que no sea "Ir a pagar".
 - No cambiar el significado de verde, amarillo y gris.
-- No copiar el estilo de otra marca (Stripe, Apple, casinos conocidos). GoldenTicket tiene su propia identidad.
+- No copiar el estilo de otra marca (Stripe, Apple, casinos conocidos). Tora tiene su propia identidad.
 - No agregar animaciones al hacer scroll, parpadeos ni carruseles automáticos.
 - No usar blanco puro, morado ni azul eléctrico.
 

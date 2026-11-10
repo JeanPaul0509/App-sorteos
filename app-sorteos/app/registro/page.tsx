@@ -43,7 +43,7 @@ export default function RegisterPage() {
         "Cuenta creada, pero falta desactivar 'Confirm email' en Supabase (ver guía)."
       );
     }
-    router.replace("/sorteos");
+    router.replace("/tienda");
     router.refresh();
   }
 

@@ -35,7 +35,7 @@ export default function PasswordReset() {
 
   const waUrl = done
     ? `https://api.whatsapp.com/send?phone=51${done.phone}&text=${encodeURIComponent(
-        `Hola 👋 Te cambiamos la contraseña de GoldenTicket.\n\nCelular: ${done.phone}\nContraseña nueva: *${done.password}*\n\nEntra con estos datos.`
+        `Hola 👋 Te cambiamos la contraseña de Tora.\n\nCelular: ${done.phone}\nContraseña nueva: *${done.password}*\n\nEntra con estos datos.`
       )}`
     : "";
 

@@ -3,9 +3,6 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ConfirmWordModal from "@/components/ConfirmWordModal";
-import PasswordReset from "@/components/PasswordReset";
-import SocialSettings from "@/components/SocialSettings";
-import TermsEditor from "@/components/TermsEditor";
 import { createClient } from "@/lib/supabase/client";
 import type { Raffle, RaffleCount } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
@@ -63,7 +60,7 @@ export default function AdminPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold">Panel de administrador</h1>
+          <h1 className="text-2xl font-extrabold">Sorteos</h1>
           <p className="text-white/60">
             {pendingTotal > 0 ? (
               <>
@@ -131,12 +128,6 @@ export default function AdminPage() {
           })}
         </div>
       )}
-      <div className="mt-10 space-y-6">
-        <SocialSettings />
-        <PasswordReset />
-        <TermsEditor />
-      </div>
-
       {pending && (
         <ConfirmWordModal
           key={pending.raffle.id + pending.action}

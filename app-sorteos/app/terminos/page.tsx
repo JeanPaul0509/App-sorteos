@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { DEFAULT_TERMS } from "@/lib/terms";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Términos y condiciones | GoldenTicket" };
+export const metadata = { title: "Términos y condiciones | Tora" };
 
 export default async function TerminosPage() {
   const supabase = await createClient();
@@ -22,7 +22,7 @@ export default async function TerminosPage() {
       <header className="border-b border-gold/25 bg-brand/90">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <Brand light />
-          <Link href="/sorteos" className="text-sm font-semibold text-white/80 hover:text-white">
+          <Link href="/tienda" className="text-sm font-semibold text-white/80 hover:text-white">
             Volver
           </Link>
         </div>

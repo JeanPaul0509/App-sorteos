@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
   }
   if (user && (isAuthPage || path === "/")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/sorteos";
+    url.pathname = "/tienda";
     return NextResponse.redirect(url);
   }
   return response;

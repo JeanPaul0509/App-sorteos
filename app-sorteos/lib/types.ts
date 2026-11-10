@@ -60,3 +60,44 @@ export interface SiteSettings {
   terms_text?: string | null;
   terms_updated_at?: string | null;
 }
+
+export type ProductCategory = "pollo" | "promos" | "belleza";
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string | null;
+  category: ProductCategory;
+  price: number;
+  stock: number;
+  image_url: string | null;
+  active: boolean;
+  sort: number;
+  created_at: string;
+}
+
+export type OrderStatus = "pending" | "paid" | "delivered" | "cancelled";
+
+export interface OrderItem {
+  id: number;
+  product_id: string | null;
+  name: string;
+  price: number;
+  qty: number;
+}
+
+export interface Order {
+  id: string;
+  order_no: number;
+  user_id: string | null;
+  buyer_name: string;
+  buyer_phone: string;
+  address: string | null;
+  note: string | null;
+  total: number;
+  status: OrderStatus;
+  created_at: string;
+  paid_at: string | null;
+  delivered_at: string | null;
+  order_items: OrderItem[];
+}
