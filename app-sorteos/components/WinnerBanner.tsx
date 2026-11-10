@@ -19,7 +19,7 @@ export default function WinnerBanner({
       <div className="flex flex-wrap items-center gap-5">
         <span
           className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-2xl font-extrabold text-[#3a2a06]"
-          style={{ background: "linear-gradient(135deg, #f8dc85, #e2b43c 55%, #c4902a)" }}
+          style={{ background: "linear-gradient(135deg, #f1dca8, #d6ad5a 55%, #b08a3e)" }}
         >
           {pad(number, totalTickets)}
         </span>

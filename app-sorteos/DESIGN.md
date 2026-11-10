@@ -1,25 +1,25 @@
 ---
 version: 1.0
 name: Gekko
-description: Sistema de diseño de Gekko, tienda de pollo aderezado y belleza con un apartado de sorteos, todo con pago por Yape. Noche esmeralda como fondo, oro como protagonista y boletos de papel marfil. Debe transmitir lujo sobrio y, sobre todo, confianza para pagar. Tipografía Archivo con ancho expandido en títulos, cifras tabulares, bolitas de colores para el estado de cada número y movimiento firme y corto.
+description: Sistema de diseño de Gekko, tienda de pollo aderezado y belleza con un apartado de sorteos, todo con pago por Yape. Noche de carbón cálido como fondo, champán (oro suave) como único acento y tarjetas de papel marfil. Debe transmitir elegancia sobria y, sobre todo, confianza para pagar. Tipografía Archivo con ancho expandido en títulos, cifras tabulares, bolitas de colores para el estado de cada número y movimiento firme y corto.
 
 colors:
   # Marca
-  gold: "#e2b43c"            # protagonista: logo, acentos, barra de progreso, anillo de selección
-  gold-deep: "#a8801f"       # oro sobre fondos claros cuando se necesita contraste
-  gold-soft: "#f6ecd0"       # fondo de imágenes vacías y rellenos suaves
-  brand: "#0b3326"           # esmeralda: barra superior, bloque de pasos, botón principal, pager
-  brand-deep: "#072219"      # hover del botón principal
-  night: "#061a13"           # fondo de página
+  gold: "#d6ad5a"            # champán: logo, acentos, líneas finas, anillo de selección
+  gold-deep: "#94702a"       # champán sobre fondos claros cuando se necesita contraste
+  gold-soft: "#f4ead6"       # fondo de imágenes vacías y rellenos suaves
+  brand: "#1d1814"           # carbón cálido: barra superior, botón principal, pager
+  brand-deep: "#110e0b"      # hover del botón principal
+  night: "#100d0b"           # fondo de página
   # Superficies
-  ivory: "#fffdf6"           # boletos, tarjetas, modales (papel marfil, nunca blanco puro)
-  paper: "#eef3ee"           # pista de barras de progreso, rellenos dentro de tarjetas
-  line: "#dde6df"            # bordes finos y línea perforada del boleto
+  ivory: "#fffcf7"           # boletos, tarjetas, modales (papel marfil, nunca blanco puro)
+  paper: "#f4f0e9"           # pista de barras de progreso, rellenos dentro de tarjetas
+  line: "#e7e0d4"            # bordes finos y línea perforada del boleto
   # Texto
-  ink: "#0f2a20"             # texto sobre marfil
-  text-on-dark: "#eef4ef"    # texto sobre la noche
+  ink: "#221c17"             # texto sobre marfil
+  text-on-dark: "#f1ece4"    # texto sobre la noche
   text-on-dark-muted: "rgb(255 255 255 / 0.60)"
-  link: "#0b5d43"            # enlaces sobre marfil
+  link: "#6b4d16"            # enlaces y precios sobre marfil (bronce)
   # Estado de los números (no cambiar: es el lenguaje de la app)
   ball-available: "#16a34a"  # verde: disponible
   ball-reserved: "#f5c518"   # amarillo: reservado, esperando pago
@@ -27,7 +27,7 @@ colors:
   ball-sold: "#d6d9e0"       # gris: vendido / pagado
   ball-sold-text: "#6b7280"
   # Acciones especiales
-  pay-gradient: "linear-gradient(180deg, #f0cb66, #e2b43c)"  # SOLO para "Ir a pagar"
+  pay-gradient: "linear-gradient(180deg, #e6c47f, #d6ad5a)"  # SOLO para "Ir a pagar"
   whatsapp: "#15803d"
   danger-bg: "#fee2e2"
   danger-text: "#b91c1c"
@@ -103,19 +103,19 @@ motion:
 
 components:
   ticket: "Tarjeta de sorteo con forma de boleto: marfil, muescas laterales a la altura de la línea perforada, talón fijo abajo con precio, % vendido y personas"
-  ball: "Bolita circular de número: verde / amarillo / gris; elegida = esmeralda con anillo dorado"
-  button-primary: "Esmeralda con texto dorado"
+  ball: "Bolita circular de número: verde / amarillo / gris; elegida = carbón con anillo dorado"
+  button-primary: "Carbón con texto dorado"
   button-pay: "Degradado dorado, texto tinta. Único botón brillante de la app"
   button-light: "Marfil con borde fino"
-  pager: "‹ N › con N en píldora esmeralda y texto dorado; de 100 en 100"
+  pager: "‹ N › con N en píldora carbón y texto dorado; de 100 en 100"
   bottom-sheet: "Barra fija abajo, blanca 95% con desenfoque, sube con ease-drawer"
   modal: "Centrado, marfil, cierra con Esc y tocando fuera"
-  brand-mark: "Boleto dorado pequeño con muescas + 'Gek' en blanco + 'ko' en oro"
-  winner-banner: "Bloque esmeralda con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
+  brand-mark: "Monograma G en champán (trazo redondeado) sobre cuadrado de carbón con borde fino, + 'Gek' en blanco + 'ko' en champán. El mismo monograma es el ícono de la pestaña y del celular"
+  winner-banner: "Bloque carbón con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
   verify-modal: "Modal marfil estándar para verificar el celular: 3 pasos cortos, botón verde WhatsApp (único uso del verde de acción), código en cifras tabulares y mensaje 'Esperando tu mensaje…'; al terminar muestra ✅ y sigue con la compra. Aviso previo en el tablero: franja 'paper' con borde 'line' (nunca amarillo, que es de 'reservado')"
   product-card: "Tarjeta marfil con foto 4:3, nombre, descripción (3 líneas máx.), precio en 24px y, abajo a la derecha, botón 'Agregar' que se vuelve selector − 2 +. Agotado: foto en gris con etiqueta 'Agotado' y 'Sin stock' en vez del botón. Con 5 o menos unidades: '¡Quedan N unidades!' en oro oscuro"
-  qty-stepper: "Píldora 'paper' con − (blanco) y + (esmeralda con texto dorado), 40px de alto en tarjetas y 36px en el carrito; el + se desactiva al llegar al stock"
-  cart-bar: "Barra fija abajo (misma del tablero de sorteos): 'N productos · Total S/' y botón esmeralda 'Ver carrito →'. El único botón dorado del flujo es 'Ir a pagar' dentro del carrito"
+  qty-stepper: "Píldora 'paper' con − (blanco) y + (carbón con texto dorado), 40px de alto en tarjetas y 36px en el carrito; el + se desactiva al llegar al stock"
+  cart-bar: "Barra fija abajo (misma del tablero de sorteos): 'N productos · Total S/' y botón carbón 'Ver carrito →'. El único botón dorado del flujo es 'Ir a pagar' dentro del carrito"
   order-chip: "Píldora de estado del pedido: 🟡 Esperando pago (amarillo, igual que 'reservado'), ✅ Pagado (verde), 📦 Entregado (gris), Cancelado (rojo suave)"
   admin-tabs: "Fila de botones Pedidos · Productos · Sorteos · Ajustes; el activo va en oro plano (sin degradado), los demás en blanco 10%"
   terms-page: "/terminos, pública; texto editable por el admin (## títulos, - viñetas) dentro de una tarjeta marfil"
@@ -129,24 +129,24 @@ components:
 
 Gekko vende **pollo aderezado listo para cocinar** y **productos de belleza**, entrega los domingos y cobra por Yape; además tiene un apartado de **sorteos** donde se venden números. La gente paga **antes** de recibir, así que el diseño tiene una sola misión: **que se vea confiable sin dejar de ser apetitoso**.
 
-La base visual no cambia: **noche esmeralda con oro y papel marfil**.
+La base visual es **carbón cálido, champán y papel marfil**: sobria, oscura como tu flyer y sin colores que compitan con la comida ni con los productos de belleza.
 
-- **Noche esmeralda:** el fondo, casi negro con verde profundo (combina con el flyer oscuro de la marca).
-- **Oro:** acento para precios, botones activos y lo que importa. En dosis pequeñas.
-- **Papel marfil:** todo lo que se lee (productos, pedidos, modales). El **boleto con muescas** queda como forma firma del apartado de sorteos y del logo.
+- **Noche de carbón:** el fondo, casi negro con un tono cálido (combina con el flyer oscuro de la marca).
+- **Champán:** el único acento; líneas finas, botones activos y lo que importa. En dosis pequeñas. Los precios y enlaces sobre marfil usan su versión oscura, el bronce.
+- **Papel marfil:** todo lo que se lee (productos, pedidos, modales). El **boleto con muescas** queda solo como forma firma del apartado de sorteos; el logo es el monograma G.
 
 Las fotos de producto mandan: se muestran siempre reales, nunca ilustraciones. Nada parpadea y nada compite con la foto y el precio.
 
 ## Colors
 
 ### Marca y acento
-- **Oro `#e2b43c`**: logo, número de los pasos, barra de progreso, anillo de la bolita elegida, links sobre fondo oscuro.
-- **Esmeralda `#0b3326`**: barra superior, bloque de pasos del inicio, botón principal, selector de página.
-- **Noche `#061a13`**: fondo de todas las páginas, con dos brillos suaves (oro arriba a la derecha, esmeralda abajo a la izquierda).
+- **Champán `#d6ad5a`**: logo, número de los pasos, barra de progreso, anillo de la bolita elegida, links sobre fondo oscuro.
+- **Carbón `#1d1814`**: barra superior, botón principal, selector de página.
+- **Noche `#100d0b`**: fondo de todas las páginas, con dos brillos suaves (champán arriba a la derecha, cobre abajo a la izquierda).
 
 ### Superficies
-- **Marfil `#fffdf6`**: todo lo que se lee (boletos, tarjetas, modales). Nunca blanco puro: el marfil hace que se sienta papel.
-- **Papel `#eef3ee`**: rellenos dentro de las tarjetas, como la pista de la barra de progreso.
+- **Marfil `#fffcf7`**: todo lo que se lee (boletos, tarjetas, modales). Nunca blanco puro: el marfil hace que se sienta papel.
+- **Papel `#f4f0e9`**: rellenos dentro de las tarjetas, como la pista de la barra de progreso.
 
 ### Estado de los números (intocable)
 | Color | Significa |
@@ -154,7 +154,7 @@ Las fotos de producto mandan: se muestran siempre reales, nunca ilustraciones. N
 | 🟢 Verde `#16a34a` | Disponible |
 | 🟡 Amarillo `#f5c518` | Reservado, esperando pago |
 | ⚪ Gris `#d6d9e0` tachado | Vendido |
-| Esmeralda + anillo dorado | Lo que el usuario está eligiendo |
+| Carbón + anillo dorado | Lo que el usuario está eligiendo |
 
 Estos colores son el idioma de la app. No se usan para nada más.
 
@@ -211,7 +211,7 @@ Estos colores son el idioma de la app. No se usan para nada más.
 ### Botones
 | Tipo | Aspecto | Uso |
 |---|---|---|
-| Principal | Esmeralda, texto dorado | Acciones normales |
+| Principal | Carbón, texto dorado | Acciones normales |
 | **Pagar** | Degradado dorado, texto tinta | Solo "Ir a pagar" |
 | WhatsApp | Verde | Enviar o reenviar por WhatsApp |
 | Claro | Marfil con borde | Cancelar, Volver, Limpiar |
@@ -226,7 +226,7 @@ Foto 4:3, título con ícono (máx. 3 líneas), fecha y línea perforada. En el 
 Verde, amarillo y gris según el estado. Al tocarlas se encogen. El hover solo existe con mouse.
 
 ### Selector de página (`Pager`)
-`‹ N ›`, con N en píldora esmeralda y texto dorado. Sirve para el tablero y la lista de compradores.
+`‹ N ›`, con N en píldora carbón y texto dorado. Sirve para el tablero y la lista de compradores.
 
 ### Ventanas
 Modal centrado, entra suave, se cierra con **Esc** o tocando afuera. Las acciones peligrosas piden escribir **ELIMINAR** o **FINALIZAR** letra por letra.
@@ -236,7 +236,7 @@ Aparece al elegir números y sube desde abajo con curva tipo iPhone.
 
 ## Tienda y pedidos
 
-- **Pantalla de inicio (`/tienda`):** bloque esmeralda con el titular y la regla de entrega ("Entregamos todos los domingos"), filtros por categoría (Todo · Pollo aderezado · Promos · Belleza) y grilla de tarjetas (1 columna en celular, 2 en tablet, 3 en computadora). Los filtros no se animan.
+- **Pantalla de inicio (`/tienda`):** portada con una línea pequeña en mayúsculas (Pollo aderezado · Belleza · Sorteos), titular grande, tres sellos (Entregas los domingos · Pago con Yape · Confirmación por WhatsApp), filtros por categoría en un selector segmentado (sin emojis) y, por categoría, un título con línea fina de champán y la cantidad de productos; luego la grilla de tarjetas (1 columna en celular, 2 en tablet, 3 en computadora). Los filtros no se animan.
 - **Stock:** el número de unidades lo pone el admin. El cliente solo ve "¡Quedan N!" cuando son 5 o menos y "Agotado" en 0. El stock se descuenta al hacer el pedido y se devuelve si se cancela.
 - **Carrito (`/carrito`):** lista con foto, cantidad y subtotal; datos de entrega; recuadro con total y datos de Yape; **"Ir a pagar 📲"** (único dorado). Si algo se agotó, se quita solo y se avisa con una franja amarilla.
 - **Pedido enviado:** tarjeta con ✅, el monto a yapear y botón verde de WhatsApp para enviar la captura.
@@ -265,7 +265,7 @@ Basado en los principios de Emil Kowalski:
 ## Do's and Don'ts
 
 ### Do
-- Usar marfil para todo lo que se lee y la noche esmeralda de fondo.
+- Usar marfil para todo lo que se lee y la noche de carbón de fondo.
 - Usar el oro con moderación, para lo que importa.
 - Mostrar siempre la **foto real del premio**.
 - Confirmar con texto claro cada acción importante.

@@ -22,8 +22,12 @@ export default function Catalog({ products }: { products: Product[] }) {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Categorías">
-        {[{ key: "all" as const, label: "Todo", icon: "✨" }, ...CATEGORIES].map((c) => {
+      <div
+        className="mb-8 inline-flex max-w-full flex-wrap gap-1 rounded-2xl border border-white/10 bg-white/5 p-1"
+        role="tablist"
+        aria-label="Categorías"
+      >
+        {[{ key: "all" as const, label: "Todo" }, ...CATEGORIES].map((c) => {
           const active = filter === c.key;
           return (
             <button
@@ -31,9 +35,9 @@ export default function Catalog({ products }: { products: Product[] }) {
               role="tab"
               aria-selected={active}
               onClick={() => setFilter(c.key)}
-              className={`btn py-2 text-sm ${active ? "bg-gold text-ink" : "bg-white/10 text-white"}`}
+              className={`btn rounded-xl py-2 text-sm ${active ? "bg-gold text-ink" : "text-white/70 hover:text-white"}`}
             >
-              {c.icon} {c.label}
+              {c.label}
             </button>
           );
         })}
@@ -46,9 +50,16 @@ export default function Catalog({ products }: { products: Product[] }) {
           if (list.length === 0 && filter === "all") return null;
           return (
             <section key={c.key} aria-labelledby={`cat-${c.key}`}>
-              <h2 id={`cat-${c.key}`} className="mb-4 text-2xl font-extrabold text-white">
-                {c.icon} {c.label}
-              </h2>
+              <div className="mb-5 flex items-baseline justify-between gap-3 border-b border-gold/25 pb-2">
+                <h2
+                  id={`cat-${c.key}`}
+                  className="text-xl font-extrabold tracking-tight text-white sm:text-2xl"
+                  style={{ fontStretch: "108%" }}
+                >
+                  {c.label}
+                </h2>
+                <span className="shrink-0 text-sm text-white/50">{plural(list.length, "producto", "productos")}</span>
+              </div>
               {list.length === 0 ? (
                 <div className="card p-8 text-center text-gray-500">{c.empty}</div>
               ) : (
@@ -65,7 +76,6 @@ export default function Catalog({ products }: { products: Product[] }) {
         })}
         {products.length === 0 && filter === "all" && (
           <div className="card p-10 text-center text-gray-500">
-            <div className="mb-2 text-5xl">🍗</div>
             Todavía no hay productos. Vuelve pronto.
           </div>
         )}

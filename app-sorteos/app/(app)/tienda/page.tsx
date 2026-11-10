@@ -5,6 +5,8 @@ import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+const SELLOS = ["Entregas los domingos", "Pago con Yape", "Confirmación por WhatsApp"];
+
 export default async function TiendaPage() {
   const supabase = await createClient();
   const { data } = await supabase
@@ -16,16 +18,26 @@ export default async function TiendaPage() {
 
   return (
     <div>
-      <section className="-mx-4 -mt-6 mb-8 border-b border-gold/20 bg-brand/80 px-4 pb-8 pt-8 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:border sm:px-8">
-        <h1
-          className="anim-rise max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl"
-          style={{ fontStretch: "110%" }}
-        >
-          Pollo aderezado, listo para cocinar.
-        </h1>
-        <p className="anim-rise mt-3 max-w-xl text-white/70" style={{ ["--delay" as string]: "80ms" }}>
-          {DELIVERY_NOTE} Pagas con Yape y confirmamos tu pedido por WhatsApp.
+      <section className="-mx-4 -mt-6 mb-10 border-b border-gold/20 px-4 pb-10 pt-10 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:border sm:bg-brand/60 sm:px-10 sm:pt-12">
+        <p className="anim-rise text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+          Pollo aderezado · Belleza · Sorteos
         </p>
+        <h1
+          className="anim-rise mt-3 max-w-2xl text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl"
+          style={{ fontStretch: "112%", ["--delay" as string]: "60ms" }}
+        >
+          Listo para cocinar, directo a tu mesa.
+        </h1>
+        <p className="anim-rise mt-4 max-w-xl text-white/70" style={{ ["--delay" as string]: "120ms" }}>
+          {DELIVERY_NOTE}
+        </p>
+        <ul className="anim-rise mt-6 flex flex-wrap gap-2" style={{ ["--delay" as string]: "180ms" }}>
+          {SELLOS.map((s) => (
+            <li key={s} className="rounded-full border border-gold/30 px-3 py-1 text-xs font-semibold text-gold">
+              {s}
+            </li>
+          ))}
+        </ul>
       </section>
       <Catalog products={(data ?? []) as Product[]} />
     </div>

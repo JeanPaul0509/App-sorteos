@@ -1,39 +1,39 @@
 @import "tailwindcss";
 
 /*
-  GoldenTicket — "Esmeralda y oro": verde esmeralda profundo (mesa de casino), oro como acento
-  y boletos de papel marfil. Verde/amarillo/gris siguen marcando el estado de los números.
+  Gekko — "Carbón y champán": carbón cálido de fondo, champán (oro suave) como único acento
+  y tarjetas de papel marfil. Verde/amarillo/gris siguen marcando el estado de los números.
   La paleta "violet" de Tailwind se redefine aquí para que toda la app
   use los colores de la marca sin tocar cada componente.
 */
 @theme {
   --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #0f2a20;
-  --color-brand: #0b3326;
-  --color-brand-deep: #072219;
-  --color-gold: #e2b43c;
-  --color-gold-deep: #a8801f;
-  --color-gold-soft: #f6ecd0;
+  --color-ink: #221c17;
+  --color-brand: #1d1814;
+  --color-brand-deep: #110e0b;
+  --color-gold: #d6ad5a;
+  --color-gold-deep: #94702a;
+  --color-gold-soft: #f4ead6;
   --color-orange: #e8892b;
-  --color-paper: #eef3ee;
-  --color-line: #dde6df;
+  --color-paper: #f4f0e9;
+  --color-line: #e7e0d4;
 
-  --color-violet-50: #fbf6e6;
-  --color-violet-100: #f6ebc6;
-  --color-violet-200: #ebd58e;
-  --color-violet-300: #ddbf5e;
-  --color-violet-400: #c9a23a;
-  --color-violet-500: #b8901f;
-  --color-violet-600: #0e6b4d;
-  --color-violet-700: #0b5d43;
-  --color-violet-800: #0b3326;
-  --color-violet-900: #072219;
-  --color-fuchsia-500: #e6b325;
-  --color-fuchsia-600: #c99412;
-  --color-amber-400: #e8bd3a;
+  --color-violet-50: #faf5ea;
+  --color-violet-100: #f3e8cf;
+  --color-violet-200: #e6d3a6;
+  --color-violet-300: #d6bb7c;
+  --color-violet-400: #c4a15a;
+  --color-violet-500: #b08a3e;
+  --color-violet-600: #7d5c1e;
+  --color-violet-700: #6b4d16;
+  --color-violet-800: #1d1814;
+  --color-violet-900: #110e0b;
+  --color-fuchsia-500: #d6ad5a;
+  --color-fuchsia-600: #b08a3e;
+  --color-amber-400: #dcb55a;
   --color-ruby: #b3262d;
-  --color-night: #061a13;
+  --color-night: #100d0b;
 
   /* Curvas de movimiento (más firmes que las de CSS por defecto) */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -43,11 +43,11 @@
 
 body {
   background:
-    radial-gradient(60rem 30rem at 85% -10%, rgb(226 180 60 / 0.10), transparent 70%),
-    radial-gradient(50rem 40rem at 0% 100%, rgb(14 107 77 / 0.25), transparent 70%),
+    radial-gradient(60rem 30rem at 85% -10%, rgb(214 173 90 / 0.10), transparent 70%),
+    radial-gradient(50rem 40rem at 0% 100%, rgb(150 90 50 / 0.16), transparent 70%),
     var(--color-night);
   background-attachment: fixed;
-  color: #eef4ef;
+  color: #f1ece4;
   font-feature-settings: "tnum" 1;
 }
 
@@ -65,23 +65,12 @@ body {
   letter-spacing: -0.02em;
   line-height: 1;
 }
-.brand-mark {
-  /* boleto pequeño con muescas laterales */
-  width: 2.1rem;
-  height: 1.45rem;
-  background: var(--color-gold);
-  -webkit-mask: radial-gradient(circle at 0 50%, #0000 0.3rem, #000 0.31rem) left / 51% 100% no-repeat,
-    radial-gradient(circle at 100% 50%, #0000 0.3rem, #000 0.31rem) right / 51% 100% no-repeat;
-  mask: radial-gradient(circle at 0 50%, #0000 0.3rem, #000 0.31rem) left / 51% 100% no-repeat,
-    radial-gradient(circle at 100% 50%, #0000 0.3rem, #000 0.31rem) right / 51% 100% no-repeat;
-  border-radius: 0.3rem;
-}
 
 /* ---------- Boleto (tarjeta de sorteo) ---------- */
 .ticket {
   --notch: 0.85rem;
   position: relative;
-  background: #fffdf6;
+  background: #fffcf7;
   color: var(--color-ink);
   border-radius: 1.1rem;
   -webkit-mask: radial-gradient(circle var(--notch) at 0 var(--cut), #0000 98%, #000) 0 0 / 51% 100% no-repeat,
@@ -136,19 +125,19 @@ button.ball:active { transform: scale(0.92); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primary { background: var(--color-brand); color: var(--color-gold); }
 .btn-primary:hover:not(:disabled) { background: var(--color-brand-deep); }
-.btn-gold { background: linear-gradient(180deg, #f0cb66, var(--color-gold)); color: var(--color-ink); box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12); }
+.btn-gold { background: linear-gradient(180deg, #e6c47f, var(--color-gold)); color: var(--color-ink); box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12); }
 .btn-gold:hover:not(:disabled) { filter: brightness(1.05); }
 .btn-green { background: #15803d; color: white; }
 .btn-gray { background: #4b5563; color: white; }
 .btn-yellow { background: #f5c518; color: #5c4300; }
-.btn-light { background: #fffdf6; color: var(--color-ink); border: 1px solid var(--color-line); }
+.btn-light { background: #fffcf7; color: var(--color-ink); border: 1px solid var(--color-line); }
 .btn-danger { background: #fee2e2; color: #b91c1c; }
 
 .input {
   transition: border-color 150ms ease, box-shadow 150ms ease;
   width: 100%;
   border-radius: 0.8rem;
-  border: 1px solid #cfdcd3;
+  border: 1px solid #d9cfbf;
   background: white;
   color: var(--color-ink);
   padding: 0.75rem 1rem;
@@ -157,7 +146,7 @@ button.ball:active { transform: scale(0.92); }
 .input:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px var(--color-gold-soft); }
 
 .card {
-  background: #fffdf6;
+  background: #fffcf7;
   color: var(--color-ink);
   border-radius: 1rem;
   border: 1px solid var(--color-line);
@@ -170,7 +159,7 @@ button.ball:active { transform: scale(0.92); }
 .anim-toast { animation: gt-toast 200ms var(--ease-out) backwards; }
 .anim-rise { animation: gt-rise 360ms var(--ease-out) backwards; animation-delay: var(--delay, 0ms); }
 
-.skeleton { background: rgb(15 42 32 / 0.08); animation: gt-pulse 1.1s ease-in-out infinite; }
+.skeleton { background: rgb(34 28 23 / 0.08); animation: gt-pulse 1.1s ease-in-out infinite; }
 
 /* ---------- Boleto dorado del inicio (el único momento "show" de la app) ---------- */
 .hero-ticket { perspective: 900px; }
@@ -179,8 +168,8 @@ button.ball:active { transform: scale(0.92); }
   overflow: hidden;
   padding: 1.1rem 1.4rem;
   border-radius: 14px;
-  color: #3a2a06;
-  background: linear-gradient(135deg, #f8dc85 0%, #e8bd48 42%, #c4902a 100%);
+  color: #3a2a0b;
+  background: linear-gradient(135deg, #f1dca8 0%, #d6ad5a 45%, #b08a3e 100%);
   -webkit-mask: radial-gradient(circle at 0 62%, #0000 0.75rem, #000 0.78rem) left / 51% 100% no-repeat,
     radial-gradient(circle at 100% 62%, #0000 0.75rem, #000 0.78rem) right / 51% 100% no-repeat;
   mask: radial-gradient(circle at 0 62%, #0000 0.75rem, #000 0.78rem) left / 51% 100% no-repeat,
@@ -205,7 +194,7 @@ button.ball:active { transform: scale(0.92); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 38%, rgb(226 180 60 / 0.28) 50%, transparent 62%);
+  background: linear-gradient(105deg, transparent 38%, rgb(214 173 90 / 0.28) 50%, transparent 62%);
   transform: translateX(-120%);
   animation: gt-shine 1000ms var(--ease-in-out) 700ms both;
   pointer-events: none;

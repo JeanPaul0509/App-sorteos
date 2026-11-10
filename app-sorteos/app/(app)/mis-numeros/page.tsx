@@ -77,7 +77,7 @@ export default async function MisNumerosPage() {
                 ))}
               </div>
               {iWon && (
-                <div className="mt-4 rounded-xl p-4 text-[#3a2a06]" style={{ background: "linear-gradient(135deg, #f8dc85, #e2b43c 60%, #c4902a)" }}>
+                <div className="mt-4 rounded-xl p-4 text-[#3a2a06]" style={{ background: "linear-gradient(135deg, #f1dca8, #d6ad5a 60%, #b08a3e)" }}>
                   <p className="text-lg font-extrabold">🏆 ¡Ganaste con el número {pad(winNum!, first.total_tickets)}!</p>
                   <p className="text-sm">Te contactaremos a tu celular para coordinar la entrega del premio.</p>
                 </div>

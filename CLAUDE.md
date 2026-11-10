@@ -16,7 +16,7 @@ App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega
 
 ## Reglas del código
 
-- **Antes de tocar cualquier pantalla, leer `app-sorteos/DESIGN.md`** (paleta Esmeralda y oro, boletos marfil, tipografía Archivo, movimiento según Emil Kowalski). Si un cambio no encaja, actualizar primero DESIGN.md.
+- **Antes de tocar cualquier pantalla, leer `app-sorteos/DESIGN.md`** (paleta Carbón y champán, tarjetas marfil, boletos solo en sorteos, tipografía Archivo, movimiento según Emil Kowalski). Si un cambio no encaja, actualizar primero DESIGN.md.
 - Montos, conteos y plurales: `money()`, `num()`, `plural()`, `soldPercent()` de `lib/utils.ts`.
 - Imágenes de premios: `components/SafeImg.tsx`, nunca `<img>` directo.
 - Textos largos: `[overflow-wrap:anywhere]`; probar a 360px de ancho sin scroll horizontal.
@@ -47,7 +47,7 @@ App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega
 - Admin: crear sorteo; finalizar/eliminar con confirmación escribiendo FINALIZAR/ELIMINAR; pagos por confirmar agrupados por persona + botón "Avisarle por WhatsApp"; tablero con cambio de estado; buscador del número ganador con llamar/WhatsApp; **publicar ganador** (solo números pagados, nombre abreviado "Juan P.", link de video); lista de compradores paginada + exportar a Excel (CSV protegido contra fórmulas); enlace de grupo de WhatsApp por sorteo; redes sociales (WhatsApp, Instagram, TikTok); **restablecer contraseña** de un usuario; **editor de Términos y condiciones**.
 - Página pública `/privacidad` (texto fijo en `app/privacidad/page.tsx`; la pide Meta para publicar la app; borrador que debe revisar un abogado antes de cobrar). Página pública `/terminos` (plantilla en `lib/terms.ts`, editable desde el admin). Reglas acordadas: el sorteo se hace cuando se venden todos los números; se contacta al ganador durante 7 días, si no responde se vuelve a sortear sin ese número; la entrega se coordina por WhatsApp.
 - Tarjetas con % vendido honesto y conteo de personas; ganador visible en la tarjeta y en el detalle.
-- Diseño: boleto dorado animado en el inicio y en el login, ícono propio (`app/icon.svg`, `app/apple-icon.png`), animaciones cortas, esqueletos de carga, casos extremos probados con break-ui.
+- Diseño: boleto dorado animado en el inicio y en el login, ícono propio: monograma G (`app/icon.svg`, `app/apple-icon.png`), animaciones cortas, esqueletos de carga, casos extremos probados con break-ui.
 
 ## Verificación de celular por WhatsApp (código listo; falta conectar Meta)
 
@@ -65,7 +65,7 @@ App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega
 ## Pendientes / ideas
 
 - **Decisión del usuario:** el negocio pasa a llamarse **Gekko**. Pausar el registro del chip 913880121 en Meta (el WABA se iba a llamar "GoldenTicket" y los sorteos cuentan como "juego con dinero" para WhatsApp). Plan: verificación manual desde el admin (`admin_verify_phone`) como respaldo.
-- Cambiar el ícono (`app/icon.svg`, `app/apple-icon.png`) al de Gekko; los términos guardados en la base pueden seguir diciendo GoldenTicket (Admin → Ajustes → Términos).
+- Los términos guardados en la base pueden seguir diciendo GoldenTicket (Admin → Ajustes → Términos).
 - Aspectos legales de la tienda a consultar: libro de reclamaciones (Indecopi) y permisos sanitarios/municipales para vender alimentos.
 
 - **Antes de encender la verificación:** WhatsApp está lanzando nombres de usuario; si alguien lo activa, Meta puede mandar al webhook un identificador (BSUID) en vez de su celular (`from`/`wa_id`) y `route.ts` lo descarta (no verifica). Falta una salida: mensaje en `VerifyPhoneModal` para esos casos + botón/función SQL de admin para verificar un celular a mano (`admin_verify_phone`).

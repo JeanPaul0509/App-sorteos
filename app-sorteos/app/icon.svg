@@ -1,19 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f8dc85"/>
-      <stop offset="0.45" stop-color="#e8bd48"/>
-      <stop offset="1" stop-color="#c4902a"/>
-    </linearGradient>
-    <mask id="notch">
-      <rect width="64" height="64" fill="#fff"/>
-      <circle cx="8" cy="32" r="6" fill="#000"/>
-      <circle cx="56" cy="32" r="6" fill="#000"/>
-    </mask>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="#0b3326"/>
-  <g transform="rotate(-8 32 32)">
-    <rect x="8" y="18" width="48" height="28" rx="5" fill="url(#g)" mask="url(#notch)"/>
-    <line x1="20" y1="32" x2="44" y2="32" stroke="#3a2a06" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="3 3"/>
-  </g>
+  <rect width="64" height="64" rx="15" fill="#1d1814"/>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#d6ad5a" stroke-opacity="0.45" stroke-width="2"/>
+  <path d="M41.7 22.3 A13.75 13.75 0 1 0 45.75 32 H34" fill="none" stroke="#d6ad5a" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

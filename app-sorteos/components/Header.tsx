@@ -40,7 +40,7 @@ export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boo
           {link("/tienda", "Tienda")}
           {link("/sorteos", "Sorteos")}
           {link("/mis-pedidos", "Pedidos")}
-          {link("/carrito", count > 0 ? `🛒 ${count}` : "🛒")}
+          {link("/carrito", count > 0 ? `Carrito (${count})` : "Carrito")}
           {isAdmin && link("/admin/pedidos", "Admin", "/admin")}
           <button
             onClick={logout}
