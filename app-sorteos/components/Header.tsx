@@ -23,8 +23,8 @@ export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boo
       <Link
         href={href}
         aria-current={active ? "page" : undefined}
-        className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
-          active ? "bg-white/10 text-gold" : "text-white/80 hover:text-white"
+        className={`rounded-lg px-2.5 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] transition ${
+          active ? "text-gold" : "text-white/65 hover:text-white"
         }`}
       >
         {label}
@@ -45,7 +45,7 @@ export default function Header({ phone, isAdmin }: { phone: string; isAdmin: boo
           <button
             onClick={logout}
             title={phone ? `Sesión: ${phone}` : undefined}
-            className="rounded-lg px-3 py-2 text-sm text-white/60 hover:text-white"
+            className="rounded-lg px-2.5 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-white/45 hover:text-white"
           >
             Salir
           </button>

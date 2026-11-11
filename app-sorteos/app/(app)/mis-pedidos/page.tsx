@@ -44,7 +44,7 @@ export default function MisPedidosPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="mb-6 text-2xl font-extrabold">Mis pedidos</h1>
+      <h1 className="mb-6 font-display text-4xl font-semibold tracking-tight">Mis pedidos</h1>
 
       {error && <p className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
 

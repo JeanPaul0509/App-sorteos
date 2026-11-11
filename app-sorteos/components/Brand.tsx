@@ -26,8 +26,12 @@ export default function Brand({ light = false, size = "md" }: { light?: boolean;
       className="flex items-center gap-2.5 rounded-lg"
     >
       <Monogram className={size === "lg" ? "h-12 w-12" : "h-8 w-8"} />
-      <span className={`brand ${size === "lg" ? "text-3xl" : "text-xl"} ${light ? "text-white" : "text-ink"}`}>
-        Gek<span className="text-gold">ko</span>
+      <span
+        className={`font-display font-bold uppercase leading-none tracking-[0.22em] ${
+          size === "lg" ? "text-4xl" : "text-[1.35rem]"
+        } ${light ? "text-white" : "text-ink"}`}
+      >
+        Gekko
       </span>
     </Link>
   );

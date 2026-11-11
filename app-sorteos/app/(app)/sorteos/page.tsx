@@ -55,7 +55,7 @@ export default async function SorteosPage() {
       </section>
 
       <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-2xl font-extrabold text-white">Sorteos activos</h2>
+        <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">Sorteos activos</h2>
         <Link href="/mis-numeros" className="btn bg-white/10 py-2 text-sm text-white">
           Mis números →
         </Link>

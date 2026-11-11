@@ -35,6 +35,17 @@ colors:
 
 typography:
   family: "Archivo (Google Fonts, eje de ancho 100–125)"
+  display:
+    family: "Cormorant Garamond (Google Fonts, 500–700), clase font-display"
+    use: "Solo títulos grandes: portada, títulos de sección, títulos de página y el logo en mayúsculas espaciadas (tracking 0.22em). Nunca en texto pequeño, precios, botones ni formularios"
+    hero: "42px en celular, 60px en pantalla grande, peso 600, interlineado 1.04"
+    section: "30px en celular, 36px en pantalla grande, peso 600"
+  eyebrow:
+    fontSize: 11.5px          # clase eyebrow
+    fontWeight: 600
+    letterSpacing: 0.24em
+    textTransform: uppercase
+    color: gold               # línea pequeña sobre los títulos y categoría en las tarjetas
   brand:
     fontSize: 20px            # 30px en login
     fontWeight: 800
@@ -110,10 +121,10 @@ components:
   pager: "‹ N › con N en píldora carbón y texto dorado; de 100 en 100"
   bottom-sheet: "Barra fija abajo, blanca 95% con desenfoque, sube con ease-drawer"
   modal: "Centrado, marfil, cierra con Esc y tocando fuera"
-  brand-mark: "Monograma G en champán (trazo redondeado) sobre cuadrado de carbón con borde fino, + 'Gek' en blanco + 'ko' en champán. El mismo monograma es el ícono de la pestaña y del celular"
+  brand-mark: "Monograma G en champán (trazo redondeado) sobre cuadrado de carbón con borde fino + GEKKO en serifa mayúscula espaciada, todo blanco. El mismo monograma es el ícono de la pestaña y del celular"
   winner-banner: "Bloque carbón con borde dorado; número ganador en un disco de oro (mismo oro del boleto del inicio); nombre abreviado 'Juan P.'; botón dorado 'Ver el sorteo en vivo'"
   verify-modal: "Modal marfil estándar para verificar el celular: 3 pasos cortos, botón verde WhatsApp (único uso del verde de acción), código en cifras tabulares y mensaje 'Esperando tu mensaje…'; al terminar muestra ✅ y sigue con la compra. Aviso previo en el tablero: franja 'paper' con borde 'line' (nunca amarillo, que es de 'reservado')"
-  product-card: "Tarjeta marfil con foto 4:3, nombre, descripción (3 líneas máx.), precio en 24px y, abajo a la derecha, botón 'Agregar' que se vuelve selector − 2 +. Agotado: foto en gris con etiqueta 'Agotado' y 'Sin stock' en vez del botón. Con 5 o menos unidades: '¡Quedan N unidades!' en oro oscuro"
+  product-card: "Tarjeta marfil con borde champán fino y sombra profunda (clase card-lux). Foto cuadrada protagonista (zoom lento al pasar el mouse), categoría en eyebrow, nombre, descripción (3 líneas máx.), línea fina de champán y debajo precio en 26px + botón 'Agregar' que se vuelve selector − 2 +. Agotado: foto en gris con etiqueta 'AGOTADO' en mayúsculas y 'Sin stock' en vez del botón. Con 5 o menos unidades: 'Quedan N unidades' / 'Última unidad' en champán oscuro. Sube 3px al pasar el mouse"
   qty-stepper: "Píldora 'paper' con − (blanco) y + (carbón con texto dorado), 40px de alto en tarjetas y 36px en el carrito; el + se desactiva al llegar al stock"
   cart-bar: "Barra fija abajo (misma del tablero de sorteos): 'N productos · Total S/' y botón carbón 'Ver carrito →'. El único botón dorado del flujo es 'Ir a pagar' dentro del carrito"
   order-chip: "Píldora de estado del pedido: 🟡 Esperando pago (amarillo, igual que 'reservado'), ✅ Pagado (verde), 📦 Entregado (gris), Cancelado (rojo suave)"
@@ -236,7 +247,7 @@ Aparece al elegir números y sube desde abajo con curva tipo iPhone.
 
 ## Tienda y pedidos
 
-- **Pantalla de inicio (`/tienda`):** portada con una línea pequeña en mayúsculas (Pollo aderezado · Belleza · Sorteos), titular grande, tres sellos (Entregas los domingos · Pago con Yape · Confirmación por WhatsApp), filtros por categoría en un selector segmentado (sin emojis) y, por categoría, un título con línea fina de champán y la cantidad de productos; luego la grilla de tarjetas (1 columna en celular, 2 en tablet, 3 en computadora). Los filtros no se animan.
+- **Pantalla de inicio (`/tienda`):** portada **centrada** con un brillo champán suave arriba: eyebrow (Pollo aderezado · Belleza · Sorteos), titular en serifa grande, línea fina de champán, la regla de entrega y tres sellos en mayúsculas pequeñas separados por rombos. Debajo, selector de categorías centrado (sin emojis) y, por categoría, un título en serifa con línea de champán que se desvanece y la cantidad de productos; luego la grilla (1 columna en celular, 2 en tablet, 3 en computadora, 20px de separación).
 - **Stock:** el número de unidades lo pone el admin. El cliente solo ve "¡Quedan N!" cuando son 5 o menos y "Agotado" en 0. El stock se descuenta al hacer el pedido y se devuelve si se cancela.
 - **Carrito (`/carrito`):** lista con foto, cantidad y subtotal; datos de entrega; recuadro con total y datos de Yape; **"Ir a pagar 📲"** (único dorado). Si algo se agotó, se quita solo y se avisa con una franja amarilla.
 - **Pedido enviado:** tarjeta con ✅, el monto a yapear y botón verde de WhatsApp para enviar la captura.
@@ -266,6 +277,7 @@ Basado en los principios de Emil Kowalski:
 
 ### Do
 - Usar marfil para todo lo que se lee y la noche de carbón de fondo.
+- Sensación de exclusividad = **menos, pero mejor**: mucho aire, un solo acento (champán), líneas finas en vez de cajas gruesas, serifa solo en títulos grandes, mayúsculas espaciadas solo en etiquetas pequeñas. Nada de emojis en títulos, menú ni filtros (solo en mensajes de WhatsApp y estados).
 - Usar el oro con moderación, para lo que importa.
 - Mostrar siempre la **foto real del premio**.
 - Confirmar con texto claro cada acción importante.

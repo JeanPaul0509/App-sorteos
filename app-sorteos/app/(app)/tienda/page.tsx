@@ -18,22 +18,31 @@ export default async function TiendaPage() {
 
   return (
     <div>
-      <section className="-mx-4 -mt-6 mb-10 border-b border-gold/20 px-4 pb-10 pt-10 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl sm:border sm:bg-brand/60 sm:px-10 sm:pt-12">
-        <p className="anim-rise text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-          Pollo aderezado · Belleza · Sorteos
-        </p>
+      <section className="relative -mx-4 -mt-6 mb-12 overflow-hidden px-4 pb-14 pt-14 text-center text-white sm:mx-0 sm:mt-0 sm:rounded-3xl sm:border sm:border-gold/20 sm:bg-brand/50 sm:px-10 sm:pb-20 sm:pt-20">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -top-28 h-72 bg-[radial-gradient(closest-side,rgb(214_173_90/0.18),transparent)]"
+        />
+        <p className="eyebrow anim-rise relative">Pollo aderezado · Belleza · Sorteos</p>
         <h1
-          className="anim-rise mt-3 max-w-2xl text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl"
-          style={{ fontStretch: "112%", ["--delay" as string]: "60ms" }}
+          className="anim-rise relative mx-auto mt-5 max-w-3xl font-display text-[2.6rem] font-semibold leading-[1.04] tracking-tight sm:text-6xl"
+          style={{ ["--delay" as string]: "60ms" }}
         >
-          Listo para cocinar, directo a tu mesa.
+          Sabor que se nota en tu mesa.
         </h1>
-        <p className="anim-rise mt-4 max-w-xl text-white/70" style={{ ["--delay" as string]: "120ms" }}>
+        <div className="gold-rule-center anim-rise relative mx-auto my-7 w-28" style={{ ["--delay" as string]: "120ms" }} />
+        <p
+          className="anim-rise relative mx-auto max-w-md text-base leading-relaxed text-white/70"
+          style={{ ["--delay" as string]: "160ms" }}
+        >
           {DELIVERY_NOTE}
         </p>
-        <ul className="anim-rise mt-6 flex flex-wrap gap-2" style={{ ["--delay" as string]: "180ms" }}>
+        <ul
+          className="anim-rise relative mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/55"
+          style={{ ["--delay" as string]: "220ms" }}
+        >
           {SELLOS.map((s) => (
-            <li key={s} className="rounded-full border border-gold/30 px-3 py-1 text-xs font-semibold text-gold">
+            <li key={s} className="before:mr-2.5 before:text-[0.5rem] before:text-gold before:content-['◆']">
               {s}
             </li>
           ))}

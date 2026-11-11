@@ -145,7 +145,7 @@ export default function CartView({ phone }: { phone: string }) {
       <Link href="/tienda" className="text-sm text-gold">
         ← Seguir comprando
       </Link>
-      <h1 className="mb-5 mt-2 text-2xl font-extrabold">Tu carrito</h1>
+      <h1 className="mb-6 mt-2 font-display text-4xl font-semibold tracking-tight">Tu carrito</h1>
 
       {!ready || !loaded ? (
         <div className="space-y-3" aria-busy="true">
