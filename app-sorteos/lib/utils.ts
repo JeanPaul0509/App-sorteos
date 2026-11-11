@@ -57,6 +57,9 @@ export function isPastDate(d: string | null) {
 
 export const LIMITS = { title: 80, description: 1000, specs: 1000, buyerName: 60 };
 
+/** WhatsApp que recibe TODOS los pedidos y capturas de pago (pedidos de la tienda y números de sorteo). */
+export const WHATSAPP_NUMBER = "51912389459";
+
 export const YAPE_NUMBER = process.env.NEXT_PUBLIC_YAPE_NUMBER ?? "";
 export const YAPE_NAME = process.env.NEXT_PUBLIC_YAPE_NAME ?? "";
 
@@ -68,7 +71,7 @@ export function buildWhatsAppUrl(opts: {
   name: string;
   phone: string;
 }) {
-  const admin = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
+  const admin = WHATSAPP_NUMBER;
   const nums = [...opts.numbers].sort((a, b) => a - b).map((n) => pad(n, opts.totalTickets));
   const total = opts.price * opts.numbers.length;
   const text = [

@@ -65,7 +65,6 @@ Los admins **no** se pueden crear desde la app, solo desde Supabase:
    |---|---|
    | `NEXT_PUBLIC_SUPABASE_URL` | tu Project URL |
    | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | tu anon key |
-   | `NEXT_PUBLIC_WHATSAPP_NUMBER` | tu WhatsApp con 51 adelante, ej `51987654321` |
    | `NEXT_PUBLIC_YAPE_NUMBER` | tu número de Yape, ej `987654321` |
    | `NEXT_PUBLIC_YAPE_NAME` | el nombre que aparece en tu Yape |
 

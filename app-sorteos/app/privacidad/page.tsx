@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Brand from "@/components/Brand";
 import TermsText from "@/components/TermsText";
+import { WHATSAPP_NUMBER } from "@/lib/utils";
 
 export const metadata = { title: "Política de privacidad | Gekko" };
 
@@ -38,7 +39,7 @@ Puedes pedirnos que corrijamos tus datos o que eliminemos tu cuenta. Escríbenos
 Si la actualizamos, publicaremos la nueva versión en esta misma página con su fecha.`;
 
 export default function PrivacidadPage() {
-  const wa = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
+  const wa = WHATSAPP_NUMBER;
 
   return (
     <div className="min-h-screen">

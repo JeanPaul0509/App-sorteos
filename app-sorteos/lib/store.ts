@@ -1,5 +1,5 @@
 import type { OrderStatus, ProductCategory } from "@/lib/types";
-import { money } from "@/lib/utils";
+import { money, WHATSAPP_NUMBER } from "@/lib/utils";
 
 export const CATEGORIES: { key: ProductCategory; label: string; icon: string; empty: string }[] = [
   { key: "pollo", label: "Pollo aderezado", icon: "🍗", empty: "Pronto tendremos piezas disponibles." },
@@ -25,7 +25,7 @@ function itemLines(items: Line[]) {
 }
 
 function waNumber() {
-  return (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
+  return WHATSAPP_NUMBER;
 }
 
 /** Mensaje del cliente a Gekko con su pedido (luego adjunta la captura de Yape). */
