@@ -1,9 +1,9 @@
 # Gekko (antes GoldenTicket) — contexto del proyecto
 
-App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega los domingos) y **belleza**, más un apartado de **sorteos/rifas**. Los usuarios se registran con celular y contraseña, hacen pedidos o reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano. Nombre anterior: GoldenTicket (el repo de GitHub aún conserva el nombre viejo).
+App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega los domingos) y **belleza**, más un apartado de **sorteos/rifas**. Los usuarios se registran con celular y contraseña, hacen pedidos o reservan números, pagan por Yape y envían la captura por WhatsApp. El admin confirma los pagos a mano. Nombre anterior: GoldenTicket (el repo ya se llama gekko-portal-de-ventas).
 
 - **Producción:** https://gekkoperu.vercel.app (antes goldenticketperu.vercel.app, que redirige al nuevo).
-- **Repo:** github.com/JeanPaul0509/App-sorteos (rama `main`). El código está en `app-sorteos/`.
+- **Repo:** github.com/JeanPaul0509/gekko-portal-de-ventas (rama `main`; antes se llamaba App-sorteos). El código está en `app-sorteos/`.
 - **Stack:** Next.js 15 (App Router) + React 19 + Tailwind v4 + Supabase (Auth, Postgres, Storage) + Vercel.
 - **Idioma:** todo en español de Perú. El usuario no es programador: explicar en pasos simples.
 
