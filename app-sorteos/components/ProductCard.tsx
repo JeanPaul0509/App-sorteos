@@ -1,22 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import SafeImg from "@/components/SafeImg";
 import { useCart } from "@/components/CartProvider";
-import { CATEGORIES, isPromoDayLima, MAX_QTY, PROMO_PRICES } from "@/lib/store";
+import { CATEGORIES, MAX_QTY, priceTiers, PROMO_PRICES } from "@/lib/store";
 import type { Product } from "@/lib/types";
 import { money, plural } from "@/lib/utils";
 
 /** Tarjeta de producto: foto cuadrada protagonista, categoría, nombre, precio y botón para agregar al carrito. */
-export default function ProductCard({ product: p }: { product: Product }) {
+export default function ProductCard({
+  product: p,
+  promo: promoDay = false,
+  used = 0,
+}: {
+  product: Product;
+  /** Hoy es jueves y la pieza entra en la oferta */
+  promo?: boolean;
+  /** Unidades de esta pieza que la cuenta ya pidió hoy */
+  used?: number;
+}) {
   const { qtyOf, setQty } = useCart();
   const qty = qtyOf(p.id);
   const max = Math.min(p.stock, MAX_QTY);
   const soldOut = p.stock <= 0;
   const cat = CATEGORIES.find((c) => c.key === p.category);
-  const [thursday, setThursday] = useState(false);
-  useEffect(() => setThursday(isPromoDayLima()), []);
-  const promo = thursday && p.category === "pollo" && !soldOut;
+  const promo = promoDay && !soldOut;
+  // Precio de la próxima unidad que se agregaría (S/5 la 1.ª, S/6 la 2.ª, luego normal)
+  const nextPrice = promo ? priceTiers(1, Number(p.price), true, used + qty)[0].price : Number(p.price);
+  const discounted = promo && nextPrice < Number(p.price);
 
   return (
     <article className="card-lux flex h-full flex-col overflow-hidden p-2.5">
@@ -48,8 +58,13 @@ export default function ProductCard({ product: p }: { product: Product }) {
           <div className="gold-rule mb-4 opacity-70" />
           <div className="flex items-end justify-between gap-2">
             <div>
-              <p className="text-[1.65rem] font-extrabold leading-none tracking-tight text-ink">{money(p.price)}</p>
-              {promo && (
+              <p className="text-[1.65rem] font-extrabold leading-none tracking-tight text-ink">
+                {money(nextPrice)}
+                {discounted && (
+                  <span className="ml-2 align-middle text-sm font-semibold text-gray-400 line-through">{money(p.price)}</span>
+                )}
+              </p>
+              {promo && used < 2 && (
                 <p className="mt-1.5 text-xs font-semibold text-gold-deep">
                   Jueves: 1.ª a {money(Math.min(p.price, PROMO_PRICES[0]))} · 2.ª a {money(Math.min(p.price, PROMO_PRICES[1]))}
                 </p>

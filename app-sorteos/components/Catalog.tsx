@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/components/CartProvider";
 import ProductCard from "@/components/ProductCard";
-import { CATEGORIES } from "@/lib/store";
+import { createClient } from "@/lib/supabase/client";
+import { CATEGORIES, priceTiers, tiersTotal } from "@/lib/store";
 import type { Product, ProductCategory } from "@/lib/types";
 import { money, plural } from "@/lib/utils";
 
@@ -12,11 +13,25 @@ import { money, plural } from "@/lib/utils";
 export default function Catalog({ products }: { products: Product[] }) {
   const [filter, setFilter] = useState<ProductCategory | "all">("all");
   const { lines, count } = useCart();
+  const [promo, setPromo] = useState<{ active: boolean; used: Record<string, number> }>({ active: false, used: {} });
+
+  // ¿Es jueves y cuánto pidió ya hoy esta cuenta? (si falta la migración 010, queda sin oferta)
+  useEffect(() => {
+    createClient()
+      .rpc("promo_info")
+      .then(({ data }) => {
+        if (data) setPromo(data as { active: boolean; used: Record<string, number> });
+      });
+  }, []);
 
   const total = useMemo(() => {
     const byId = new Map(products.map((p) => [p.id, p]));
-    return lines.reduce((a, l) => a + Number(byId.get(l.id)?.price ?? 0) * l.qty, 0);
-  }, [lines, products]);
+    return lines.reduce((a, l) => {
+      const p = byId.get(l.id);
+      if (!p) return a;
+      return a + tiersTotal(priceTiers(l.qty, Number(p.price), promo.active && p.category === "pollo", promo.used[p.id] ?? 0));
+    }, 0);
+  }, [lines, products, promo]);
 
   const shown = CATEGORIES.filter((c) => filter === "all" || c.key === filter);
 
@@ -70,7 +85,7 @@ export default function Catalog({ products }: { products: Product[] }) {
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((p, i) => (
                     <div key={p.id} className="anim-rise h-full" style={{ ["--delay" as string]: `${Math.min(i, 6) * 50}ms` }}>
-                      <ProductCard product={p} />
+                      <ProductCard product={p} promo={promo.active && p.category === "pollo"} used={promo.used[p.id] ?? 0} />
                     </div>
                   ))}
                 </div>
