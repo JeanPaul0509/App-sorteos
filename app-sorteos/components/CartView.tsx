@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/components/CartProvider";
 import SafeImg from "@/components/SafeImg";
 import { createClient } from "@/lib/supabase/client";
-import { buildOrderWhatsAppUrl, CATEGORIES, DELIVERY_NOTE, MAX_QTY } from "@/lib/store";
+import { buildOrderWhatsAppUrl, CATEGORIES, DELIVERY_NOTE, MAX_QTY, priceTiers, PROMO_NOTE, tiersTotal } from "@/lib/store";
 import type { Product } from "@/lib/types";
 import { money, plural, YAPE_NAME, YAPE_NUMBER } from "@/lib/utils";
 
@@ -24,6 +24,7 @@ export default function CartView({ phone }: { phone: string }) {
 
   const [products, setProducts] = useState<Map<string, Product>>(new Map());
   const [loaded, setLoaded] = useState(false);
+  const [promo, setPromo] = useState<{ active: boolean; used: Record<string, number> }>({ active: false, used: {} });
   const [notice, setNotice] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -42,6 +43,8 @@ export default function CartView({ phone }: { phone: string }) {
     const { data } = await supabase.from("products").select("*").in("id", ids).eq("active", true);
     const map = new Map(((data ?? []) as Product[]).map((p) => [p.id, p]));
     setProducts(map);
+    const { data: pi } = await supabase.rpc("promo_info"); // si aún no corrieron la migración 010, queda sin oferta
+    if (pi) setPromo(pi as { active: boolean; used: Record<string, number> });
 
     const removed: string[] = [];
     const lowered: string[] = [];
@@ -74,7 +77,14 @@ export default function CartView({ phone }: { phone: string }) {
   const rows = lines
     .map((l) => ({ line: l, product: products.get(l.id) }))
     .filter((r): r is { line: { id: string; qty: number }; product: Product } => !!r.product);
-  const total = rows.reduce((a, r) => a + Number(r.product.price) * r.line.qty, 0);
+  const tiersOf = (r: { line: { qty: number }; product: Product }) =>
+    priceTiers(
+      r.line.qty,
+      Number(r.product.price),
+      promo.active && r.product.category === "pollo",
+      promo.used[r.product.id] ?? 0,
+    );
+  const total = rows.reduce((a, r) => a + tiersTotal(tiersOf(r)), 0);
   const units = rows.reduce((a, r) => a + r.line.qty, 0);
 
   async function submit() {
@@ -166,11 +176,17 @@ export default function CartView({ phone }: { phone: string }) {
       ) : (
         <div className="space-y-5">
           {notice && <p className="rounded-xl bg-yellow-100 p-3 text-sm text-yellow-900">{notice}</p>}
+          {promo.active && rows.some((r) => r.product.category === "pollo") && (
+            <p className="rounded-xl bg-gold-soft p-3 text-sm font-medium text-gold-deep">{PROMO_NOTE}</p>
+          )}
 
           <ul className="card divide-y divide-[var(--color-line)]">
             {rows.map(({ line, product: p }) => {
               const icon = CATEGORIES.find((c) => c.key === p.category)?.icon ?? "🛒";
               const max = Math.min(p.stock, MAX_QTY);
+              const tiers = tiersOf({ line, product: p });
+              const lineTotal = tiersTotal(tiers);
+              const discounted = lineTotal < Number(p.price) * line.qty;
               return (
                 <li key={p.id} className="flex items-center gap-3 p-3">
                   <span className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-gold-soft">
@@ -178,10 +194,15 @@ export default function CartView({ phone }: { phone: string }) {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="font-bold [overflow-wrap:anywhere]">{p.name}</p>
-                    <p className="text-sm text-gray-500">{money(p.price)} c/u</p>
+                    <p className="text-sm text-gray-500">
+                      {discounted
+                        ? tiers.map((t) => `${t.qty} × ${money(t.price)}`).join(" + ")
+                        : `${money(p.price)} c/u`}
+                    </p>
+                    {discounted && <p className="text-xs font-semibold text-gold-deep">Oferta del jueves</p>}
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <b>{money(Number(p.price) * line.qty)}</b>
+                    <b>{money(lineTotal)}</b>
                     <div className="flex items-center gap-1 rounded-xl bg-paper p-1">
                       <button
                         onClick={() => setQty(p.id, line.qty - 1)}
