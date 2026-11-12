@@ -64,9 +64,9 @@ export default function ProductCard({
                   <span className="ml-2 align-middle text-sm font-semibold text-gray-400 line-through">{money(p.price)}</span>
                 )}
               </p>
-              {promo && used < 2 && (
+              {promo && used < 1 && (
                 <p className="mt-1.5 text-xs font-semibold text-gold-deep">
-                  Jueves: 1.ª a {money(Math.min(p.price, PROMO_PRICES[0]))} · 2.ª a {money(Math.min(p.price, PROMO_PRICES[1]))}
+                  Jueves: la 1.ª a {money(Math.min(p.price, PROMO_PRICES[0]))}, luego precio normal
                 </p>
               )}
               {!soldOut && p.stock <= 5 && (

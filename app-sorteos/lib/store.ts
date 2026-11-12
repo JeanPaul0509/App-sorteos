@@ -18,10 +18,10 @@ export const ORDER_STATUS: Record<OrderStatus, { label: string; cls: string }> =
 
 export const MAX_QTY = 50;
 
-/** Oferta de los jueves (solo piezas de pollo): 1.ª unidad S/5, 2.ª S/6, desde la 3.ª el precio normal.
+/** Oferta de los jueves (solo piezas de pollo): 1.ª unidad S/5, desde la 2.ª el precio normal.
  *  Es por cuenta y por pieza, y cuenta lo ya pedido ese jueves. El precio real lo calcula la base (`create_order`). */
-export const PROMO_PRICES = [5, 6];
-export const PROMO_NOTE = "Jueves de oferta: la 1.ª de cada pieza a S/5 y la 2.ª a S/6 (por cuenta).";
+export const PROMO_PRICES = [5];
+export const PROMO_NOTE = "Jueves de oferta: la primera unidad de cada pieza sale a S/5. Desde la segunda, precio normal (por cuenta).";
 
 /** Reparte `qty` unidades en tramos de precio. `prev` = unidades de esa pieza que ya pidió hoy. */
 export function priceTiers(qty: number, price: number, promo: boolean, prev = 0): { qty: number; price: number }[] {

@@ -35,7 +35,7 @@ App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega
 - **Cliente:** `/tienda` (catálogo con filtros y barra del carrito), `/carrito` (datos de entrega, Yape, "Ir a pagar" abre WhatsApp con el pedido), `/mis-pedidos` (estado, reenviar captura, cancelar). El carrito vive en `localStorage` (`CartProvider`).
 - **Admin:** pestañas Pedidos (por cobrar / por entregar / entregados / cancelados + resumen de lo que hay que preparar), Productos, Sorteos (lo de siempre) y Ajustes (redes, restablecer contraseña, términos).
 - Reglas del negocio: se pide durante la semana y **se entrega los domingos** (`DELIVERY_NOTE` en `lib/store.ts`). Las promos tienen su propio stock (no descuentan de las piezas).
-- **Oferta de los jueves (migración 010, hora de Lima):** solo piezas de `pollo`; por cuenta y por pieza, la 1.ª unidad del día a S/5, la 2.ª a S/6 y desde la 3.ª precio normal (cuenta lo ya pedido ese jueves, sin cancelados). El precio lo calcula `create_order` (parte el ítem en tramos con el mismo nombre); `promo_info()` le da al carrito lo ya pedido hoy; `priceTiers()` en `lib/store.ts` es el espejo para mostrar. Las promos no entran.
+- **Oferta de los jueves (migración 010, hora de Lima):** solo piezas de `pollo`; por cuenta y por pieza, solo la 1.ª unidad del día a S/5 y desde la 2.ª precio normal (migración 011 corrige la 010) (cuenta lo ya pedido ese jueves, sin cancelados). El precio lo calcula `create_order` (parte el ítem en tramos con el mismo nombre); `promo_info()` le da al carrito lo ya pedido hoy; `priceTiers()` en `lib/store.ts` es el espejo para mostrar. Las promos no entran.
 - Sin tienda sin login: todo requiere cuenta (igual que los sorteos). Idea pendiente: dejar ver el catálogo sin registrarse.
 - **WhatsApp de pedidos y capturas (tienda y sorteos): 912389459**, fijo en el código como `WHATSAPP_NUMBER` en `lib/utils.ts` (ya no es variable de Vercel). El 994722642 es solo el celular del admin para entrar a la app.
 
@@ -61,7 +61,7 @@ App web de **Gekko**: tienda de **pollo aderezado** (piezas y promos, se entrega
 
 ## Migraciones SQL (`supabase/migrations/`)
 
-002 grupo WhatsApp · 003 límite de 5 en espera · 004 conteo de compradores · 005 redes sociales · 006 límites de texto · 007 ganador + reset de contraseña + términos · 008 verificación de celular (columna `verified_at`, interruptor, códigos, `reserve_tickets` con la revisión) · 009 tienda (productos, pedidos, stock) · 010 oferta de los jueves. El usuario las corre a mano; si algo falla por "función no existe", confirmar que corrió la migración correspondiente.
+002 grupo WhatsApp · 003 límite de 5 en espera · 004 conteo de compradores · 005 redes sociales · 006 límites de texto · 007 ganador + reset de contraseña + términos · 008 verificación de celular (columna `verified_at`, interruptor, códigos, `reserve_tickets` con la revisión) · 009 tienda (productos, pedidos, stock) · 010 oferta de los jueves · 011 jueves: solo la 1.ª a S/5. El usuario las corre a mano; si algo falla por "función no existe", confirmar que corrió la migración correspondiente.
 
 ## Pendientes / ideas
 
